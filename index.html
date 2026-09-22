@@ -1,0 +1,910 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Emploi du temps scolaire</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Segoe UI', system-ui, sans-serif;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      min-height: 100vh;
+      padding: 10px;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      background: #fff;
+      border-radius: 16px;
+      padding: 16px;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+    }
+
+    h1 {
+      text-align: center;
+      color: #2c3e50;
+      margin-bottom: 8px;
+      font-size: 1.4em;
+    }
+
+    .subtitle {
+      text-align: center;
+      color: #7f8c8d;
+      margin-bottom: 18px;
+      font-size: 0.85em;
+    }
+
+    .tabs {
+      display: flex;
+      gap: 6px;
+      justify-content: center;
+      margin-bottom: 18px;
+      background: #ecf0f1;
+      padding: 5px;
+      border-radius: 10px;
+      max-width: 500px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .tab {
+      flex: 1;
+      padding: 10px;
+      border: none;
+      background: transparent;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: 600;
+      color: #555;
+      font-size: 0.85em;
+    }
+
+    .tab.active {
+      background: #fff;
+      color: #2c3e50;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+    }
+
+    .toolbar {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      justify-content: center;
+      margin-bottom: 16px;
+    }
+
+    .toolbar button {
+      padding: 9px 14px;
+      border: none;
+      border-radius: 8px;
+      background: #3498db;
+      color: #fff;
+      font-weight: 600;
+      cursor: pointer;
+      font-size: 0.82em;
+    }
+
+    .toolbar button.danger { background: #e74c3c; }
+    .toolbar button.success { background: #27ae60; }
+
+    /* ===== GRILLE ===== */
+    .planning-wrapper {
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+      border-radius: 10px;
+      padding-bottom: 6px;
+    }
+
+    .planning {
+      display: grid;
+      grid-template-columns: 85px repeat(6, minmax(90px, 1fr));
+      gap: 3px;
+      background: #dfe6e9;
+      padding: 3px;
+      border-radius: 10px;
+      min-width: 700px;
+    }
+
+    .header {
+      background: linear-gradient(135deg, #2c3e50, #34495e);
+      color: #fff;
+      padding: 10px 4px;
+      text-align: center;
+      font-weight: 600;
+      font-size: 0.8em;
+      border-radius: 6px;
+    }
+
+    .header.samedi { background: linear-gradient(135deg, #8e44ad, #9b59b6); }
+
+    .hour {
+      padding: 6px 4px;
+      text-align: center;
+      color: #555;
+      font-size: 0.7em;
+      background: #ecf0f1;
+      border-radius: 6px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 600;
+      min-height: 55px;
+      white-space: nowrap;
+    }
+
+    .slot {
+      background: #f8f9fa;
+      border-radius: 6px;
+      min-height: 55px;
+      padding: 6px;
+      font-size: 0.75em;
+      cursor: pointer;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+      touch-action: manipulation;
+      -webkit-tap-highlight-color: rgba(52, 152, 219, 0.3);
+      user-select: none;
+      -webkit-user-select: none;
+    }
+
+    .slot:active {
+      background: #d6ecfa;
+      transform: scale(0.97);
+    }
+
+    .slot.filled {
+      color: #fff;
+      font-weight: 600;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.15);
+    }
+
+    .slot .matiere {
+      font-size: 0.95em;
+      line-height: 1.2;
+      margin-bottom: 2px;
+    }
+
+    .slot .salle {
+      font-size: 0.75em;
+      opacity: 0.9;
+      font-style: italic;
+    }
+
+    /* ===== VUE SALLES ===== */
+    .panel { display: none; }
+    .panel.active { display: block; }
+
+    .salle-card {
+      background: #f8f9fa;
+      border-radius: 10px;
+      padding: 14px;
+      margin-bottom: 10px;
+      border-left: 4px solid #3498db;
+    }
+
+    .salle-card h3 {
+      color: #2c3e50;
+      margin-bottom: 4px;
+      font-size: 1em;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .salle-card .badge {
+      font-size: 0.7em;
+      padding: 3px 8px;
+      border-radius: 12px;
+      background: #3498db;
+      color: #fff;
+      font-weight: 600;
+      white-space: nowrap;
+    }
+
+    .salle-card .badge.free { background: #27ae60; }
+    .salle-card .badge.busy { background: #e74c3c; }
+
+    .salle-occupations {
+      margin-top: 8px;
+      font-size: 0.82em;
+      color: #555;
+    }
+
+    .occupation-item {
+      padding: 5px 8px;
+      background: #fff;
+      border-radius: 5px;
+      margin-bottom: 4px;
+      display: flex;
+      justify-content: space-between;
+      gap: 8px;
+      border-left: 3px solid #3498db;
+    }
+
+    .occupation-item .time {
+      font-weight: 600;
+      color: #2c3e50;
+      white-space: nowrap;
+    }
+
+    .empty-msg {
+      color: #95a5a6;
+      font-style: italic;
+      font-size: 0.85em;
+      padding: 8px 0;
+    }
+
+    .salles-manager {
+      background: #ecf0f1;
+      border-radius: 10px;
+      padding: 14px;
+      margin-bottom: 18px;
+    }
+
+    .salles-manager h3 {
+      color: #2c3e50;
+      margin-bottom: 12px;
+      font-size: 0.95em;
+    }
+
+    .salles-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 12px;
+    }
+
+    .salle-tag {
+      background: #fff;
+      padding: 6px 10px;
+      border-radius: 20px;
+      font-size: 0.82em;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    }
+
+    .salle-tag button {
+      background: none;
+      border: none;
+      color: #e74c3c;
+      cursor: pointer;
+      font-size: 1em;
+      font-weight: bold;
+      padding: 0;
+      line-height: 1;
+    }
+
+    .add-salle-form {
+      display: flex;
+      gap: 8px;
+    }
+
+    .add-salle-form input {
+      flex: 1;
+      padding: 9px 12px;
+      border: 2px solid #dfe6e9;
+      border-radius: 8px;
+      font-size: 0.9em;
+      font-family: inherit;
+      min-width: 0;
+    }
+
+    .add-salle-form input:focus {
+      outline: none;
+      border-color: #3498db;
+    }
+
+    .add-salle-form button {
+      padding: 9px 14px;
+      border: none;
+      border-radius: 8px;
+      background: #27ae60;
+      color: #fff;
+      font-weight: 600;
+      cursor: pointer;
+      font-size: 0.85em;
+      white-space: nowrap;
+    }
+
+    /* ===== MODAL ===== */
+    .modal-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.6);
+      z-index: 1000;
+      justify-content: center;
+      align-items: center;
+      padding: 15px;
+    }
+
+    .modal-overlay.active { display: flex; }
+
+    .modal {
+      background: #fff;
+      border-radius: 12px;
+      padding: 20px;
+      width: 100%;
+      max-width: 420px;
+      max-height: 90vh;
+      overflow-y: auto;
+    }
+
+    .modal h2 {
+      margin-bottom: 14px;
+      color: #2c3e50;
+      font-size: 1.1em;
+    }
+
+    .modal label {
+      display: block;
+      margin-bottom: 5px;
+      color: #555;
+      font-size: 0.85em;
+      font-weight: 600;
+    }
+
+    .modal input, .modal select {
+      width: 100%;
+      padding: 10px;
+      border: 2px solid #dfe6e9;
+      border-radius: 8px;
+      margin-bottom: 12px;
+      font-size: 0.95em;
+      font-family: inherit;
+    }
+
+    .modal input:focus, .modal select:focus {
+      outline: none;
+      border-color: #3498db;
+    }
+
+    .dispo-info {
+      background: #e8f4fc;
+      border-left: 3px solid #3498db;
+      padding: 10px 12px;
+      border-radius: 6px;
+      font-size: 0.8em;
+      color: #2c3e50;
+      margin-bottom: 12px;
+      line-height: 1.4;
+    }
+
+    .dispo-info .titre {
+      font-weight: 700;
+      margin-bottom: 3px;
+    }
+
+    .modal-actions {
+      display: flex;
+      gap: 8px;
+      margin-top: 6px;
+    }
+
+    .modal-actions button {
+      flex: 1;
+      padding: 11px;
+      border: none;
+      border-radius: 8px;
+      font-weight: 600;
+      cursor: pointer;
+      font-size: 0.88em;
+    }
+
+    .btn-save { background: #27ae60; color: #fff; }
+    .btn-cancel { background: #ecf0f1; color: #555; }
+    .btn-delete { background: #e74c3c; color: #fff; }
+
+    .legende {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      justify-content: center;
+      margin-top: 16px;
+      padding-top: 16px;
+      border-top: 1px solid #ecf0f1;
+    }
+
+    .legende-item {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 0.82em;
+      color: #555;
+    }
+
+    .legende-color {
+      width: 14px;
+      height: 14px;
+      border-radius: 4px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>📚 Emploi du temps scolaire</h1>
+    <p class="subtitle">Clique sur un créneau pour ajouter ou modifier un cours</p>
+
+    <div class="tabs">
+      <button class="tab active" onclick="changerOnglet('edt', this)">📅 Emploi du temps</button>
+      <button class="tab" onclick="changerOnglet('salles', this)">🏫 Salles</button>
+    </div>
+
+    <div id="tab-edt" class="panel active">
+      <div class="toolbar">
+        <button onclick="exporterJSON()">💾 Exporter</button>
+        <button class="success" onclick="document.getElementById('importFile').click()">📂 Importer</button>
+        <button class="danger" onclick="toutEffacer()">🗑️ Tout effacer</button>
+        <input type="file" id="importFile" accept=".json" style="display:none" onchange="importerJSON(event)">
+      </div>
+
+      <div class="planning-wrapper">
+        <div class="planning" id="planning"></div>
+      </div>
+
+      <div class="legende" id="legende"></div>
+    </div>
+
+    <div id="tab-salles" class="panel">
+      <div class="salles-manager">
+        <h3>🛠️ Gérer les salles</h3>
+        <div class="salles-list" id="sallesList"></div>
+        <div class="add-salle-form">
+          <input type="text" id="newSalleInput" placeholder="Ex : B204" onkeypress="if(event.key==='Enter'){ajouterSalle();event.preventDefault();}">
+          <button onclick="ajouterSalle()">+ Ajouter</button>
+        </div>
+      </div>
+
+      <h3 style="color:#2c3e50;margin-bottom:12px;font-size:1em;">📊 Occupation des salles</h3>
+      <div id="sallesOccupation"></div>
+    </div>
+  </div>
+
+  <div class="modal-overlay" id="modal">
+    <div class="modal">
+      <h2 id="modalTitle">Ajouter un cours</h2>
+
+      <label>Matière</label>
+      <input type="text" id="inputMatiere" placeholder="Ex : Mathématiques" list="matieresList">
+      <datalist id="matieresList">
+        <option value="Mathématiques">
+        <option value="Français">
+        <option value="Histoire-Géo">
+        <option value="Anglais">
+        <option value="Espagnol">
+        <option value="SVT">
+        <option value="Physique-Chimie">
+        <option value="EPS">
+        <option value="Arts plastiques">
+        <option value="Musique">
+        <option value="Technologie">
+        <option value="Philosophie">
+      </datalist>
+
+      <label>Professeur (optionnel)</label>
+      <input type="text" id="inputProf" placeholder="Ex : M. Dupont">
+
+      <label>Salle</label>
+      <select id="inputSalle" onchange="verifierDisponibilite()">
+        <option value="">— Aucune —</option>
+      </select>
+
+      <div id="dispoInfo" class="dispo-info" style="display:none;"></div>
+
+      <label>Couleur</label>
+      <select id="inputCouleur">
+        <option value="#e74c3c">🔴 Rouge</option>
+        <option value="#3498db">🔵 Bleu</option>
+        <option value="#27ae60">🟢 Vert</option>
+        <option value="#f39c12">🟠 Orange</option>
+        <option value="#9b59b6">🟣 Violet</option>
+        <option value="#1abc9c">🟦 Turquoise</option>
+        <option value="#e91e63">🩷 Rose</option>
+        <option value="#34495e">⚫ Gris foncé</option>
+      </select>
+
+      <div class="modal-actions">
+        <button class="btn-delete" id="btnDelete" onclick="supprimerCours()" style="display:none">Supprimer</button>
+        <button class="btn-cancel" onclick="fermerModal()">Annuler</button>
+        <button class="btn-save" onclick="sauvegarderCours()">Enregistrer</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const JOURS = ['Lundi', 'Mardi', 'Mercredi', 'Jeudi', 'Vendredi', 'Samedi'];
+    const HEURES = [
+      '7h-8h', '8h-9h', '9h-10h', '10h-11h', '11h-12h',
+      '12h-13h', '13h-14h', '14h-15h', '15h-16h', '16h-17h', '17h-18h'
+    ];
+
+    let emploiDuTemps = chargerDepuisStorage('emploiDuTemps', {});
+    let listeSalles = chargerDepuisStorage('listeSalles', ['B101', 'B102', 'Amphi A']);
+    let slotEnEdition = null;
+
+    // ===== ONGLETS =====
+    function changerOnglet(onglet, btn) {
+      document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+      document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+      btn.classList.add('active');
+      document.getElementById('tab-' + onglet).classList.add('active');
+      if (onglet === 'salles') afficherSalles();
+    }
+
+    // ===== AFFICHAGE EMPLOI DU TEMPS =====
+    function afficher() {
+      const planning = document.getElementById('planning');
+      planning.innerHTML = '';
+
+      planning.innerHTML += '<div class="header">Heure</div>';
+      JOURS.forEach((j, i) => {
+        const cls = i === 5 ? 'header samedi' : 'header';
+        planning.innerHTML += '<div class="' + cls + '">' + j + '</div>';
+      });
+
+      HEURES.forEach(function(heure, hi) {
+        planning.innerHTML += '<div class="hour">' + heure + '</div>';
+        JOURS.forEach(function(_, ji) {
+          const key = ji + '-' + hi;
+          const cours = emploiDuTemps[key];
+          const slot = document.createElement('div');
+
+          if (cours) {
+            slot.className = 'slot filled';
+            slot.style.background = cours.couleur;
+            slot.innerHTML =
+              '<div class="matiere">' + cours.matiere + '</div>' +
+              (cours.salle ? '<div class="salle">📍 ' + cours.salle + '</div>' : '');
+          } else {
+            slot.className = 'slot';
+          }
+
+          // Clic + tactile
+          const handler = function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            ouvrirModal(ji, hi, cours || null);
+          };
+          slot.addEventListener('click', handler);
+          slot.addEventListener('touchend', handler, { passive: false });
+
+          planning.appendChild(slot);
+        });
+      });
+
+      afficherLegende();
+    }
+
+    function afficherLegende() {
+      const legende = document.getElementById('legende');
+      const matieres = {};
+
+      Object.values(emploiDuTemps).forEach(function(c) {
+        if (!matieres[c.matiere]) matieres[c.matiere] = c.couleur;
+      });
+
+      if (Object.keys(matieres).length === 0) {
+        legende.innerHTML = '<span style="color:#999;font-size:0.85em">Aucun cours enregistré pour le moment</span>';
+        return;
+      }
+
+      legende.innerHTML = Object.entries(matieres).map(function(entry) {
+        return '<div class="legende-item">' +
+          '<div class="legende-color" style="background:' + entry[1] + '"></div>' +
+          '<span>' + entry[0] + '</span>' +
+          '</div>';
+      }).join('');
+    }
+
+    // ===== GESTION DES SALLES =====
+    function afficherSalles() {
+      const list = document.getElementById('sallesList');
+      if (listeSalles.length === 0) {
+        list.innerHTML = '<span style="color:#95a5a6;font-size:0.85em;font-style:italic">Aucune salle</span>';
+      } else {
+        list.innerHTML = listeSalles.map(function(s) {
+          return '<div class="salle-tag">' +
+            '<span>🏫 ' + s + '</span>' +
+            '<button onclick="supprimerSalle(\'' + s + '\')" title="Supprimer">✕</button>' +
+            '</div>';
+        }).join('');
+      }
+
+      const occup = document.getElementById('sallesOccupation');
+      if (listeSalles.length === 0) {
+        occup.innerHTML = '<p class="empty-msg">Ajoute des salles pour voir leur occupation.</p>';
+        return;
+      }
+
+      const parSalle = {};
+      listeSalles.forEach(function(s) { parSalle[s] = []; });
+
+      Object.entries(emploiDuTemps).forEach(function(entry) {
+        const key = entry[0], cours = entry[1];
+        if (!cours.salle) return;
+        const parts = key.split('-');
+        const ji = Number(parts[0]), hi = Number(parts[1]);
+        if (!parSalle[cours.salle]) parSalle[cours.salle] = [];
+        parSalle[cours.salle].push({
+          jour: JOURS[ji],
+          heure: HEURES[hi],
+          matiere: cours.matiere,
+          jourIdx: ji,
+          heureIdx: hi
+        });
+      });
+
+      Object.values(parSalle).forEach(function(arr) {
+        arr.sort(function(a, b) { return a.jourIdx - b.jourIdx || a.heureIdx - b.heureIdx; });
+      });
+
+      occup.innerHTML = listeSalles.map(function(s) {
+        const occupations = parSalle[s] || [];
+        const total = occupations.length;
+        const badgeCls = total === 0 ? 'free' : 'busy';
+        const badgeTxt = total === 0 ? 'Libre' : total + ' cours';
+
+        let html = '<div class="salle-card">' +
+          '<h3>🏫 ' + s + ' <span class="badge ' + badgeCls + '">' + badgeTxt + '</span></h3>' +
+          '<div class="salle-occupations">';
+
+        if (total === 0) {
+          html += '<span class="empty-msg">Aucun cours planifié</span>';
+        } else {
+          html += occupations.map(function(o) {
+            return '<div class="occupation-item">' +
+              '<span>' + o.matiere + '</span>' +
+              '<span class="time">' + o.jour + ' · ' + o.heure + '</span>' +
+              '</div>';
+          }).join('');
+        }
+
+        html += '</div></div>';
+        return html;
+      }).join('');
+    }
+
+    function ajouterSalle() {
+      const input = document.getElementById('newSalleInput');
+      const nom = input.value.trim();
+      if (!nom) return;
+
+      if (listeSalles.indexOf(nom) !== -1) {
+        alert('Cette salle existe déjà');
+        return;
+      }
+
+      listeSalles.push(nom);
+      listeSalles.sort();
+      sauvegarderStorage('listeSalles', listeSalles);
+      input.value = '';
+      afficherSalles();
+      mettreAJourSelectSalles();
+    }
+
+    function supprimerSalle(nom) {
+      const utilisee = Object.values(emploiDuTemps).some(function(c) { return c.salle === nom; });
+      if (utilisee) {
+        if (!confirm('⚠️ La salle "' + nom + '" est utilisée. La supprimer quand même ?')) return;
+        Object.keys(emploiDuTemps).forEach(function(k) {
+          if (emploiDuTemps[k].salle === nom) emploiDuTemps[k].salle = '';
+        });
+        sauvegarderStorage('emploiDuTemps', emploiDuTemps);
+        afficher();
+      } else {
+        if (!confirm('Supprimer la salle "' + nom + '" ?')) return;
+      }
+
+      listeSalles = listeSalles.filter(function(s) { return s !== nom; });
+      sauvegarderStorage('listeSalles', listeSalles);
+      afficherSalles();
+      mettreAJourSelectSalles();
+    }
+
+    function mettreAJourSelectSalles() {
+      const select = document.getElementById('inputSalle');
+      const valActuelle = select.value;
+      select.innerHTML = '<option value="">— Aucune —</option>' +
+        listeSalles.map(function(s) {
+          return '<option value="' + s + '">' + s + '</option>';
+        }).join('');
+      select.value = valActuelle;
+    }
+
+    function verifierDisponibilite() {
+      if (!slotEnEdition) return;
+
+      const salle = document.getElementById('inputSalle').value;
+      const info = document.getElementById('dispoInfo');
+      const key = slotEnEdition.jourIndex + '-' + slotEnEdition.heureIndex;
+
+      if (!salle) {
+        info.style.display = 'none';
+        return;
+      }
+
+      const occupations = Object.entries(emploiDuTemps)
+        .filter(function(e) { return e[1].salle === salle && e[0] !== key; })
+        .map(function(e) {
+          const parts = e[0].split('-');
+          const ji = Number(parts[0]), hi = Number(parts[1]);
+          return {
+            jour: JOURS[ji],
+            heure: HEURES[hi],
+            matiere: e[1].matiere,
+            jourIdx: ji,
+            heureIdx: hi
+          };
+        })
+        .sort(function(a, b) { return a.jourIdx - b.jourIdx || a.heureIdx - b.heureIdx; });
+
+      info.style.display = 'block';
+
+      if (occupations.length === 0) {
+        info.innerHTML = '<div class="titre">✅ ' + salle + ' est libre cette semaine</div>' +
+          'Aucun autre cours n\'utilise cette salle.';
+      } else {
+        info.innerHTML = '<div class="titre">📋 ' + salle + ' — ' + occupations.length + ' autre(s) occupation(s)</div>' +
+          occupations.slice(0, 4).map(function(o) {
+            return '• ' + o.jour + ' ' + o.heure + ' (' + o.matiere + ')';
+          }).join('<br>') +
+          (occupations.length > 4 ? '<br>… et ' + (occupations.length - 4) + ' autre(s)' : '');
+      }
+    }
+
+    // ===== MODAL =====
+    function ouvrirModal(jourIndex, heureIndex, cours) {
+      slotEnEdition = { jourIndex: jourIndex, heureIndex: heureIndex };
+      const modal = document.getElementById('modal');
+      const title = document.getElementById('modalTitle');
+      const btnDelete = document.getElementById('btnDelete');
+      const info = document.getElementById('dispoInfo');
+
+      mettreAJourSelectSalles();
+
+      if (cours) {
+        title.textContent = 'Modifier : ' + JOURS[jourIndex] + ' ' + HEURES[heureIndex];
+        document.getElementById('inputMatiere').value = cours.matiere;
+        document.getElementById('inputProf').value = cours.prof || '';
+        document.getElementById('inputSalle').value = cours.salle || '';
+        document.getElementById('inputCouleur').value = cours.couleur;
+        btnDelete.style.display = 'block';
+      } else {
+        title.textContent = 'Ajouter : ' + JOURS[jourIndex] + ' ' + HEURES[heureIndex];
+        document.getElementById('inputMatiere').value = '';
+        document.getElementById('inputProf').value = '';
+        document.getElementById('inputSalle').value = '';
+        document.getElementById('inputCouleur').value = '#3498db';
+        btnDelete.style.display = 'none';
+      }
+
+      info.style.display = 'none';
+      modal.classList.add('active');
+      setTimeout(function() { document.getElementById('inputMatiere').focus(); }, 100);
+
+      if (document.getElementById('inputSalle').value) verifierDisponibilite();
+    }
+
+    function fermerModal() {
+      document.getElementById('modal').classList.remove('active');
+      slotEnEdition = null;
+    }
+
+    function sauvegarderCours() {
+      const matiere = document.getElementById('inputMatiere').value.trim();
+      if (!matiere) {
+        alert('Veuillez saisir une matière');
+        return;
+      }
+
+      const key = slotEnEdition.jourIndex + '-' + slotEnEdition.heureIndex;
+
+      emploiDuTemps[key] = {
+        matiere: matiere,
+        prof: document.getElementById('inputProf').value.trim(),
+        salle: document.getElementById('inputSalle').value,
+        couleur: document.getElementById('inputCouleur').value
+      };
+
+      sauvegarderStorage('emploiDuTemps', emploiDuTemps);
+      fermerModal();
+      afficher();
+    }
+
+    function supprimerCours() {
+      if (!slotEnEdition) return;
+      if (!confirm('Supprimer ce cours ?')) return;
+
+      const key = slotEnEdition.jourIndex + '-' + slotEnEdition.heureIndex;
+      delete emploiDuTemps[key];
+      sauvegarderStorage('emploiDuTemps', emploiDuTemps);
+      fermerModal();
+      afficher();
+    }
+
+    // ===== STORAGE =====
+    function sauvegarderStorage(cle, valeur) {
+      try { localStorage.setItem(cle, JSON.stringify(valeur)); } catch(e) {}
+    }
+
+    function chargerDepuisStorage(cle, defaut) {
+      try {
+        const val = JSON.parse(localStorage.getItem(cle));
+        return val !== null && val !== undefined ? val : defaut;
+      } catch(e) { return defaut; }
+    }
+
+    // ===== IMPORT / EXPORT =====
+    function exporterJSON() {
+      const data = JSON.stringify({ emploiDuTemps: emploiDuTemps, listeSalles: listeSalles }, null, 2);
+      const blob = new Blob([data], { type: 'application/json' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = 'emploi-du-temps-' + new Date().toISOString().split('T')[0] + '.json';
+      a.click();
+      URL.revokeObjectURL(url);
+    }
+
+    function importerJSON(event) {
+      const file = event.target.files[0];
+      if (!file) return;
+
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        try {
+          const data = JSON.parse(e.target.result);
+          if (data.emploiDuTemps) {
+            emploiDuTemps = data.emploiDuTemps;
+            listeSalles = data.listeSalles || [];
+          } else {
+            emploiDuTemps = data;
+            listeSalles = [];
+          }
+          sauvegarderStorage('emploiDuTemps', emploiDuTemps);
+          sauvegarderStorage('listeSalles', listeSalles);
+          afficher();
+          afficherSalles();
+          mettreAJourSelectSalles();
+          alert('✅ Emploi du temps importé !');
+        } catch(err) {
+          alert('❌ Fichier invalide');
+        }
+      };
+      reader.readAsText(file);
+      event.target.value = '';
+    }
+
+    function toutEffacer() {
+      if (!confirm('⚠️ Effacer tout l\'emploi du temps ?')) return;
+      emploiDuTemps = {};
+      sauvegarderStorage('emploiDuTemps', emploiDuTemps);
+      afficher();
+    }
+
+    // ===== ÉVÉNEMENTS =====
+    document.getElementById('modal').addEventListener('click', function(e) {
+      if (e.target.id === 'modal') fermerModal();
+    });
+
+    document.addEventListener('keydown', function(e) {
+      if (e.key === 'Escape') fermerModal();
+    });
+
+    // ===== INIT =====
+    afficher();
+    mettreAJourSelectSalles();
+  </script>
+</body>
+</html>
