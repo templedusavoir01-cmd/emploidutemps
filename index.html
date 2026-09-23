@@ -4,8 +4,103 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Emploi du temps - ITA</title>
-<!-- CSS À COLLER ICI (MESSAGE 2) -->
-</head>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Segoe UI',system-ui,sans-serif;background:linear-gradient(135deg,#1e3a8a,#3b82f6);min-height:100vh;padding:8px}
+.container{max-width:1200px;margin:0 auto;background:#fff;border-radius:12px;padding:12px;box-shadow:0 10px 30px rgba(0,0,0,.3)}
+h1{text-align:center;color:#1e3a8a;font-size:1.1em;margin-bottom:4px}
+.subtitle{text-align:center;color:#7f8c8d;font-size:.72em;margin-bottom:10px}
+.tabs{display:flex;gap:3px;justify-content:center;margin-bottom:10px;background:#ecf0f1;padding:4px;border-radius:8px;flex-wrap:wrap}
+.tab{flex:1;min-width:75px;padding:7px;border:none;background:transparent;border-radius:6px;cursor:pointer;font-weight:600;color:#555;font-size:.68em}
+.tab.active{background:#fff;color:#1e3a8a;box-shadow:0 1px 3px rgba(0,0,0,.1)}
+.tab-add-main{display:block;width:100%;max-width:320px;margin:0 auto 10px;padding:12px 18px;background:linear-gradient(135deg,#1e3a8a,#3b82f6);color:#fff;border:none;border-radius:10px;font-size:.95em;font-weight:700;cursor:pointer;box-shadow:0 4px 12px rgba(30,58,138,.4);transition:.2s}
+.tab-add-main:hover{transform:translateY(-2px);box-shadow:0 6px 18px rgba(30,58,138,.5)}
+.tab-add-main:active{transform:scale(.97)}
+.classe-selector{display:flex;align-items:center;justify-content:center;gap:8px;margin-bottom:10px;padding:8px;background:#f8f9fa;border-radius:8px;border-left:4px solid #1e3a8a;flex-wrap:wrap}
+.classe-selector label{font-weight:600;color:#1e3a8a;font-size:.82em}
+.classe-selector select{padding:6px 10px;border:2px solid #dfe6e9;border-radius:6px;font-size:.85em;font-weight:600;background:#fff;min-width:120px}
+.classe-selector select:focus{outline:none;border-color:#1e3a8a}
+.toolbar{display:flex;flex-wrap:wrap;gap:6px;justify-content:center;margin-bottom:10px}
+.toolbar button{padding:6px 10px;border:none;border-radius:6px;background:#1e3a8a;color:#fff;font-weight:600;cursor:pointer;font-size:.72em}
+.toolbar button.danger{background:#e74c3c}
+.toolbar button.success{background:#27ae60}
+.toolbar button.pdf{background:#e67e22}
+.toolbar button.word{background:#2b579a}
+.toolbar button.excel{background:#217346}
+.planning-wrapper{overflow-x:auto;-webkit-overflow-scrolling:touch;border-radius:8px}
+.planning{display:grid;grid-template-columns:85px repeat(6,minmax(80px,1fr));gap:2px;background:#dfe6e9;padding:2px;border-radius:8px;min-width:620px}
+.header{background:linear-gradient(135deg,#1e3a8a,#3b82f6);color:#fff;padding:7px 3px;text-align:center;font-weight:600;font-size:.72em;border-radius:4px}
+.header.samedi{background:linear-gradient(135deg,#7c3aed,#a855f7)}
+.hour{padding:4px;text-align:center;color:#555;font-size:.6em;background:#ecf0f1;border-radius:4px;display:flex;align-items:center;justify-content:center;font-weight:600;min-height:42px;white-space:nowrap}
+.slot{background:#f8f9fa;border-radius:4px;min-height:42px;padding:3px;font-size:.68em;cursor:pointer;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;overflow:hidden;touch-action:manipulation;-webkit-tap-highlight-color:rgba(30,58,138,.3);user-select:none;-webkit-user-select:none;transition:.15s}
+.slot:active{background:#d6ecfa;transform:scale(.97)}
+.slot.filled{color:#fff;font-weight:600;box-shadow:0 1px 3px rgba(0,0,0,.15)}
+.slot.filled[style*="rgb(189, 195, 199)"]{color:#000 !important}
+.slot.filled[style*="#bdc3c7"]{color:#000 !important}
+.slot.filled:hover{transform:scale(1.03);box-shadow:0 3px 8px rgba(0,0,0,.25)}
+.slot .matiere{font-size:.92em;line-height:1.1;margin-bottom:1px}
+.slot .prof{font-size:.75em;opacity:.95;line-height:1.1}
+.slot .salle{font-size:.72em;opacity:.9;font-style:italic}
+.panel{display:none}
+.panel.active{display:block}
+.card{background:#f8f9fa;border-radius:8px;padding:10px;margin-bottom:8px;border-left:3px solid #1e3a8a}
+.card h3{color:#1e3a8a;margin-bottom:3px;font-size:.9em;display:flex;justify-content:space-between;align-items:center;gap:6px;flex-wrap:wrap}
+.card .badge{font-size:.65em;padding:2px 6px;border-radius:10px;background:#1e3a8a;color:#fff;font-weight:600;white-space:nowrap}
+.card .badge.free{background:#27ae60}
+.card .badge.busy{background:#e74c3c}
+.card .badge.gold{background:#f39c12}
+.card-occupations{margin-top:6px;font-size:.75em;color:#555}
+.occupation-item{padding:4px 6px;background:#fff;border-radius:4px;margin-bottom:3px;display:flex;justify-content:space-between;gap:6px;border-left:2px solid #1e3a8a;flex-wrap:wrap}
+.occupation-item .time{font-weight:600;color:#1e3a8a;white-space:nowrap}
+.occupation-item .classe{background:#dbeafe;color:#1e3a8a;padding:1px 5px;border-radius:3px;font-size:.85em;font-weight:600}
+.empty-msg{color:#95a5a6;font-style:italic;font-size:.8em;padding:6px 0}
+.manager{background:#ecf0f1;border-radius:8px;padding:10px;margin-bottom:12px}
+.manager h3{color:#1e3a8a;margin-bottom:8px;font-size:.85em}
+.tags-list{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:8px}
+.tag{background:#fff;padding:4px 8px;border-radius:16px;font-size:.75em;display:flex;align-items:center;gap:5px;box-shadow:0 1px 2px rgba(0,0,0,.1)}
+.tag button{background:none;border:none;color:#e74c3c;cursor:pointer;font-size:1em;font-weight:bold;padding:0;line-height:1}
+.tag button.dup{color:#27ae60}
+.tag button.dup:hover{color:#229954}
+.add-form{display:flex;gap:6px;flex-wrap:wrap}
+.add-form input,.add-form select{flex:1;padding:6px 10px;border:2px solid #dfe6e9;border-radius:6px;font-size:.8em;font-family:inherit;min-width:100px}
+.add-form input:focus,.add-form select:focus{outline:none;border-color:#1e3a8a}
+.add-form button{padding:6px 10px;border:none;border-radius:6px;background:#27ae60;color:#fff;font-weight:600;cursor:pointer;font-size:.78em;white-space:nowrap}
+.modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:1000;justify-content:center;align-items:center;padding:15px}
+.modal-overlay.active{display:flex}
+.modal{background:#fff;border-radius:10px;padding:16px;width:100%;max-width:420px;max-height:90vh;overflow-y:auto}
+.modal h2{margin-bottom:10px;color:#1e3a8a;font-size:1em}
+.modal label{display:block;margin-bottom:4px;color:#555;font-size:.78em;font-weight:600}
+.modal input,.modal select{width:100%;padding:8px;border:2px solid #dfe6e9;border-radius:6px;margin-bottom:9px;font-size:.88em;font-family:inherit}
+.modal input:focus,.modal select:focus{outline:none;border-color:#1e3a8a}
+.dispo-info{background:#dbeafe;border-left:3px solid #1e3a8a;padding:8px 10px;border-radius:5px;font-size:.72em;color:#1e3a8a;margin-bottom:9px;line-height:1.4}
+.dispo-info.ok{background:#d5f4e6;border-left-color:#27ae60;color:#1e8449}
+.dispo-info.warning{background:#fdecea;border-left-color:#e74c3c;color:#c0392b}
+.dispo-info .titre{font-weight:700;margin-bottom:4px}
+.modal-actions{display:flex;gap:6px;margin-top:5px;flex-wrap:wrap}
+.modal-actions button{flex:1;min-width:80px;padding:9px;border:none;border-radius:6px;font-weight:600;cursor:pointer;font-size:.8em}
+.btn-save{background:#27ae60;color:#fff}
+.btn-save:disabled{background:#95a5a6;cursor:not-allowed}
+.btn-cancel{background:#ecf0f1;color:#555}
+.btn-delete{background:#e74c3c;color:#fff}
+.legende{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin-top:10px;padding-top:10px;border-top:1px solid #ecf0f1}
+.legende-item{display:flex;align-items:center;gap:5px;font-size:.75em;color:#555}
+.legende-color{width:12px;height:12px;border-radius:3px}
+.info-box{background:#fffbea;border-left:4px solid #f39c12;padding:10px;border-radius:6px;margin-bottom:12px;font-size:.78em;color:#7d6608;line-height:1.4}
+.stats-section{background:#f8f9fa;border-radius:8px;padding:12px;margin-bottom:12px;border-left:4px solid #1e3a8a}
+.stats-section h3{color:#1e3a8a;font-size:.9em;margin-bottom:10px;text-transform:uppercase;letter-spacing:.5px}
+.stats-table{width:100%;border-collapse:collapse;font-size:.82em}
+.stats-table th{background:#1e3a8a;color:#fff;padding:6px 8px;text-align:left;font-weight:600}
+.stats-table td{padding:6px 8px;border-bottom:1px solid #ecf0f1}
+.stats-table tr:hover{background:#f0f9ff}
+.stats-table .rank{font-weight:bold;width:40px;text-align:center}
+.stats-table .hours{text-align:right;font-weight:700;color:#1e3a8a;white-space:nowrap}
+.stats-badge{display:inline-block;padding:2px 6px;border-radius:10px;font-size:.75em;font-weight:600}
+.stats-badge.gold{background:#f39c12;color:#fff}
+.stats-badge.silver{background:#95a5a6;color:#fff}
+.stats-badge.bronze{background:#cd7f32;color:#fff}
+.stats-total{display:flex;justify-content:space-between;padding:10px 12px;background:#dbeafe;border-radius:6px;margin-bottom:6px;font-weight:600;color:#1e3a8a}
+.stats-total .val{font-size:1.15em;font-weight:700}
+</style></head>
 <body>
 <div class="container">
 <h1>📚 Emploi du temps - ITA</h1>
@@ -1305,7 +1400,7 @@ document.addEventListener('keydown',function(e){
   if(e.key==='Escape')fermerModal();
 });
 
-afficher();afficher();
+afficher();
 </script>
 </body>
 </html>
