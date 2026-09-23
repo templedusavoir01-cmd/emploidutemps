@@ -94,19 +94,19 @@ h1{text-align:center;color:#1e3a8a;font-size:1.1em;margin-bottom:4px}
 .stats-table tr:hover{background:#f0f9ff}
 .stats-table .rank{font-weight:bold;width:40px;text-align:center}
 .stats-table .hours{text-align:right;font-weight:700;color:#1e3a8a;white-space:nowrap}
-.stats-badge{display:inline-block;padding:2px 6px;border-radius:10px;font-size:.75em;font-weight:600}
+.stats-badge{display:inline-block;padding:2px 6px;border-radius:10px;font-size:.75em;font-weight:600;background:#ecf0f1;color:#555}
 .stats-badge.gold{background:#f39c12;color:#fff}
 .stats-badge.silver{background:#95a5a6;color:#fff}
 .stats-badge.bronze{background:#cd7f32;color:#fff}
 .stats-total{display:flex;justify-content:space-between;padding:10px 12px;background:#dbeafe;border-radius:6px;margin-bottom:6px;font-weight:600;color:#1e3a8a}
 .stats-total .val{font-size:1.15em;font-weight:700}
-</style></head>
+</style>
+</head>
 <body>
 <div class="container">
 <h1>📚 Emploi du temps - ITA</h1>
 <p class="subtitle">Institut des Technologies d'Abidjan</p>
 
-<!-- ONGLETS -->
 <div class="tabs">
 <button class="tab active" onclick="changerOnglet('edt',this)">📅 EDT</button>
 <button class="tab" onclick="changerOnglet('stats',this)">📊 Stats</button>
@@ -117,7 +117,6 @@ h1{text-align:center;color:#1e3a8a;font-size:1.1em;margin-bottom:4px}
 <button class="tab" onclick="changerOnglet('classes',this)">📋 Classes</button>
 </div>
 
-<!-- ========== ONGLET EDT ========== -->
 <div id="tab-edt" class="panel active">
 <div class="classe-selector">
 <label>📋 Classe active :</label>
@@ -140,30 +139,24 @@ h1{text-align:center;color:#1e3a8a;font-size:1.1em;margin-bottom:4px}
 <div class="legende" id="legende"></div>
 </div>
 
-<!-- ========== ONGLET STATS ========== -->
 <div id="tab-stats" class="panel">
 <h2 style="color:#1e3a8a;margin-bottom:12px;font-size:1em">📊 Statistiques</h2>
-
 <div class="stats-section">
 <h3>👨‍🏫 Heures par professeur</h3>
 <div id="statsProfs"></div>
 </div>
-
 <div class="stats-section">
 <h3>🏆 Classement des classes (par heures)</h3>
 <div id="statsClasses"></div>
 </div>
-
 <div class="stats-section">
 <h3>⏱️ Totaux généraux</h3>
 <div id="statsTotaux"></div>
 </div>
 </div>
 
-<!-- ========== ONGLET MENSUEL ========== -->
 <div id="tab-mensuel" class="panel">
 <h2 style="color:#1e3a8a;margin-bottom:12px;font-size:1em">📅 Vue mensuelle par semaine</h2>
-
 <div class="classe-selector">
 <label>📋 Classe :</label>
 <select id="selectClasseMensuel" onchange="changerClasseMensuel(this.value)"></select>
@@ -175,15 +168,12 @@ h1{text-align:center;color:#1e3a8a;font-size:1.1em;margin-bottom:4px}
 <option value="S4">Semaine 4</option>
 </select>
 </div>
-
 <div class="info-box">
-💡 Chaque semaine a son propre emploi du temps. Pratique pour les semaines d'examens ou les semaines spéciales.
+💡 Chaque semaine a son propre emploi du temps. La première fois, il est copié depuis l'emploi du temps principal.
 </div>
-
 <div class="planning-wrapper"><div class="planning" id="planningMensuel"></div></div>
 </div>
 
-<!-- ========== ONGLET SALLES ========== -->
 <div id="tab-salles" class="panel">
 <div class="manager">
 <h3>🛠️ Gérer les salles</h3>
@@ -197,7 +187,6 @@ h1{text-align:center;color:#1e3a8a;font-size:1.1em;margin-bottom:4px}
 <div id="sallesOccupation"></div>
 </div>
 
-<!-- ========== ONGLET MATIERES ========== -->
 <div id="tab-matieres" class="panel">
 <div class="manager">
 <h3>🛠️ Gérer les matières</h3>
@@ -208,11 +197,10 @@ h1{text-align:center;color:#1e3a8a;font-size:1.1em;margin-bottom:4px}
 </div>
 </div>
 <div class="info-box">
-💡 Ajoute simplement le <strong>nom</strong> de la matière. Pas besoin de code.
+💡 Ajoute simplement le <strong>nom</strong> de la matière.
 </div>
 </div>
 
-<!-- ========== ONGLET PROFS ========== -->
 <div id="tab-profs" class="panel">
 <div class="manager">
 <h3>🛠️ Gérer les professeurs</h3>
@@ -225,13 +213,12 @@ h1{text-align:center;color:#1e3a8a;font-size:1.1em;margin-bottom:4px}
 </div>
 </div>
 <div class="info-box">
-💡 Pour chaque prof, associe une <strong>matière</strong> et une <strong>salle</strong>. Ces infos apparaîtront dans le tableau récapitulatif des exports PDF/Word/Excel.
+💡 Pour chaque prof, associe une <strong>matière</strong> et une <strong>salle</strong>. Ces infos apparaissent dans le tableau récapitulatif des exports.
 </div>
 <h3 style="color:#1e3a8a;margin-bottom:8px;font-size:.9em;">📊 Charge horaire des professeurs</h3>
 <div id="profsCharge"></div>
 </div>
 
-<!-- ========== ONGLET CLASSES ========== -->
 <div id="tab-classes" class="panel">
 <div class="manager">
 <h3>🛠️ Gérer les classes</h3>
@@ -250,11 +237,9 @@ h1{text-align:center;color:#1e3a8a;font-size:1.1em;margin-bottom:4px}
 
 </div>
 
-<!-- ========== MODAL ========== -->
 <div class="modal-overlay" id="modal">
 <div class="modal">
 <h2 id="modalTitle">Ajouter un cours</h2>
-
 <div id="selectJourHeure">
 <label>Jour</label>
 <select id="inputJour">
@@ -279,18 +264,13 @@ h1{text-align:center;color:#1e3a8a;font-size:1.1em;margin-bottom:4px}
 <option value="9">17H00-18H00</option>
 </select>
 </div>
-
 <label>Matière</label>
 <select id="inputMatiere"><option value="">— Choisir —</option></select>
-
 <label>Professeur</label>
 <select id="inputProf" onchange="verifierConflits()"><option value="">— Aucun —</option></select>
-
 <label>Salle</label>
 <select id="inputSalle" onchange="verifierConflits()"><option value="">— Aucune —</option></select>
-
 <div id="dispoInfo" class="dispo-info" style="display:none;"></div>
-
 <label>Couleur</label>
 <select id="inputCouleur">
 <option value="#bdc3c7" style="color:#000">⚪ Gris clair</option>
@@ -302,7 +282,6 @@ h1{text-align:center;color:#1e3a8a;font-size:1.1em;margin-bottom:4px}
 <option value="#e91e63">🩷 Rose</option>
 <option value="#34495e">⚫ Gris foncé</option>
 </select>
-
 <div class="modal-actions">
 <button class="btn-delete" id="btnDelete" onclick="supprimerCours()" style="display:none">🗑️ Supprimer</button>
 <button class="btn-cancel" onclick="fermerModal()">Annuler</button>
@@ -312,107 +291,7 @@ h1{text-align:center;color:#1e3a8a;font-size:1.1em;margin-bottom:4px}
 </div>
 
 <script>
-// JAVASCRIPT À COLLER ICI (MESSAGE 3)
-</script>
-</body>
-</html><style>
-*{box-sizing:border-box;margin:0;padding:0}
-body{font-family:'Segoe UI',system-ui,sans-serif;background:linear-gradient(135deg,#1e3a8a,#3b82f6);min-height:100vh;padding:8px}
-.container{max-width:1200px;margin:0 auto;background:#fff;border-radius:12px;padding:12px;box-shadow:0 10px 30px rgba(0,0,0,.3)}
-h1{text-align:center;color:#1e3a8a;font-size:1.1em;margin-bottom:4px}
-.subtitle{text-align:center;color:#7f8c8d;font-size:.72em;margin-bottom:10px}
-.tabs{display:flex;gap:3px;justify-content:center;margin-bottom:10px;background:#ecf0f1;padding:4px;border-radius:8px;flex-wrap:wrap}
-.tab{flex:1;min-width:75px;padding:7px;border:none;background:transparent;border-radius:6px;cursor:pointer;font-weight:600;color:#555;font-size:.68em}
-.tab.active{background:#fff;color:#1e3a8a;box-shadow:0 1px 3px rgba(0,0,0,.1)}
-.tab-add-main{display:block;width:100%;max-width:320px;margin:0 auto 10px;padding:12px 18px;background:linear-gradient(135deg,#1e3a8a,#3b82f6);color:#fff;border:none;border-radius:10px;font-size:.95em;font-weight:700;cursor:pointer;box-shadow:0 4px 12px rgba(30,58,138,.4);transition:.2s}
-.tab-add-main:hover{transform:translateY(-2px);box-shadow:0 6px 18px rgba(30,58,138,.5)}
-.tab-add-main:active{transform:scale(.97)}
-.classe-selector{display:flex;align-items:center;justify-content:center;gap:8px;margin-bottom:10px;padding:8px;background:#f8f9fa;border-radius:8px;border-left:4px solid #1e3a8a;flex-wrap:wrap}
-.classe-selector label{font-weight:600;color:#1e3a8a;font-size:.82em}
-.classe-selector select{padding:6px 10px;border:2px solid #dfe6e9;border-radius:6px;font-size:.85em;font-weight:600;background:#fff;min-width:120px}
-.classe-selector select:focus{outline:none;border-color:#1e3a8a}
-.toolbar{display:flex;flex-wrap:wrap;gap:6px;justify-content:center;margin-bottom:10px}
-.toolbar button{padding:6px 10px;border:none;border-radius:6px;background:#1e3a8a;color:#fff;font-weight:600;cursor:pointer;font-size:.72em}
-.toolbar button.danger{background:#e74c3c}
-.toolbar button.success{background:#27ae60}
-.toolbar button.pdf{background:#e67e22}
-.toolbar button.word{background:#2b579a}
-.toolbar button.excel{background:#217346}
-.planning-wrapper{overflow-x:auto;-webkit-overflow-scrolling:touch;border-radius:8px}
-.planning{display:grid;grid-template-columns:85px repeat(6,minmax(80px,1fr));gap:2px;background:#dfe6e9;padding:2px;border-radius:8px;min-width:620px}
-.header{background:linear-gradient(135deg,#1e3a8a,#3b82f6);color:#fff;padding:7px 3px;text-align:center;font-weight:600;font-size:.72em;border-radius:4px}
-.header.samedi{background:linear-gradient(135deg,#7c3aed,#a855f7)}
-.hour{padding:4px;text-align:center;color:#555;font-size:.6em;background:#ecf0f1;border-radius:4px;display:flex;align-items:center;justify-content:center;font-weight:600;min-height:42px;white-space:nowrap}
-.slot{background:#f8f9fa;border-radius:4px;min-height:42px;padding:3px;font-size:.68em;cursor:pointer;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;overflow:hidden;touch-action:manipulation;-webkit-tap-highlight-color:rgba(30,58,138,.3);user-select:none;-webkit-user-select:none;transition:.15s}
-.slot:active{background:#d6ecfa;transform:scale(.97)}
-.slot.filled{color:#fff;font-weight:600;box-shadow:0 1px 3px rgba(0,0,0,.15)}
-.slot.filled[style*="rgb(189, 195, 199)"]{color:#000 !important}
-.slot.filled[style*="#bdc3c7"]{color:#000 !important}
-.slot.filled:hover{transform:scale(1.03);box-shadow:0 3px 8px rgba(0,0,0,.25)}
-.slot .matiere{font-size:.92em;line-height:1.1;margin-bottom:1px}
-.slot .prof{font-size:.75em;opacity:.95;line-height:1.1}
-.slot .salle{font-size:.72em;opacity:.9;font-style:italic}
-.panel{display:none}
-.panel.active{display:block}
-.card{background:#f8f9fa;border-radius:8px;padding:10px;margin-bottom:8px;border-left:3px solid #1e3a8a}
-.card h3{color:#1e3a8a;margin-bottom:3px;font-size:.9em;display:flex;justify-content:space-between;align-items:center;gap:6px;flex-wrap:wrap}
-.card .badge{font-size:.65em;padding:2px 6px;border-radius:10px;background:#1e3a8a;color:#fff;font-weight:600;white-space:nowrap}
-.card .badge.free{background:#27ae60}
-.card .badge.busy{background:#e74c3c}
-.card .badge.gold{background:#f39c12}
-.card-occupations{margin-top:6px;font-size:.75em;color:#555}
-.occupation-item{padding:4px 6px;background:#fff;border-radius:4px;margin-bottom:3px;display:flex;justify-content:space-between;gap:6px;border-left:2px solid #1e3a8a;flex-wrap:wrap}
-.occupation-item .time{font-weight:600;color:#1e3a8a;white-space:nowrap}
-.occupation-item .classe{background:#dbeafe;color:#1e3a8a;padding:1px 5px;border-radius:3px;font-size:.85em;font-weight:600}
-.empty-msg{color:#95a5a6;font-style:italic;font-size:.8em;padding:6px 0}
-.manager{background:#ecf0f1;border-radius:8px;padding:10px;margin-bottom:12px}
-.manager h3{color:#1e3a8a;margin-bottom:8px;font-size:.85em}
-.tags-list{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:8px}
-.tag{background:#fff;padding:4px 8px;border-radius:16px;font-size:.75em;display:flex;align-items:center;gap:5px;box-shadow:0 1px 2px rgba(0,0,0,.1)}
-.tag button{background:none;border:none;color:#e74c3c;cursor:pointer;font-size:1em;font-weight:bold;padding:0;line-height:1}
-.tag button.dup{color:#27ae60}
-.tag button.dup:hover{color:#229954}
-.add-form{display:flex;gap:6px;flex-wrap:wrap}
-.add-form input,.add-form select{flex:1;padding:6px 10px;border:2px solid #dfe6e9;border-radius:6px;font-size:.8em;font-family:inherit;min-width:100px}
-.add-form input:focus,.add-form select:focus{outline:none;border-color:#1e3a8a}
-.add-form button{padding:6px 10px;border:none;border-radius:6px;background:#27ae60;color:#fff;font-weight:600;cursor:pointer;font-size:.78em;white-space:nowrap}
-.modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:1000;justify-content:center;align-items:center;padding:15px}
-.modal-overlay.active{display:flex}
-.modal{background:#fff;border-radius:10px;padding:16px;width:100%;max-width:420px;max-height:90vh;overflow-y:auto}
-.modal h2{margin-bottom:10px;color:#1e3a8a;font-size:1em}
-.modal label{display:block;margin-bottom:4px;color:#555;font-size:.78em;font-weight:600}
-.modal input,.modal select{width:100%;padding:8px;border:2px solid #dfe6e9;border-radius:6px;margin-bottom:9px;font-size:.88em;font-family:inherit}
-.modal input:focus,.modal select:focus{outline:none;border-color:#1e3a8a}
-.dispo-info{background:#dbeafe;border-left:3px solid #1e3a8a;padding:8px 10px;border-radius:5px;font-size:.72em;color:#1e3a8a;margin-bottom:9px;line-height:1.4}
-.dispo-info.ok{background:#d5f4e6;border-left-color:#27ae60;color:#1e8449}
-.dispo-info.warning{background:#fdecea;border-left-color:#e74c3c;color:#c0392b}
-.dispo-info .titre{font-weight:700;margin-bottom:4px}
-.modal-actions{display:flex;gap:6px;margin-top:5px;flex-wrap:wrap}
-.modal-actions button{flex:1;min-width:80px;padding:9px;border:none;border-radius:6px;font-weight:600;cursor:pointer;font-size:.8em}
-.btn-save{background:#27ae60;color:#fff}
-.btn-save:disabled{background:#95a5a6;cursor:not-allowed}
-.btn-cancel{background:#ecf0f1;color:#555}
-.btn-delete{background:#e74c3c;color:#fff}
-.legende{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin-top:10px;padding-top:10px;border-top:1px solid #ecf0f1}
-.legende-item{display:flex;align-items:center;gap:5px;font-size:.75em;color:#555}
-.legende-color{width:12px;height:12px;border-radius:3px}
-.info-box{background:#fffbea;border-left:4px solid #f39c12;padding:10px;border-radius:6px;margin-bottom:12px;font-size:.78em;color:#7d6608;line-height:1.4}
-/* ===== STATS ===== */
-.stats-section{background:#f8f9fa;border-radius:8px;padding:12px;margin-bottom:12px;border-left:4px solid #1e3a8a}
-.stats-section h3{color:#1e3a8a;font-size:.9em;margin-bottom:10px;text-transform:uppercase;letter-spacing:.5px}
-.stats-table{width:100%;border-collapse:collapse;font-size:.82em}
-.stats-table th{background:#1e3a8a;color:#fff;padding:6px 8px;text-align:left;font-weight:600}
-.stats-table td{padding:6px 8px;border-bottom:1px solid #ecf0f1}
-.stats-table tr:hover{background:#f0f9ff}
-.stats-table .rank{font-weight:bold;width:40px;text-align:center}
-.stats-table .hours{text-align:right;font-weight:700;color:#1e3a8a;white-space:nowrap}
-.stats-badge{display:inline-block;padding:2px 6px;border-radius:10px;font-size:.75em;font-weight:600}
-.stats-badge.gold{background:#f39c12;color:#fff}
-.stats-badge.silver{background:#95a5a6;color:#fff}
-.stats-badge.bronze{background:#cd7f32;color:#fff}
-.stats-total{display:flex;justify-content:space-between;padding:10px 12px;background:#dbeafe;border-radius:6px;margin-bottom:6px;font-weight:600;color:#1e3a8a}
-.stats-total .val{font-size:1.15em;font-weight:700}
-</style>var JOURS=['LUNDI','MARDI','MERCREDI','JEUDI','VENDREDI','SAMEDI'];
+var JOURS=['LUNDI','MARDI','MERCREDI','JEUDI','VENDREDI','SAMEDI'];
 var HEURES=['08H00-9H00','9H00-10H00','10H00-11H00','11H00-12H00','12H00-13H00','13H00-14H00','14H00-15H00','15H00-16H00','16H00-17H00','17H00-18H00'];
 
 var etat = chargerDepuisStorage('emploiDuTempsITA', {
@@ -506,11 +385,6 @@ function getEDTSemaine(classe, semaine){
     etat.emploisSemaines[classe][semaine] = JSON.parse(JSON.stringify(base));
   }
   return etat.emploisSemaines[classe][semaine];
-}
-
-function getEDTCourant(){
-  if(modeMensuel) return getEDTSemaine(etat.classeActive, etat.semaineActive);
-  return etat.emploisDuTemps[etat.classeActive] || {};
 }
 
 function afficherGrille(){
@@ -659,7 +533,6 @@ function verifierConflits(){
 
   var conflitsSalle = [];
   var conflitsProf = [];
-  var edtSource = modeMensuel ? getEDTSemaine(etat.classeActive, etat.semaineActive) : (etat.emploisDuTemps[etat.classeActive]||{});
 
   Object.keys(etat.emploisDuTemps).forEach(function(classe){
     if(classe === etat.classeActive) return;
@@ -697,7 +570,6 @@ function verifierConflits(){
   }
 }
 
-/* ===== SALLES ===== */
 function afficherSalles(){
   var list=document.getElementById('sallesList');
   if(etat.salles.length===0){
@@ -707,7 +579,6 @@ function afficherSalles(){
       return '<div class="tag"><span>🏫 '+s+'</span><button onclick="supprimerSalle(\''+s.replace(/'/g,"\\'")+'\')">✕</button></div>';
     }).join('');
   }
-
   var occup=document.getElementById('sallesOccupation');
   if(etat.salles.length===0){
     occup.innerHTML='<p class="empty-msg">Ajoute des salles pour voir leur occupation.</p>';
@@ -766,7 +637,6 @@ function supprimerSalle(nom){
   afficher();
 }
 
-/* ===== MATIERES ===== */
 function afficherMatieres(){
   var list=document.getElementById('matieresList');
   if(etat.matieres.length===0){
@@ -799,7 +669,6 @@ function supprimerMatiere(nom){
   mettreAJourSelects();
 }
 
-/* ===== PROFS ===== */
 function afficherProfs(){
   var list=document.getElementById('profsList');
   if(etat.professeurs.length===0){
@@ -812,7 +681,6 @@ function afficherProfs(){
       return '<div class="tag"><span>👨‍🏫 '+info+'</span><button onclick="supprimerProf(\''+p.nom.replace(/'/g,"\\'")+'\')">✕</button></div>';
     }).join('');
   }
-
   var charge = document.getElementById('profsCharge');
   if(etat.professeurs.length===0){
     charge.innerHTML = '<p class="empty-msg">Ajoute des professeurs pour voir leur charge.</p>';
@@ -872,7 +740,6 @@ function supprimerProf(nom){
   mettreAJourSelects();
 }
 
-/* ===== CLASSES ===== */
 function afficherClasses(){
   var list=document.getElementById('classesList');
   if(etat.classes.length===0){
@@ -943,21 +810,17 @@ function dupliquerClasse(nom){
   alert('✅ Classe "'+nouvelle+'" créée avec ' + Object.keys(etat.emploisDuTemps[nouvelle]).length + ' cours copiés.');
 }
 
-/* ===== STATS ===== */
 function afficherStats(){
-  // Heures par prof
   var heuresProfs = {};
   etat.professeurs.forEach(function(p){ heuresProfs[p.nom] = 0; });
   Object.keys(etat.emploisDuTemps).forEach(function(classe){
     var edt = etat.emploisDuTemps[classe] || {};
     Object.keys(edt).forEach(function(key){
       var c = edt[key];
-      if(c.prof && heuresProfs[c.prof] !== undefined) heuresProfs[c.prof]++;
-      else if(c.prof) heuresProfs[c.prof] = (heuresProfs[c.prof]||0) + 1;
+      if(c.prof){ heuresProfs[c.prof] = (heuresProfs[c.prof]||0) + 1; }
     });
   });
   var arrProfs = Object.entries(heuresProfs).sort(function(a,b){return b[1]-a[1];});
-  var maxProf = arrProfs.length > 0 ? arrProfs[0][1] : 0;
   var htmlProfs = '<table class="stats-table"><thead><tr><th>#</th><th>Professeur</th><th class="hours">Heures</th></tr></thead><tbody>';
   arrProfs.forEach(function(e, i){
     var rankClass = '';
@@ -971,7 +834,6 @@ function afficherStats(){
   htmlProfs += '</tbody></table>';
   document.getElementById('statsProfs').innerHTML = htmlProfs;
 
-  // Classement des classes
   var heuresClasses = {};
   etat.classes.forEach(function(c){ heuresClasses[c] = Object.keys(etat.emploisDuTemps[c]||{}).length; });
   var arrClasses = Object.entries(heuresClasses).sort(function(a,b){return b[1]-a[1];});
@@ -988,21 +850,19 @@ function afficherStats(){
   htmlClasses += '</tbody></table>';
   document.getElementById('statsClasses').innerHTML = htmlClasses;
 
-  // Totaux généraux
   var totalProfs = arrProfs.reduce(function(s,e){return s+e[1];}, 0);
   var totalClasses = arrClasses.reduce(function(s,e){return s+e[1];}, 0);
-  var totalGeneral = totalClasses;
   var htmlTot = '';
   htmlTot += '<div class="stats-total"><span>👨‍🏫 Total heures tous les profs</span><span class="val">'+totalProfs+' h</span></div>';
   htmlTot += '<div class="stats-total"><span>📋 Total heures toutes les classes</span><span class="val">'+totalClasses+' h</span></div>';
-  htmlTot += '<div class="stats-total"><span>⏱️ Total général</span><span class="val">'+totalGeneral+' h</span></div>';
+  htmlTot += '<div class="stats-total"><span>⏱️ Total général</span><span class="val">'+totalClasses+' h</span></div>';
   document.getElementById('statsTotaux').innerHTML = htmlTot;
 }
 
-/* ===== MODAL ===== */
 function ouvrirAjoutRapide(){
   if(etat.classes.length === 0){ alert('Crée d\'abord une classe dans l\'onglet 📋 Classes'); return; }
   modeAjoutRapide=true;
+  modeMensuel=false;
   slotEnEdition={jourIndex:0,heureIndex:0};
   document.getElementById('modalTitle').textContent='➕ Ajouter un cours — '+etat.classeActive;
   document.getElementById('selectJourHeure').style.display='block';
@@ -1025,7 +885,6 @@ function ouvrirModal(jourIndex,heureIndex,cours){
   slotEnEdition={jourIndex:jourIndex,heureIndex:heureIndex};
   document.getElementById('selectJourHeure').style.display='none';
   mettreAJourSelects();
-
   if(cours){
     document.getElementById('modalTitle').textContent='✏️ Modifier : '+JOURS[jourIndex]+' '+HEURES[heureIndex]+' — '+etat.classeActive;
     document.getElementById('inputMatiere').value=cours.matiere || '';
@@ -1089,8 +948,9 @@ function sauvegarderCours(){
     etat.emploisDuTemps[etat.classeActive] = edt;
   }
   sauvegarderStorage();
+  var etaitMensuel = modeMensuel;
   fermerModal();
-  if(modeMensuel){ afficherGrilleMensuel(); } else { afficher(); }
+  if(etaitMensuel){ afficherGrilleMensuel(); } else { afficher(); }
 }
 
 function supprimerCours(){
@@ -1108,8 +968,9 @@ function supprimerCours(){
     etat.emploisDuTemps[etat.classeActive] = edt;
   }
   sauvegarderStorage();
+  var etaitMensuel = modeMensuel;
   fermerModal();
-  if(modeMensuel){ afficherGrilleMensuel(); } else { afficher(); }
+  if(etaitMensuel){ afficherGrilleMensuel(); } else { afficher(); }
 }
 
 function effacerClasseActive(){
@@ -1119,7 +980,6 @@ function effacerClasseActive(){
   afficher();
 }
 
-/* ===== EN-TETE COMMUN ===== */
 function getEnteteHTML(){
   var html = '<div style="text-align:center;margin-bottom:10px;">';
   html += '<div style="font-size:11px;font-weight:bold;">RÉPUBLIQUE DE CÔTE D\'IVOIRE</div>';
@@ -1146,7 +1006,6 @@ function getTableauRecapHTML(style){
     var p = etat.professeurs[i] || {nom:'', matiere:'', salle:''};
     html += '<tr><td>'+(p.matiere||'')+'</td><td>'+(p.nom||'')+'</td><td>'+(p.salle||'')+'</td></tr>';
   }
-  // Ajouter les matières orphelines (sans prof associé)
   etat.matieres.forEach(function(m){
     var trouve = etat.professeurs.some(function(p){ return p.matiere === m; });
     if(!trouve){ html += '<tr><td>'+m+'</td><td></td><td></td></tr>'; }
@@ -1155,7 +1014,6 @@ function getTableauRecapHTML(style){
   return html;
 }
 
-/* ===== EXPORT PDF ===== */
 function exporterPDF(){
   if(etat.classes.length === 0){ alert('Aucune classe'); return; }
   var edt = etat.emploisDuTemps[etat.classeActive] || {};
@@ -1219,7 +1077,6 @@ function exporterPDF(){
   setTimeout(function(){win.print();},500);
 }
 
-/* ===== EXPORT WORD ===== */
 function exporterWord(){
   if(etat.classes.length === 0){ alert('Aucune classe'); return; }
   var edt = etat.emploisDuTemps[etat.classeActive] || {};
@@ -1278,7 +1135,6 @@ function exporterWord(){
   URL.revokeObjectURL(url);
 }
 
-/* ===== EXPORT EXCEL ===== */
 function exporterExcel(){
   if(etat.classes.length === 0){ alert('Aucune classe'); return; }
   var edt = etat.emploisDuTemps[etat.classeActive] || {};
@@ -1351,7 +1207,6 @@ function exporterExcel(){
   URL.revokeObjectURL(url);
 }
 
-/* ===== JSON ===== */
 function exporterJSON(){
   var data=JSON.stringify(etat, null, 2);
   var blob=new Blob([data],{type:'application/json'});
