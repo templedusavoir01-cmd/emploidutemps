@@ -3,74 +3,75 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Emploi du temps - Multi-classes</title>
+<title>Emploi du temps - ITA</title>
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
-body{font-family:'Segoe UI',system-ui,sans-serif;background:linear-gradient(135deg,#667eea,#764ba2);min-height:100vh;padding:8px}
+body{font-family:'Segoe UI',system-ui,sans-serif;background:linear-gradient(135deg,#1e3a8a,#3b82f6);min-height:100vh;padding:8px}
 .container{max-width:1200px;margin:0 auto;background:#fff;border-radius:12px;padding:12px;box-shadow:0 10px 30px rgba(0,0,0,.3)}
-h1{text-align:center;color:#2c3e50;font-size:1.1em;margin-bottom:4px}
+h1{text-align:center;color:#1e3a8a;font-size:1.1em;margin-bottom:4px}
 .subtitle{text-align:center;color:#7f8c8d;font-size:.72em;margin-bottom:10px}
 .tabs{display:flex;gap:3px;justify-content:center;margin-bottom:10px;background:#ecf0f1;padding:4px;border-radius:8px;flex-wrap:wrap}
 .tab{flex:1;min-width:75px;padding:7px;border:none;background:transparent;border-radius:6px;cursor:pointer;font-weight:600;color:#555;font-size:.7em}
-.tab.active{background:#fff;color:#2c3e50;box-shadow:0 1px 3px rgba(0,0,0,.1)}
-.tab-add-main{display:block;width:100%;max-width:320px;margin:0 auto 10px;padding:12px 18px;background:linear-gradient(135deg,#27ae60,#2ecc71);color:#fff;border:none;border-radius:10px;font-size:.95em;font-weight:700;cursor:pointer;box-shadow:0 4px 12px rgba(39,174,96,.4);transition:.2s}
-.tab-add-main:hover{transform:translateY(-2px);box-shadow:0 6px 18px rgba(39,174,96,.5)}
+.tab.active{background:#fff;color:#1e3a8a;box-shadow:0 1px 3px rgba(0,0,0,.1)}
+.tab-add-main{display:block;width:100%;max-width:320px;margin:0 auto 10px;padding:12px 18px;background:linear-gradient(135deg,#1e3a8a,#3b82f6);color:#fff;border:none;border-radius:10px;font-size:.95em;font-weight:700;cursor:pointer;box-shadow:0 4px 12px rgba(30,58,138,.4);transition:.2s}
+.tab-add-main:hover{transform:translateY(-2px);box-shadow:0 6px 18px rgba(30,58,138,.5)}
 .tab-add-main:active{transform:scale(.97)}
-.classe-selector{display:flex;align-items:center;justify-content:center;gap:8px;margin-bottom:10px;padding:8px;background:#f8f9fa;border-radius:8px;border-left:4px solid #3498db}
-.classe-selector label{font-weight:600;color:#2c3e50;font-size:.82em}
+.classe-selector{display:flex;align-items:center;justify-content:center;gap:8px;margin-bottom:10px;padding:8px;background:#f8f9fa;border-radius:8px;border-left:4px solid #1e3a8a}
+.classe-selector label{font-weight:600;color:#1e3a8a;font-size:.82em}
 .classe-selector select{padding:6px 10px;border:2px solid #dfe6e9;border-radius:6px;font-size:.85em;font-weight:600;background:#fff;min-width:140px}
-.classe-selector select:focus{outline:none;border-color:#3498db}
+.classe-selector select:focus{outline:none;border-color:#1e3a8a}
 .toolbar{display:flex;flex-wrap:wrap;gap:6px;justify-content:center;margin-bottom:10px}
-.toolbar button{padding:6px 10px;border:none;border-radius:6px;background:#3498db;color:#fff;font-weight:600;cursor:pointer;font-size:.72em}
+.toolbar button{padding:6px 10px;border:none;border-radius:6px;background:#1e3a8a;color:#fff;font-weight:600;cursor:pointer;font-size:.72em}
 .toolbar button.danger{background:#e74c3c}
 .toolbar button.success{background:#27ae60}
 .toolbar button.pdf{background:#e67e22}
 .toolbar button.word{background:#2b579a}
+.toolbar button.excel{background:#217346}
 .planning-wrapper{overflow-x:auto;-webkit-overflow-scrolling:touch;border-radius:8px}
-.planning{display:grid;grid-template-columns:70px repeat(6,minmax(80px,1fr));gap:2px;background:#dfe6e9;padding:2px;border-radius:8px;min-width:620px}
-.header{background:linear-gradient(135deg,#2c3e50,#34495e);color:#fff;padding:7px 3px;text-align:center;font-weight:600;font-size:.72em;border-radius:4px}
-.header.samedi{background:linear-gradient(135deg,#8e44ad,#9b59b6)}
-.hour{padding:4px;text-align:center;color:#555;font-size:.62em;background:#ecf0f1;border-radius:4px;display:flex;align-items:center;justify-content:center;font-weight:600;min-height:42px;white-space:nowrap}
-.slot{background:#f8f9fa;border-radius:4px;min-height:42px;padding:3px;font-size:.68em;cursor:pointer;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;overflow:hidden;touch-action:manipulation;-webkit-tap-highlight-color:rgba(52,152,219,.3);user-select:none;-webkit-user-select:none;transition:.15s}
+.planning{display:grid;grid-template-columns:85px repeat(6,minmax(80px,1fr));gap:2px;background:#dfe6e9;padding:2px;border-radius:8px;min-width:620px}
+.header{background:linear-gradient(135deg,#1e3a8a,#3b82f6);color:#fff;padding:7px 3px;text-align:center;font-weight:600;font-size:.72em;border-radius:4px}
+.header.samedi{background:linear-gradient(135deg,#7c3aed,#a855f7)}
+.hour{padding:4px;text-align:center;color:#555;font-size:.6em;background:#ecf0f1;border-radius:4px;display:flex;align-items:center;justify-content:center;font-weight:600;min-height:42px;white-space:nowrap}
+.slot{background:#f8f9fa;border-radius:4px;min-height:42px;padding:3px;font-size:.68em;cursor:pointer;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;overflow:hidden;touch-action:manipulation;-webkit-tap-highlight-color:rgba(30,58,138,.3);user-select:none;-webkit-user-select:none;transition:.15s}
 .slot:active{background:#d6ecfa;transform:scale(.97)}
 .slot.filled{color:#fff;font-weight:600;box-shadow:0 1px 3px rgba(0,0,0,.15)}
 .slot.filled[style*="rgb(189, 195, 199)"]{color:#000 !important}
 .slot.filled[style*="#bdc3c7"]{color:#000 !important}
 .slot.filled:hover{transform:scale(1.03);box-shadow:0 3px 8px rgba(0,0,0,.25)}
-.slot .matiere{font-size:.95em;line-height:1.1;margin-bottom:1px}
+.slot .matiere{font-size:.92em;line-height:1.1;margin-bottom:1px}
 .slot .prof{font-size:.75em;opacity:.95;line-height:1.1}
 .slot .salle{font-size:.72em;opacity:.9;font-style:italic}
 .panel{display:none}
 .panel.active{display:block}
-.card{background:#f8f9fa;border-radius:8px;padding:10px;margin-bottom:8px;border-left:3px solid #3498db}
-.card h3{color:#2c3e50;margin-bottom:3px;font-size:.9em;display:flex;justify-content:space-between;align-items:center;gap:6px;flex-wrap:wrap}
-.card .badge{font-size:.65em;padding:2px 6px;border-radius:10px;background:#3498db;color:#fff;font-weight:600;white-space:nowrap}
+.card{background:#f8f9fa;border-radius:8px;padding:10px;margin-bottom:8px;border-left:3px solid #1e3a8a}
+.card h3{color:#1e3a8a;margin-bottom:3px;font-size:.9em;display:flex;justify-content:space-between;align-items:center;gap:6px;flex-wrap:wrap}
+.card .badge{font-size:.65em;padding:2px 6px;border-radius:10px;background:#1e3a8a;color:#fff;font-weight:600;white-space:nowrap}
 .card .badge.free{background:#27ae60}
 .card .badge.busy{background:#e74c3c}
 .card-occupations{margin-top:6px;font-size:.75em;color:#555}
-.occupation-item{padding:4px 6px;background:#fff;border-radius:4px;margin-bottom:3px;display:flex;justify-content:space-between;gap:6px;border-left:2px solid #3498db;flex-wrap:wrap}
-.occupation-item .time{font-weight:600;color:#2c3e50;white-space:nowrap}
-.occupation-item .classe{background:#e8f4fc;color:#2c3e50;padding:1px 5px;border-radius:3px;font-size:.85em;font-weight:600}
+.occupation-item{padding:4px 6px;background:#fff;border-radius:4px;margin-bottom:3px;display:flex;justify-content:space-between;gap:6px;border-left:2px solid #1e3a8a;flex-wrap:wrap}
+.occupation-item .time{font-weight:600;color:#1e3a8a;white-space:nowrap}
+.occupation-item .classe{background:#dbeafe;color:#1e3a8a;padding:1px 5px;border-radius:3px;font-size:.85em;font-weight:600}
 .empty-msg{color:#95a5a6;font-style:italic;font-size:.8em;padding:6px 0}
 .manager{background:#ecf0f1;border-radius:8px;padding:10px;margin-bottom:12px}
-.manager h3{color:#2c3e50;margin-bottom:8px;font-size:.85em}
+.manager h3{color:#1e3a8a;margin-bottom:8px;font-size:.85em}
 .tags-list{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:8px}
 .tag{background:#fff;padding:4px 8px;border-radius:16px;font-size:.75em;display:flex;align-items:center;gap:5px;box-shadow:0 1px 2px rgba(0,0,0,.1)}
 .tag button{background:none;border:none;color:#e74c3c;cursor:pointer;font-size:1em;font-weight:bold;padding:0;line-height:1}
 .tag button.dup{color:#27ae60}
 .tag button.dup:hover{color:#229954}
 .add-form{display:flex;gap:6px;flex-wrap:wrap}
-.add-form input{flex:1;padding:6px 10px;border:2px solid #dfe6e9;border-radius:6px;font-size:.8em;font-family:inherit;min-width:120px}
-.add-form input:focus{outline:none;border-color:#3498db}
+.add-form input,.add-form select{flex:1;padding:6px 10px;border:2px solid #dfe6e9;border-radius:6px;font-size:.8em;font-family:inherit;min-width:110px}
+.add-form input:focus,.add-form select:focus{outline:none;border-color:#1e3a8a}
 .add-form button{padding:6px 10px;border:none;border-radius:6px;background:#27ae60;color:#fff;font-weight:600;cursor:pointer;font-size:.78em;white-space:nowrap}
 .modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:1000;justify-content:center;align-items:center;padding:15px}
 .modal-overlay.active{display:flex}
 .modal{background:#fff;border-radius:10px;padding:16px;width:100%;max-width:420px;max-height:90vh;overflow-y:auto}
-.modal h2{margin-bottom:10px;color:#2c3e50;font-size:1em}
+.modal h2{margin-bottom:10px;color:#1e3a8a;font-size:1em}
 .modal label{display:block;margin-bottom:4px;color:#555;font-size:.78em;font-weight:600}
 .modal input,.modal select{width:100%;padding:8px;border:2px solid #dfe6e9;border-radius:6px;margin-bottom:9px;font-size:.88em;font-family:inherit}
-.modal input:focus,.modal select:focus{outline:none;border-color:#3498db}
-.dispo-info{background:#e8f4fc;border-left:3px solid #3498db;padding:8px 10px;border-radius:5px;font-size:.72em;color:#2c3e50;margin-bottom:9px;line-height:1.4}
+.modal input:focus,.modal select:focus{outline:none;border-color:#1e3a8a}
+.dispo-info{background:#dbeafe;border-left:3px solid #1e3a8a;padding:8px 10px;border-radius:5px;font-size:.72em;color:#1e3a8a;margin-bottom:9px;line-height:1.4}
 .dispo-info.ok{background:#d5f4e6;border-left-color:#27ae60;color:#1e8449}
 .dispo-info.warning{background:#fdecea;border-left-color:#e74c3c;color:#c0392b}
 .dispo-info .titre{font-weight:700;margin-bottom:4px}
@@ -88,8 +89,8 @@ h1{text-align:center;color:#2c3e50;font-size:1.1em;margin-bottom:4px}
 </head>
 <body>
 <div class="container">
-<h1>📚 Emploi du temps - Multi-classes</h1>
-<p class="subtitle">Gérez plusieurs classes avec leurs propres emplois du temps</p>
+<h1>📚 Emploi du temps - ITA</h1>
+<p class="subtitle">Institut des Technologies d'Abidjan</p>
 
 <div class="tabs">
 <button class="tab active" onclick="changerOnglet('edt',this)">📅 EDT</button>
@@ -99,7 +100,6 @@ h1{text-align:center;color:#2c3e50;font-size:1.1em;margin-bottom:4px}
 <button class="tab" onclick="changerOnglet('classes',this)">📋 Classes</button>
 </div>
 
-<!-- ONGLET EMPLOI DU TEMPS -->
 <div id="tab-edt" class="panel active">
 <div class="classe-selector">
 <label>📋 Classe active :</label>
@@ -111,6 +111,7 @@ h1{text-align:center;color:#2c3e50;font-size:1.1em;margin-bottom:4px}
 <div class="toolbar">
 <button class="pdf" onclick="exporterPDF()">📄 PDF</button>
 <button class="word" onclick="exporterWord()">📝 Word</button>
+<button class="excel" onclick="exporterExcel()">📊 Excel</button>
 <button onclick="exporterJSON()">💾 Sauvegarder</button>
 <button class="success" onclick="document.getElementById('restoreFile').click()">📂 Restaurer</button>
 <button class="danger" onclick="effacerClasseActive()">🗑️ Vider</button>
@@ -121,7 +122,6 @@ h1{text-align:center;color:#2c3e50;font-size:1.1em;margin-bottom:4px}
 <div class="legende" id="legende"></div>
 </div>
 
-<!-- ONGLET SALLES -->
 <div id="tab-salles" class="panel">
 <div class="manager">
 <h3>🛠️ Gérer les salles</h3>
@@ -131,62 +131,57 @@ h1{text-align:center;color:#2c3e50;font-size:1.1em;margin-bottom:4px}
 <button onclick="ajouterSalle()">+ Ajouter</button>
 </div>
 </div>
-<h3 style="color:#2c3e50;margin-bottom:8px;font-size:.9em;">📊 Occupation des salles</h3>
+<h3 style="color:#1e3a8a;margin-bottom:8px;font-size:.9em;">📊 Occupation des salles</h3>
 <div id="sallesOccupation"></div>
 </div>
 
-<!-- ONGLET MATIERES -->
 <div id="tab-matieres" class="panel">
 <div class="manager">
 <h3>🛠️ Gérer les matières</h3>
 <div class="tags-list" id="matieresList"></div>
 <div class="add-form">
-<input type="text" id="newMatiereInput" placeholder="Ex : Mathématiques" onkeypress="if(event.key==='Enter'){ajouterMatiere();event.preventDefault();}">
+<input type="text" id="newMatiereInput" placeholder="Ex : MATHEMATIQUE" onkeypress="if(event.key==='Enter'){ajouterMatiere();event.preventDefault();}">
+<input type="text" id="newMatiereCode" placeholder="Code (ex: S1)" onkeypress="if(event.key==='Enter'){ajouterMatiere();event.preventDefault();}">
 <button onclick="ajouterMatiere()">+ Ajouter</button>
 </div>
 </div>
 <div class="info-box">
-💡 Les matières que tu ajoutes ici apparaissent dans le menu déroulant du formulaire d'ajout de cours.
+💡 Ajoute le <strong>nom</strong> de la matière et son <strong>code</strong>. Le code apparaîtra sur le PDF/Word/Excel.
 </div>
 </div>
 
-<!-- ONGLET PROFS -->
 <div id="tab-profs" class="panel">
 <div class="manager">
 <h3>🛠️ Gérer les professeurs</h3>
 <div class="tags-list" id="profsList"></div>
 <div class="add-form">
-<input type="text" id="newProfInput" placeholder="Ex : M. Dupont" onkeypress="if(event.key==='Enter'){ajouterProf();event.preventDefault();}">
+<input type="text" id="newProfInput" placeholder="Ex : M. TRESOR" onkeypress="if(event.key==='Enter'){ajouterProf();event.preventDefault();}">
+<select id="newProfMatiere"><option value="">— Matière —</option></select>
 <button onclick="ajouterProf()">+ Ajouter</button>
 </div>
 </div>
-<div class="info-box">
-💡 Le nom des professeurs sert au système anti-conflit. Si un prof est déjà occupé à un créneau, tu ne pourras pas le réassigner.
-</div>
-<h3 style="color:#2c3e50;margin-bottom:8px;font-size:.9em;">📊 Charge horaire des professeurs</h3>
+<h3 style="color:#1e3a8a;margin-bottom:8px;font-size:.9em;">📊 Charge horaire des professeurs</h3>
 <div id="profsCharge"></div>
 </div>
 
-<!-- ONGLET CLASSES -->
 <div id="tab-classes" class="panel">
 <div class="manager">
 <h3>🛠️ Gérer les classes</h3>
 <div class="tags-list" id="classesList"></div>
 <div class="add-form">
-<input type="text" id="newClasseInput" placeholder="Ex : 6ème A" onkeypress="if(event.key==='Enter'){ajouterClasse();event.preventDefault();}">
+<input type="text" id="newClasseInput" placeholder="Ex : 1A--IDA" onkeypress="if(event.key==='Enter'){ajouterClasse();event.preventDefault();}">
 <button onclick="ajouterClasse()">+ Ajouter</button>
 </div>
 </div>
 <div class="info-box">
 💡 <strong>Dupliquer</strong> (icône 📋) crée une copie complète de l'emploi du temps d'une classe.
 </div>
-<h3 style="color:#2c3e50;margin-bottom:8px;font-size:.9em;">📊 Résumé des classes</h3>
+<h3 style="color:#1e3a8a;margin-bottom:8px;font-size:.9em;">📊 Résumé des classes</h3>
 <div id="classesResume"></div>
 </div>
 
 </div>
 
-<!-- MODAL -->
 <div class="modal-overlay" id="modal">
 <div class="modal">
 <h2 id="modalTitle">Ajouter un cours</h2>
@@ -194,26 +189,25 @@ h1{text-align:center;color:#2c3e50;font-size:1.1em;margin-bottom:4px}
 <div id="selectJourHeure">
 <label>Jour</label>
 <select id="inputJour">
-<option value="0">Lundi</option>
-<option value="1">Mardi</option>
-<option value="2">Mercredi</option>
-<option value="3">Jeudi</option>
-<option value="4">Vendredi</option>
-<option value="5">Samedi</option>
+<option value="0">LUNDI</option>
+<option value="1">MARDI</option>
+<option value="2">MERCREDI</option>
+<option value="3">JEUDI</option>
+<option value="4">VENDREDI</option>
+<option value="5">SAMEDI</option>
 </select>
 <label>Heure</label>
 <select id="inputHeure">
-<option value="0">7h-8h</option>
-<option value="1">8h-9h</option>
-<option value="2">9h-10h</option>
-<option value="3">10h-11h</option>
-<option value="4">11h-12h</option>
-<option value="5">12h-13h</option>
-<option value="6">13h-14h</option>
-<option value="7">14h-15h</option>
-<option value="8">15h-16h</option>
-<option value="9">16h-17h</option>
-<option value="10">17h-18h</option>
+<option value="0">08H00-9H00</option>
+<option value="1">9H00-10H00</option>
+<option value="2">10H00-11H00</option>
+<option value="3">11H00-12H00</option>
+<option value="4">12H00-13H00</option>
+<option value="5">13H00-14H00</option>
+<option value="6">14H00-15H00</option>
+<option value="7">15H00-16H00</option>
+<option value="8">16H00-17H00</option>
+<option value="9">17H00-18H00</option>
 </select>
 </div>
 
@@ -249,28 +243,27 @@ h1{text-align:center;color:#2c3e50;font-size:1.1em;margin-bottom:4px}
 </div>
 
 <script>
-var JOURS=['Lundi','Mardi','Mercredi','Jeudi','Vendredi','Samedi'];
-var HEURES=['7h-8h','8h-9h','9h-10h','10h-11h','11h-12h','12h-13h','13h-14h','14h-15h','15h-16h','16h-17h','17h-18h'];
+var JOURS=['LUNDI','MARDI','MERCREDI','JEUDI','VENDREDI','SAMEDI'];
+var HEURES=['08H00-9H00','9H00-10H00','10H00-11H00','11H00-12H00','12H00-13H00','13H00-14H00','14H00-15H00','15H00-16H00','16H00-17H00','17H00-18H00'];
 
-var etat = chargerDepuisStorage('emploiDuTempsMulti', {
-  classes: ['6ème A'],
+var etat = chargerDepuisStorage('emploiDuTempsITA', {
+  classes: [],
   matieres: [],
   salles: [],
   professeurs: [],
-  emploisDuTemps: { '6ème A': {} },
-  classeActive: '6ème A'
+  emploisDuTemps: {},
+  classeActive: ''
 });
 
-// Compatibilité avec les anciennes versions
-if(!etat.professeurs) etat.professeurs = [];
 if(!etat.matieres) etat.matieres = [];
 if(!etat.salles) etat.salles = [];
+if(!etat.professeurs) etat.professeurs = [];
 
 var slotEnEdition=null;
 var modeAjoutRapide=false;
 
 function sauvegarderStorage(){
-  try{ localStorage.setItem('emploiDuTempsMulti', JSON.stringify(etat)); }catch(e){}
+  try{ localStorage.setItem('emploiDuTempsITA', JSON.stringify(etat)); }catch(e){}
 }
 function chargerDepuisStorage(cle, defaut){
   try{
@@ -328,7 +321,7 @@ function afficherGrille(){
 
   var edt = etat.emploisDuTemps[etat.classeActive] || {};
 
-  planning.innerHTML += '<div class="header">Heure</div>';
+  planning.innerHTML += '<div class="header">HEURE</div>';
   JOURS.forEach(function(j,i){
     var cls=i===5?'header samedi':'header';
     planning.innerHTML+='<div class="'+cls+'">'+j+'</div>';
@@ -343,7 +336,8 @@ function afficherGrille(){
       if(cours){
         slot.className='slot filled';
         slot.style.background=cours.couleur;
-        slot.innerHTML='<div class="matiere">'+cours.matiere+'</div>'+
+        var mat = getMatiereAffichage(cours.matiere);
+        slot.innerHTML='<div class="matiere">'+mat+'</div>'+
         (cours.prof?'<div class="prof">'+cours.prof+'</div>':'')+
         (cours.salle?'<div class="salle">📍 '+cours.salle+'</div>':'');
       }else{
@@ -359,6 +353,15 @@ function afficherGrille(){
   });
 }
 
+function getMatiereAffichage(nomMatiere){
+  for(var i=0; i<etat.matieres.length; i++){
+    if(etat.matieres[i].nom === nomMatiere){
+      return nomMatiere + (etat.matieres[i].code ? ' --' + etat.matieres[i].code : '');
+    }
+  }
+  return nomMatiere;
+}
+
 function afficherLegende(){
   var legende=document.getElementById('legende');
   var edt = etat.emploisDuTemps[etat.classeActive] || {};
@@ -371,7 +374,7 @@ function afficherLegende(){
     return;
   }
   legende.innerHTML=Object.entries(matieres).map(function(entry){
-    return '<div class="legende-item"><div class="legende-color" style="background:'+entry[1]+'"></div><span>'+entry[0]+'</span></div>';
+    return '<div class="legende-item"><div class="legende-color" style="background:'+entry[1]+'"></div><span>'+getMatiereAffichage(entry[0])+'</span></div>';
   }).join('');
 }
 
@@ -379,16 +382,16 @@ function mettreAJourSelects(){
   var selMat = document.getElementById('inputMatiere');
   var valMat = selMat.value;
   selMat.innerHTML = '<option value="">— Choisir —</option>'+etat.matieres.map(function(m){
-    return '<option value="'+m+'">'+m+'</option>';
+    return '<option value="'+m.nom+'">'+m.nom+(m.code?' --'+m.code:'')+'</option>';
   }).join('');
-  if(etat.matieres.indexOf(valMat) !== -1) selMat.value = valMat;
+  if(etat.matieres.some(function(m){return m.nom===valMat;})) selMat.value = valMat;
 
   var selProf = document.getElementById('inputProf');
   var valProf = selProf.value;
   selProf.innerHTML = '<option value="">— Aucun —</option>'+etat.professeurs.map(function(p){
-    return '<option value="'+p+'">'+p+'</option>';
+    return '<option value="'+p.nom+'">'+p.nom+'</option>';
   }).join('');
-  if(etat.professeurs.indexOf(valProf) !== -1) selProf.value = valProf;
+  if(etat.professeurs.some(function(p){return p.nom===valProf;})) selProf.value = valProf;
 
   var selSal = document.getElementById('inputSalle');
   var valSal = selSal.value;
@@ -396,9 +399,13 @@ function mettreAJourSelects(){
     return '<option value="'+s+'">'+s+'</option>';
   }).join('');
   if(etat.salles.indexOf(valSal) !== -1) selSal.value = valSal;
+
+  var selProfMat = document.getElementById('newProfMatiere');
+  selProfMat.innerHTML = '<option value="">— Matière —</option>'+etat.matieres.map(function(m){
+    return '<option value="'+m.nom+'">'+m.nom+(m.code?' --'+m.code:'')+'</option>';
+  }).join('');
 }
 
-/* ===== VERIFICATION CONFLITS ===== */
 function verifierConflits(){
   if(!slotEnEdition) return;
   var salle = document.getElementById('inputSalle').value;
@@ -418,12 +425,8 @@ function verifierConflits(){
     if(classe === etat.classeActive) return;
     var edt = etat.emploisDuTemps[classe] || {};
     if(edt[key]){
-      if(salle && edt[key].salle === salle){
-        conflitsSalle.push({classe: classe, matiere: edt[key].matiere});
-      }
-      if(prof && edt[key].prof === prof){
-        conflitsProf.push({classe: classe, matiere: edt[key].matiere, salle: edt[key].salle});
-      }
+      if(salle && edt[key].salle === salle) conflitsSalle.push({classe: classe, matiere: edt[key].matiere});
+      if(prof && edt[key].prof === prof) conflitsProf.push({classe: classe, matiere: edt[key].matiere, salle: edt[key].salle});
     }
   });
 
@@ -435,21 +438,18 @@ function verifierConflits(){
     var msgs = [];
     if(salle) msgs.push('Salle '+salle);
     if(prof) msgs.push(prof);
-    info.innerHTML = '<div class="titre">✅ Aucun conflit détecté</div>'+
-      msgs.join(' et ')+' disponible(s) à '+JOURS[ji]+' '+HEURES[hi]+'.';
+    info.innerHTML = '<div class="titre">✅ Aucun conflit détecté</div>'+msgs.join(' et ')+' disponible(s) à '+JOURS[ji]+' '+HEURES[hi]+'.';
     btnSave.disabled = false;
   }else{
     info.className = 'dispo-info warning';
     var html = '<div class="titre">🚨 Conflit(s) détecté(s) — Enregistrement bloqué</div>';
     if(conflitsSalle.length > 0){
       html += '<strong>🏫 Salle '+salle+' :</strong><br>';
-      html += conflitsSalle.map(function(c){ return '• '+c.classe+' ('+c.matiere+')'; }).join('<br>');
-      html += '<br>';
+      html += conflitsSalle.map(function(c){ return '• '+c.classe+' ('+getMatiereAffichage(c.matiere)+')'; }).join('<br>')+'<br>';
     }
     if(conflitsProf.length > 0){
       html += '<strong>👨‍🏫 '+prof+' :</strong><br>';
-      html += conflitsProf.map(function(c){ return '• '+c.classe+' ('+c.matiere+', '+c.salle+')'; }).join('<br>');
-      html += '<br>';
+      html += conflitsProf.map(function(c){ return '• '+c.classe+' ('+getMatiereAffichage(c.matiere)+', '+c.salle+')'; }).join('<br>')+'<br>';
     }
     html += '<em>Change de salle, de prof ou de créneau.</em>';
     info.innerHTML = html;
@@ -457,7 +457,7 @@ function verifierConflits(){
   }
 }
 
-/* ===== GESTION DES SALLES ===== */
+/* ===== SALLES ===== */
 function afficherSalles(){
   var list=document.getElementById('sallesList');
   if(etat.salles.length===0){
@@ -485,10 +485,7 @@ function afficherSalles(){
       var parts = key.split('-');
       var ji = Number(parts[0]), hi = Number(parts[1]);
       if(!parSalle[c.salle]) parSalle[c.salle] = [];
-      parSalle[c.salle].push({
-        classe: classe, jour: JOURS[ji], heure: HEURES[hi],
-        matiere: c.matiere, jourIdx: ji, heureIdx: hi
-      });
+      parSalle[c.salle].push({classe: classe, jour: JOURS[ji], heure: HEURES[hi], matiere: c.matiere, jourIdx: ji, heureIdx: hi});
     });
   });
 
@@ -502,13 +499,8 @@ function afficherSalles(){
     var badgeCls = total===0?'free':'busy';
     var badgeTxt = total===0?'Libre':total+' cours';
     var html = '<div class="card"><h3>🏫 '+s+' <span class="badge '+badgeCls+'">'+badgeTxt+'</span></h3><div class="card-occupations">';
-    if(total===0){
-      html += '<span class="empty-msg">Aucune occupation</span>';
-    }else{
-      html += occ.map(function(o){
-        return '<div class="occupation-item"><span class="classe">'+o.classe+'</span><span>'+o.matiere+'</span><span class="time">'+o.jour+' · '+o.heure+'</span></div>';
-      }).join('');
-    }
+    if(total===0){ html += '<span class="empty-msg">Aucune occupation</span>'; }
+    else{ html += occ.map(function(o){ return '<div class="occupation-item"><span class="classe">'+o.classe+'</span><span>'+getMatiereAffichage(o.matiere)+'</span><span class="time">'+o.jour+' · '+o.heure+'</span></div>'; }).join(''); }
     html += '</div></div>';
     return html;
   }).join('');
@@ -531,9 +523,7 @@ function supprimerSalle(nom){
   if(!confirm('Supprimer la salle "'+nom+'" ?'))return;
   Object.keys(etat.emploisDuTemps).forEach(function(classe){
     var edt = etat.emploisDuTemps[classe];
-    Object.keys(edt).forEach(function(k){
-      if(edt[k].salle === nom) edt[k].salle = '';
-    });
+    Object.keys(edt).forEach(function(k){ if(edt[k].salle === nom) edt[k].salle = ''; });
   });
   etat.salles = etat.salles.filter(function(s){return s!==nom;});
   sauvegarderStorage();
@@ -542,47 +532,50 @@ function supprimerSalle(nom){
   afficher();
 }
 
-/* ===== GESTION DES MATIERES ===== */
+/* ===== MATIERES ===== */
 function afficherMatieres(){
   var list=document.getElementById('matieresList');
   if(etat.matieres.length===0){
     list.innerHTML='<span style="color:#95a5a6;font-size:.8em;font-style:italic">Aucune matière</span>';
   }else{
     list.innerHTML=etat.matieres.map(function(m){
-      return '<div class="tag"><span>📖 '+m+'</span><button onclick="supprimerMatiere(\''+m.replace(/'/g,"\\'")+'\')">✕</button></div>';
+      return '<div class="tag"><span>📖 '+m.nom+(m.code?' --'+m.code:'')+'</span><button onclick="supprimerMatiere(\''+m.nom.replace(/'/g,"\\'")+'\')">✕</button></div>';
     }).join('');
   }
 }
 
 function ajouterMatiere(){
   var input=document.getElementById('newMatiereInput');
+  var inputCode=document.getElementById('newMatiereCode');
   var nom=input.value.trim();
+  var code=inputCode.value.trim();
   if(!nom)return;
-  if(etat.matieres.indexOf(nom)!==-1){alert('Cette matière existe déjà');return;}
-  etat.matieres.push(nom);
-  etat.matieres.sort();
+  if(etat.matieres.some(function(m){return m.nom===nom;})){alert('Cette matière existe déjà');return;}
+  etat.matieres.push({nom:nom, code:code});
+  etat.matieres.sort(function(a,b){return a.nom.localeCompare(b.nom);});
   sauvegarderStorage();
   input.value='';
+  inputCode.value='';
   afficherMatieres();
   mettreAJourSelects();
 }
 
 function supprimerMatiere(nom){
   if(!confirm('Supprimer la matière "'+nom+'" ?'))return;
-  etat.matieres = etat.matieres.filter(function(m){return m!==nom;});
+  etat.matieres = etat.matieres.filter(function(m){return m.nom!==nom;});
   sauvegarderStorage();
   afficherMatieres();
   mettreAJourSelects();
 }
 
-/* ===== GESTION DES PROFS ===== */
+/* ===== PROFS ===== */
 function afficherProfs(){
   var list=document.getElementById('profsList');
   if(etat.professeurs.length===0){
     list.innerHTML='<span style="color:#95a5a6;font-size:.8em;font-style:italic">Aucun professeur</span>';
   }else{
     list.innerHTML=etat.professeurs.map(function(p){
-      return '<div class="tag"><span>👨‍🏫 '+p+'</span><button onclick="supprimerProf(\''+p.replace(/'/g,"\\'")+'\')">✕</button></div>';
+      return '<div class="tag"><span>👨‍🏫 '+p.nom+(p.matiere?' ('+p.matiere+')':'')+'</span><button onclick="supprimerProf(\''+p.nom.replace(/'/g,"\\'")+'\')">✕</button></div>';
     }).join('');
   }
 
@@ -593,7 +586,7 @@ function afficherProfs(){
   }
 
   var parProf = {};
-  etat.professeurs.forEach(function(p){ parProf[p] = []; });
+  etat.professeurs.forEach(function(p){ parProf[p.nom] = []; });
 
   Object.keys(etat.emploisDuTemps).forEach(function(classe){
     var edt = etat.emploisDuTemps[classe] || {};
@@ -602,10 +595,7 @@ function afficherProfs(){
       if(!c.prof || !parProf[c.prof]) return;
       var parts = key.split('-');
       var ji = Number(parts[0]), hi = Number(parts[1]);
-      parProf[c.prof].push({
-        classe: classe, jour: JOURS[ji], heure: HEURES[hi],
-        matiere: c.matiere, jourIdx: ji, heureIdx: hi
-      });
+      parProf[c.prof].push({classe: classe, jour: JOURS[ji], heure: HEURES[hi], matiere: c.matiere, jourIdx: ji, heureIdx: hi});
     });
   });
 
@@ -614,18 +604,13 @@ function afficherProfs(){
   });
 
   charge.innerHTML = etat.professeurs.map(function(p){
-    var occ = parProf[p] || [];
+    var occ = parProf[p.nom] || [];
     var total = occ.length;
     var badgeCls = total===0?'free':'busy';
     var badgeTxt = total===0?'Disponible':total+' h/sem';
-    var html = '<div class="card"><h3>👨‍🏫 '+p+' <span class="badge '+badgeCls+'">'+badgeTxt+'</span></h3><div class="card-occupations">';
-    if(total===0){
-      html += '<span class="empty-msg">Aucun cours assigné</span>';
-    }else{
-      html += occ.map(function(o){
-        return '<div class="occupation-item"><span class="classe">'+o.classe+'</span><span>'+o.matiere+'</span><span class="time">'+o.jour+' · '+o.heure+'</span></div>';
-      }).join('');
-    }
+    var html = '<div class="card"><h3>👨‍🏫 '+p.nom+(p.matiere?' — '+p.matiere:'')+' <span class="badge '+badgeCls+'">'+badgeTxt+'</span></h3><div class="card-occupations">';
+    if(total===0){ html += '<span class="empty-msg">Aucun cours assigné</span>'; }
+    else{ html += occ.map(function(o){ return '<div class="occupation-item"><span class="classe">'+o.classe+'</span><span>'+getMatiereAffichage(o.matiere)+'</span><span class="time">'+o.jour+' · '+o.heure+'</span></div>'; }).join(''); }
     html += '</div></div>';
     return html;
   }).join('');
@@ -633,26 +618,29 @@ function afficherProfs(){
 
 function ajouterProf(){
   var input=document.getElementById('newProfInput');
+  var selMat=document.getElementById('newProfMatiere');
   var nom=input.value.trim();
+  var matiere=selMat.value;
   if(!nom)return;
-  if(etat.professeurs.indexOf(nom)!==-1){alert('Ce professeur existe déjà');return;}
-  etat.professeurs.push(nom);
-  etat.professeurs.sort();
+  if(etat.professeurs.some(function(p){return p.nom===nom;})){alert('Ce professeur existe déjà');return;}
+  etat.professeurs.push({nom:nom, matiere:matiere});
+  etat.professeurs.sort(function(a,b){return a.nom.localeCompare(b.nom);});
   sauvegarderStorage();
   input.value='';
+  selMat.value='';
   afficherProfs();
   mettreAJourSelects();
 }
 
 function supprimerProf(nom){
-  if(!confirm('Supprimer le professeur "'+nom+'" ? Les cours concernés garderont son nom mais il ne sera plus dans la liste.'))return;
-  etat.professeurs = etat.professeurs.filter(function(p){return p!==nom;});
+  if(!confirm('Supprimer le professeur "'+nom+'" ?'))return;
+  etat.professeurs = etat.professeurs.filter(function(p){return p.nom!==nom;});
   sauvegarderStorage();
   afficherProfs();
   mettreAJourSelects();
 }
 
-/* ===== GESTION DES CLASSES ===== */
+/* ===== CLASSES ===== */
 function afficherClasses(){
   var list=document.getElementById('classesList');
   if(etat.classes.length===0){
@@ -687,6 +675,7 @@ function ajouterClasse(){
   etat.classes.push(nom);
   etat.classes.sort();
   if(!etat.emploisDuTemps[nom]) etat.emploisDuTemps[nom] = {};
+  if(!etat.classeActive) etat.classeActive = nom;
   sauvegarderStorage();
   input.value='';
   afficherClasses();
@@ -704,9 +693,7 @@ function supprimerClasse(nom){
   etat.classes = etat.classes.filter(function(c){return c!==nom;});
   delete etat.emploisDuTemps[nom];
 
-  if(etat.classeActive === nom){
-    etat.classeActive = etat.classes[0] || '';
-  }
+  if(etat.classeActive === nom) etat.classeActive = etat.classes[0] || '';
 
   sauvegarderStorage();
   afficherClasses();
@@ -838,6 +825,25 @@ function effacerClasseActive(){
   afficher();
 }
 
+/* ===== EN-TETE COMMUN ===== */
+function getEnteteHTML(){
+  var html = '<div style="text-align:center;margin-bottom:10px;">';
+  html += '<div style="font-size:11px;font-weight:bold;">RÉPUBLIQUE DE CÔTE D\'IVOIRE</div>';
+  html += '<div style="font-size:9px;font-style:italic;margin-bottom:6px;">Union-Discipline-Travail</div>';
+  html += '<div style="font-size:16px;font-weight:bold;color:#1e3a8a;">GROUPE ITA-INGÉNIERIE</div>';
+  html += '<div style="font-size:14px;font-weight:bold;color:#1e3a8a;">INSTITUT DES TECHNOLOGIES D\'ABIDJAN</div>';
+  html += '<div style="font-size:9px;">20 BP 195 ABIDJAN 20 / Tél : 21-28-32-92</div>';
+  html += '<div style="font-size:9px;margin-top:3px;">MINISTÈRE DE L\'ENSEIGNEMENT SUPÉRIEUR ET DE LA RECHERCHE SCIENTIFIQUE</div>';
+  html += '</div>';
+  html += '<div style="text-align:center;margin:10px 0;">';
+  html += '<div style="display:inline-block;border:2px solid #000;padding:4px 30px;font-size:16px;font-weight:bold;">'+etat.classeActive+'</div>';
+  html += '</div>';
+  html += '<div style="text-align:center;margin:8px 0;">';
+  html += '<div style="display:inline-block;background:#dbeafe;border:1px solid #1e3a8a;padding:4px 20px;font-size:12px;font-weight:bold;color:#1e3a8a;letter-spacing:1px;">EMPLOI DU TEMPS</div>';
+  html += '</div>';
+  return html;
+}
+
 /* ===== EXPORT PDF ===== */
 function exporterPDF(){
   if(etat.classes.length === 0){ alert('Aucune classe'); return; }
@@ -849,27 +855,30 @@ function exporterPDF(){
   html+='<style>';
   html+='*{box-sizing:border-box;margin:0;padding:0}';
   html+='body{font-family:Arial,sans-serif;padding:4mm;background:#fff}';
-  html+='h1{text-align:center;color:#2c3e50;margin-bottom:2px;font-size:16px}';
-  html+='p.sub{text-align:center;color:#666;font-size:9px;margin-bottom:6px}';
   html+='table{border-collapse:collapse;width:100%;font-size:7px;table-layout:fixed}';
-  html+='th,td{border:1px solid #333;padding:1px;text-align:center;vertical-align:middle;word-wrap:break-word;overflow:hidden}';
-  html+='th{background:#2c3e50;color:#fff;font-weight:bold;font-size:8px;height:18px}';
-  html+='th.sam{background:#8e44ad}';
-  html+='td.hour{background:#ecf0f1;font-weight:bold;width:38px;font-size:7px;height:34px}';
-  html+='td.slot-cell{height:34px}';
+  html+='th,td{border:1px solid #333;padding:2px;text-align:center;vertical-align:middle;word-wrap:break-word;overflow:hidden}';
+  html+='th{background:#1e3a8a;color:#fff;font-weight:bold;font-size:8px;height:20px}';
+  html+='th.sam{background:#7c3aed}';
+  html+='td.hour{background:#ecf0f1;font-weight:bold;width:60px;font-size:7px;height:36px}';
+  html+='td.slot-cell{height:36px}';
   html+='td.cours{font-weight:bold;padding:1px}';
   html+='.mat{font-size:8px;line-height:1;font-weight:bold}';
   html+='.pr{font-size:6px;line-height:1}';
   html+='.sa{font-size:6px;font-style:italic;line-height:1}';
   html+='@page{size:A4 landscape;margin:4mm}';
-  html+='@media print{body{padding:0}h1{font-size:14px}p.sub{font-size:8px}}';
+  html+='@media print{body{padding:0}}';
+  html+='.layout{display:flex;gap:6px;align-items:flex-start}';
+  html+='.grid-part{flex:3}';
+  html+='.table-part{flex:1}';
+  html+='.table-part table{font-size:6px}';
+  html+='.table-part th{font-size:7px;padding:2px}';
+  html+='.table-part td{padding:2px}';
   html+='</style></head><body>';
-  html+='<h1>📚 Emploi du temps - '+etat.classeActive+'</h1>';
-  html+='<p class="sub">Temple du Savoir — Année '+(new Date().getFullYear())+'-'+(new Date().getFullYear()+1)+'</p>';
-  html+='<table><thead><tr><th style="width:38px">Heure</th>';
-  JOURS.forEach(function(j,i){
-    html+='<th'+(i===5?' class="sam"':'')+'>'+j+'</th>';
-  });
+  html += getEnteteHTML();
+  html += '<div class="layout">';
+  html += '<div class="grid-part">';
+  html+='<table><thead><tr><th style="width:60px">HEURE</th>';
+  JOURS.forEach(function(j,i){ html+='<th'+(i===5?' class="sam"':'')+'>'+j+'</th>'; });
   html+='</tr></thead><tbody>';
   HEURES.forEach(function(heure,hi){
     html+='<tr><td class="hour">'+heure+'</td>';
@@ -877,21 +886,31 @@ function exporterPDF(){
       var key=ji+'-'+hi;
       var c=edt[key];
       if(c){
-        var bg=c.couleur;
         var txtColor = (c.couleur === '#bdc3c7' || c.couleur === '#ffffff') ? '#000' : '#fff';
-        html+='<td class="cours slot-cell" style="background:'+bg+';color:'+txtColor+'">';
-        html+='<div class="mat">'+c.matiere+'</div>';
+        html+='<td class="cours slot-cell" style="background:'+c.couleur+';color:'+txtColor+'">';
+        html+='<div class="mat">'+getMatiereAffichage(c.matiere)+'</div>';
         if(c.prof)html+='<div class="pr">'+c.prof+'</div>';
-        if(c.salle)html+='<div class="sa">📍'+c.salle+'</div>';
+        if(c.salle)html+='<div class="sa">'+c.salle+'</div>';
         html+='</td>';
-      }else{
-        html+='<td class="slot-cell"></td>';
-      }
+      }else{ html+='<td class="slot-cell"></td>'; }
     });
     html+='</tr>';
   });
   html+='</tbody></table>';
-  html+='<p style="text-align:center;font-size:6px;color:#999;margin-top:3px">Généré le '+new Date().toLocaleDateString('fr-FR')+'</p>';
+  html += '</div>';
+  html += '<div class="table-part">';
+  html += '<table><thead><tr><th>MATIÈRES</th><th>PROFESSEURS</th></tr></thead><tbody>';
+  etat.matieres.forEach(function(m){
+    var profNom = '';
+    for(var i=0; i<etat.professeurs.length; i++){
+      if(etat.professeurs[i].matiere === m.nom){ profNom = etat.professeurs[i].nom; break; }
+    }
+    html += '<tr><td>'+m.nom+(m.code?' --'+m.code:'')+'</td><td>'+(profNom||'')+'</td></tr>';
+  });
+  html += '</tbody></table>';
+  html += '</div>';
+  html += '</div>';
+  html+='<p style="text-align:center;font-size:6px;color:#999;margin-top:5px">Généré le '+new Date().toLocaleDateString('fr-FR')+'</p>';
   html+='</body></html>';
   win.document.write(html);
   win.document.close();
@@ -907,24 +926,16 @@ function exporterWord(){
   html += '<head><meta charset="utf-8"><title>Emploi du temps - '+etat.classeActive+'</title>';
   html += '<style>';
   html += '@page{size:A4 landscape;margin:1cm}';
-  html += 'body{font-family:Calibri,Arial,sans-serif}';
-  html += 'h1{text-align:center;color:#2c3e50;font-size:18pt}';
-  html += 'p.sub{text-align:center;color:#666;font-size:10pt;margin-bottom:10pt}';
+  html += 'body{font-family:Calibri,Arial,sans-serif;font-size:9pt}';
   html += 'table{border-collapse:collapse;width:100%}';
-  html += 'th,td{border:1px solid #333;padding:4pt;text-align:center;vertical-align:middle;font-size:9pt}';
-  html += 'th{background:#2c3e50;color:#fff;font-weight:bold}';
-  html += 'th.sam{background:#8e44ad}';
-  html += 'td.hour{background:#ecf0f1;font-weight:bold;font-size:9pt}';
-  html += '.mat{font-weight:bold;font-size:10pt}';
-  html += '.pr{font-size:8pt}';
-  html += '.sa{font-size:8pt;font-style:italic}';
+  html += 'th,td{border:1px solid #333;padding:3pt;text-align:center;vertical-align:middle;font-size:8pt}';
+  html += 'th{background:#1e3a8a;color:#fff;font-weight:bold}';
+  html += 'th.sam{background:#7c3aed}';
+  html += 'td.hour{background:#ecf0f1;font-weight:bold;font-size:8pt}';
   html += '</style></head><body>';
-  html += '<h1>📚 Emploi du temps - '+etat.classeActive+'</h1>';
-  html += '<p class="sub">Temple du Savoir — Année '+(new Date().getFullYear())+'-'+(new Date().getFullYear()+1)+'</p>';
-  html += '<table><tr><th>Heure</th>';
-  JOURS.forEach(function(j,i){
-    html += '<th'+(i===5?' class="sam"':'')+'>'+j+'</th>';
-  });
+  html += getEnteteHTML();
+  html += '<table><tr><th>HEURE</th>';
+  JOURS.forEach(function(j,i){ html += '<th'+(i===5?' class="sam"':'')+'>'+j+'</th>'; });
   html += '</tr>';
   HEURES.forEach(function(heure,hi){
     html += '<tr><td class="hour">'+heure+'</td>';
@@ -934,18 +945,25 @@ function exporterWord(){
       if(c){
         var txtColor = (c.couleur === '#bdc3c7' || c.couleur === '#ffffff') ? '#000' : '#fff';
         html += '<td style="background:'+c.couleur+';color:'+txtColor+'">';
-        html += '<div class="mat">'+c.matiere+'</div>';
-        if(c.prof) html += '<div class="pr">'+c.prof+'</div>';
-        if(c.salle) html += '<div class="sa">📍 '+c.salle+'</div>';
+        html += '<div style="font-weight:bold;font-size:9pt">'+getMatiereAffichage(c.matiere)+'</div>';
+        if(c.prof) html += '<div style="font-size:7pt">'+c.prof+'</div>';
+        if(c.salle) html += '<div style="font-size:7pt;font-style:italic">'+c.salle+'</div>';
         html += '</td>';
-      }else{
-        html += '<td></td>';
-      }
+      }else{ html += '<td></td>'; }
     });
     html += '</tr>';
   });
   html += '</table>';
-  html += '<p style="text-align:center;font-size:8pt;color:#999;margin-top:10pt">Généré le '+new Date().toLocaleDateString('fr-FR')+'</p>';
+  html += '<br><table><tr><th>MATIÈRES</th><th>PROFESSEURS</th></tr>';
+  etat.matieres.forEach(function(m){
+    var profNom = '';
+    for(var i=0; i<etat.professeurs.length; i++){
+      if(etat.professeurs[i].matiere === m.nom){ profNom = etat.professeurs[i].nom; break; }
+    }
+    html += '<tr><td>'+m.nom+(m.code?' --'+m.code:'')+'</td><td>'+(profNom||'')+'</td></tr>';
+  });
+  html += '</table>';
+  html += '<p style="text-align:center;font-size:7pt;color:#999;margin-top:10pt">Généré le '+new Date().toLocaleDateString('fr-FR')+'</p>';
   html += '</body></html>';
 
   var blob = new Blob(['\ufeff', html], {type: 'application/msword'});
@@ -957,6 +975,87 @@ function exporterWord(){
   URL.revokeObjectURL(url);
 }
 
+/* ===== EXPORT EXCEL ===== */
+function exporterExcel(){
+  if(etat.classes.length === 0){ alert('Aucune classe'); return; }
+  var edt = etat.emploisDuTemps[etat.classeActive] || {};
+
+  var html = '<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:x="urn:schemas-microsoft-com:office:excel" xmlns="http://www.w3.org/TR/REC-html40">';
+  html += '<head><meta charset="utf-8">';
+  html += '<!--[if gte mso 9]><xml><x:ExcelWorkbook><x:ExcelWorksheets><x:ExcelWorksheet>';
+  html += '<x:Name>Emploi du temps</x:Name>';
+  html += '<x:WorksheetOptions><x:DisplayGridlines/></x:WorksheetOptions>';
+  html += '</x:ExcelWorksheet></x:ExcelWorksheets></x:ExcelWorkbook></xml><![endif]-->';
+  html += '<style>';
+  html += 'table{border-collapse:collapse}';
+  html += 'td,th{border:1px solid #000;padding:4px;text-align:center;vertical-align:middle;font-family:Calibri,Arial;font-size:10pt}';
+  html += 'th{background:#1e3a8a;color:#fff;font-weight:bold}';
+  html += 'th.sam{background:#7c3aed}';
+  html += 'td.hour{background:#ecf0f1;font-weight:bold}';
+  html += '.entete{font-family:Arial;font-size:11pt;font-weight:bold;text-align:center}';
+  html += '.sub{font-family:Arial;font-size:9pt;text-align:center;font-style:italic}';
+  html += '.titre{font-family:Arial;font-size:14pt;font-weight:bold;text-align:center;color:#1e3a8a}';
+  html += '.classe{font-family:Arial;font-size:16pt;font-weight:bold;text-align:center;border:2px solid #000;padding:5px}';
+  html += '</style></head><body>';
+
+  // En-tête
+  html += '<table style="border:none;width:100%">';
+  html += '<tr><td colspan="7" class="entete" style="border:none">RÉPUBLIQUE DE CÔTE D\'IVOIRE</td></tr>';
+  html += '<tr><td colspan="7" class="sub" style="border:none">Union-Discipline-Travail</td></tr>';
+  html += '<tr><td colspan="7" class="titre" style="border:none">GROUPE ITA-INGÉNIERIE</td></tr>';
+  html += '<tr><td colspan="7" class="titre" style="border:none">INSTITUT DES TECHNOLOGIES D\'ABIDJAN</td></tr>';
+  html += '<tr><td colspan="7" class="sub" style="border:none">20 BP 195 ABIDJAN 20 / Tél : 21-28-32-92</td></tr>';
+  html += '<tr><td colspan="7" class="sub" style="border:none">MINISTÈRE DE L\'ENSEIGNEMENT SUPÉRIEUR ET DE LA RECHERCHE SCIENTIFIQUE</td></tr>';
+  html += '<tr><td colspan="7" style="border:none">&nbsp;</td></tr>';
+  html += '<tr><td colspan="7" class="classe">'+etat.classeActive+'</td></tr>';
+  html += '<tr><td colspan="7" style="border:none">&nbsp;</td></tr>';
+  html += '<tr><td colspan="7" class="titre" style="background:#dbeafe">EMPLOI DU TEMPS</td></tr>';
+  html += '</table>';
+  html += '<br>';
+
+  // Grille EDT
+  html += '<table>';
+  html += '<tr><th>HEURE</th>';
+  JOURS.forEach(function(j,i){ html += '<th'+(i===5?' class="sam"':'')+'>'+j+'</th>'; });
+  html += '</tr>';
+  HEURES.forEach(function(heure,hi){
+    html += '<tr><td class="hour">'+heure+'</td>';
+    JOURS.forEach(function(_,ji){
+      var key=ji+'-'+hi;
+      var c=edt[key];
+      if(c){
+        html += '<td>'+getMatiereAffichage(c.matiere)+(c.prof?'<br>'+c.prof:'')+(c.salle?'<br>'+c.salle:'')+'</td>';
+      }else{ html += '<td></td>'; }
+    });
+    html += '</tr>';
+  });
+  html += '</table>';
+  html += '<br><br>';
+
+  // Tableau Matières / Profs
+  html += '<table>';
+  html += '<tr><th>MATIÈRES</th><th>PROFESSEURS</th></tr>';
+  etat.matieres.forEach(function(m){
+    var profNom = '';
+    for(var i=0; i<etat.professeurs.length; i++){
+      if(etat.professeurs[i].matiere === m.nom){ profNom = etat.professeurs[i].nom; break; }
+    }
+    html += '<tr><td>'+m.nom+(m.code?' --'+m.code:'')+'</td><td>'+(profNom||'')+'</td></tr>';
+  });
+  html += '</table>';
+
+  html += '<p style="text-align:center;font-size:8pt;color:#999;margin-top:10px;font-family:Arial">Généré le '+new Date().toLocaleDateString('fr-FR')+'</p>';
+  html += '</body></html>';
+
+  var blob = new Blob(['\ufeff', html], {type: 'application/vnd.ms-excel'});
+  var url = URL.createObjectURL(blob);
+  var a = document.createElement('a');
+  a.href = url;
+  a.download = 'emploi-du-temps-' + etat.classeActive.replace(/[^a-z0-9]/gi,'_') + '.xls';
+  a.click();
+  URL.revokeObjectURL(url);
+}
+
 /* ===== JSON ===== */
 function exporterJSON(){
   var data=JSON.stringify(etat, null, 2);
@@ -964,7 +1063,7 @@ function exporterJSON(){
   var url=URL.createObjectURL(blob);
   var a=document.createElement('a');
   a.href=url;
-  a.download='emploi-du-temps-multi-'+new Date().toISOString().split('T')[0]+'.json';
+  a.download='emploi-du-temps-ita-'+new Date().toISOString().split('T')[0]+'.json';
   a.click();
   URL.revokeObjectURL(url);
 }
@@ -977,15 +1076,9 @@ function restaurerJSON(event){
   reader.onload=function(e){
     try{
       var data=JSON.parse(e.target.result);
-      if(data.emploiDuTemps && !data.emploisDuTemps){
-        var nc = 'Classe 1';
-        etat = { classes: [nc], matieres: [], salles: data.listeSalles || [], professeurs: [], emploisDuTemps: {}, classeActive: nc };
-        etat.emploisDuTemps[nc] = data.emploiDuTemps;
-      }
-      else if(data.emploisDuTemps){ etat = data; }
+      if(data.classes){ etat = data; }
       else{ alert('❌ Fichier non reconnu'); event.target.value=''; return; }
 
-      if(!etat.classes) etat.classes = [];
       if(!etat.matieres) etat.matieres = [];
       if(!etat.salles) etat.salles = [];
       if(!etat.professeurs) etat.professeurs = [];
