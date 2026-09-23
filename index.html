@@ -4,102 +4,25 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Emploi du temps - ITA</title>
-<style>
-*{box-sizing:border-box;margin:0;padding:0}
-body{font-family:'Segoe UI',system-ui,sans-serif;background:linear-gradient(135deg,#1e3a8a,#3b82f6);min-height:100vh;padding:8px}
-.container{max-width:1200px;margin:0 auto;background:#fff;border-radius:12px;padding:12px;box-shadow:0 10px 30px rgba(0,0,0,.3)}
-h1{text-align:center;color:#1e3a8a;font-size:1.1em;margin-bottom:4px}
-.subtitle{text-align:center;color:#7f8c8d;font-size:.72em;margin-bottom:10px}
-.tabs{display:flex;gap:3px;justify-content:center;margin-bottom:10px;background:#ecf0f1;padding:4px;border-radius:8px;flex-wrap:wrap}
-.tab{flex:1;min-width:75px;padding:7px;border:none;background:transparent;border-radius:6px;cursor:pointer;font-weight:600;color:#555;font-size:.7em}
-.tab.active{background:#fff;color:#1e3a8a;box-shadow:0 1px 3px rgba(0,0,0,.1)}
-.tab-add-main{display:block;width:100%;max-width:320px;margin:0 auto 10px;padding:12px 18px;background:linear-gradient(135deg,#1e3a8a,#3b82f6);color:#fff;border:none;border-radius:10px;font-size:.95em;font-weight:700;cursor:pointer;box-shadow:0 4px 12px rgba(30,58,138,.4);transition:.2s}
-.tab-add-main:hover{transform:translateY(-2px);box-shadow:0 6px 18px rgba(30,58,138,.5)}
-.tab-add-main:active{transform:scale(.97)}
-.classe-selector{display:flex;align-items:center;justify-content:center;gap:8px;margin-bottom:10px;padding:8px;background:#f8f9fa;border-radius:8px;border-left:4px solid #1e3a8a}
-.classe-selector label{font-weight:600;color:#1e3a8a;font-size:.82em}
-.classe-selector select{padding:6px 10px;border:2px solid #dfe6e9;border-radius:6px;font-size:.85em;font-weight:600;background:#fff;min-width:140px}
-.classe-selector select:focus{outline:none;border-color:#1e3a8a}
-.toolbar{display:flex;flex-wrap:wrap;gap:6px;justify-content:center;margin-bottom:10px}
-.toolbar button{padding:6px 10px;border:none;border-radius:6px;background:#1e3a8a;color:#fff;font-weight:600;cursor:pointer;font-size:.72em}
-.toolbar button.danger{background:#e74c3c}
-.toolbar button.success{background:#27ae60}
-.toolbar button.pdf{background:#e67e22}
-.toolbar button.word{background:#2b579a}
-.toolbar button.excel{background:#217346}
-.planning-wrapper{overflow-x:auto;-webkit-overflow-scrolling:touch;border-radius:8px}
-.planning{display:grid;grid-template-columns:85px repeat(6,minmax(80px,1fr));gap:2px;background:#dfe6e9;padding:2px;border-radius:8px;min-width:620px}
-.header{background:linear-gradient(135deg,#1e3a8a,#3b82f6);color:#fff;padding:7px 3px;text-align:center;font-weight:600;font-size:.72em;border-radius:4px}
-.header.samedi{background:linear-gradient(135deg,#7c3aed,#a855f7)}
-.hour{padding:4px;text-align:center;color:#555;font-size:.6em;background:#ecf0f1;border-radius:4px;display:flex;align-items:center;justify-content:center;font-weight:600;min-height:42px;white-space:nowrap}
-.slot{background:#f8f9fa;border-radius:4px;min-height:42px;padding:3px;font-size:.68em;cursor:pointer;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;overflow:hidden;touch-action:manipulation;-webkit-tap-highlight-color:rgba(30,58,138,.3);user-select:none;-webkit-user-select:none;transition:.15s}
-.slot:active{background:#d6ecfa;transform:scale(.97)}
-.slot.filled{color:#fff;font-weight:600;box-shadow:0 1px 3px rgba(0,0,0,.15)}
-.slot.filled[style*="rgb(189, 195, 199)"]{color:#000 !important}
-.slot.filled[style*="#bdc3c7"]{color:#000 !important}
-.slot.filled:hover{transform:scale(1.03);box-shadow:0 3px 8px rgba(0,0,0,.25)}
-.slot .matiere{font-size:.92em;line-height:1.1;margin-bottom:1px}
-.slot .prof{font-size:.75em;opacity:.95;line-height:1.1}
-.slot .salle{font-size:.72em;opacity:.9;font-style:italic}
-.panel{display:none}
-.panel.active{display:block}
-.card{background:#f8f9fa;border-radius:8px;padding:10px;margin-bottom:8px;border-left:3px solid #1e3a8a}
-.card h3{color:#1e3a8a;margin-bottom:3px;font-size:.9em;display:flex;justify-content:space-between;align-items:center;gap:6px;flex-wrap:wrap}
-.card .badge{font-size:.65em;padding:2px 6px;border-radius:10px;background:#1e3a8a;color:#fff;font-weight:600;white-space:nowrap}
-.card .badge.free{background:#27ae60}
-.card .badge.busy{background:#e74c3c}
-.card-occupations{margin-top:6px;font-size:.75em;color:#555}
-.occupation-item{padding:4px 6px;background:#fff;border-radius:4px;margin-bottom:3px;display:flex;justify-content:space-between;gap:6px;border-left:2px solid #1e3a8a;flex-wrap:wrap}
-.occupation-item .time{font-weight:600;color:#1e3a8a;white-space:nowrap}
-.occupation-item .classe{background:#dbeafe;color:#1e3a8a;padding:1px 5px;border-radius:3px;font-size:.85em;font-weight:600}
-.empty-msg{color:#95a5a6;font-style:italic;font-size:.8em;padding:6px 0}
-.manager{background:#ecf0f1;border-radius:8px;padding:10px;margin-bottom:12px}
-.manager h3{color:#1e3a8a;margin-bottom:8px;font-size:.85em}
-.tags-list{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:8px}
-.tag{background:#fff;padding:4px 8px;border-radius:16px;font-size:.75em;display:flex;align-items:center;gap:5px;box-shadow:0 1px 2px rgba(0,0,0,.1)}
-.tag button{background:none;border:none;color:#e74c3c;cursor:pointer;font-size:1em;font-weight:bold;padding:0;line-height:1}
-.tag button.dup{color:#27ae60}
-.tag button.dup:hover{color:#229954}
-.add-form{display:flex;gap:6px;flex-wrap:wrap}
-.add-form input,.add-form select{flex:1;padding:6px 10px;border:2px solid #dfe6e9;border-radius:6px;font-size:.8em;font-family:inherit;min-width:110px}
-.add-form input:focus,.add-form select:focus{outline:none;border-color:#1e3a8a}
-.add-form button{padding:6px 10px;border:none;border-radius:6px;background:#27ae60;color:#fff;font-weight:600;cursor:pointer;font-size:.78em;white-space:nowrap}
-.modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:1000;justify-content:center;align-items:center;padding:15px}
-.modal-overlay.active{display:flex}
-.modal{background:#fff;border-radius:10px;padding:16px;width:100%;max-width:420px;max-height:90vh;overflow-y:auto}
-.modal h2{margin-bottom:10px;color:#1e3a8a;font-size:1em}
-.modal label{display:block;margin-bottom:4px;color:#555;font-size:.78em;font-weight:600}
-.modal input,.modal select{width:100%;padding:8px;border:2px solid #dfe6e9;border-radius:6px;margin-bottom:9px;font-size:.88em;font-family:inherit}
-.modal input:focus,.modal select:focus{outline:none;border-color:#1e3a8a}
-.dispo-info{background:#dbeafe;border-left:3px solid #1e3a8a;padding:8px 10px;border-radius:5px;font-size:.72em;color:#1e3a8a;margin-bottom:9px;line-height:1.4}
-.dispo-info.ok{background:#d5f4e6;border-left-color:#27ae60;color:#1e8449}
-.dispo-info.warning{background:#fdecea;border-left-color:#e74c3c;color:#c0392b}
-.dispo-info .titre{font-weight:700;margin-bottom:4px}
-.modal-actions{display:flex;gap:6px;margin-top:5px;flex-wrap:wrap}
-.modal-actions button{flex:1;min-width:80px;padding:9px;border:none;border-radius:6px;font-weight:600;cursor:pointer;font-size:.8em}
-.btn-save{background:#27ae60;color:#fff}
-.btn-save:disabled{background:#95a5a6;cursor:not-allowed}
-.btn-cancel{background:#ecf0f1;color:#555}
-.btn-delete{background:#e74c3c;color:#fff}
-.legende{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin-top:10px;padding-top:10px;border-top:1px solid #ecf0f1}
-.legende-item{display:flex;align-items:center;gap:5px;font-size:.75em;color:#555}
-.legende-color{width:12px;height:12px;border-radius:3px}
-.info-box{background:#fffbea;border-left:4px solid #f39c12;padding:10px;border-radius:6px;margin-bottom:12px;font-size:.78em;color:#7d6608;line-height:1.4}
-</style>
+<!-- CSS À COLLER ICI (MESSAGE 2) -->
 </head>
 <body>
 <div class="container">
 <h1>📚 Emploi du temps - ITA</h1>
 <p class="subtitle">Institut des Technologies d'Abidjan</p>
 
+<!-- ONGLETS -->
 <div class="tabs">
 <button class="tab active" onclick="changerOnglet('edt',this)">📅 EDT</button>
+<button class="tab" onclick="changerOnglet('stats',this)">📊 Stats</button>
+<button class="tab" onclick="changerOnglet('mensuel',this)">📅 Mensuel</button>
 <button class="tab" onclick="changerOnglet('salles',this)">🏫 Salles</button>
 <button class="tab" onclick="changerOnglet('matieres',this)">📖 Matières</button>
 <button class="tab" onclick="changerOnglet('profs',this)">👨‍🏫 Profs</button>
 <button class="tab" onclick="changerOnglet('classes',this)">📋 Classes</button>
 </div>
 
+<!-- ========== ONGLET EDT ========== -->
 <div id="tab-edt" class="panel active">
 <div class="classe-selector">
 <label>📋 Classe active :</label>
@@ -122,12 +45,56 @@ h1{text-align:center;color:#1e3a8a;font-size:1.1em;margin-bottom:4px}
 <div class="legende" id="legende"></div>
 </div>
 
+<!-- ========== ONGLET STATS ========== -->
+<div id="tab-stats" class="panel">
+<h2 style="color:#1e3a8a;margin-bottom:12px;font-size:1em">📊 Statistiques</h2>
+
+<div class="stats-section">
+<h3>👨‍🏫 Heures par professeur</h3>
+<div id="statsProfs"></div>
+</div>
+
+<div class="stats-section">
+<h3>🏆 Classement des classes (par heures)</h3>
+<div id="statsClasses"></div>
+</div>
+
+<div class="stats-section">
+<h3>⏱️ Totaux généraux</h3>
+<div id="statsTotaux"></div>
+</div>
+</div>
+
+<!-- ========== ONGLET MENSUEL ========== -->
+<div id="tab-mensuel" class="panel">
+<h2 style="color:#1e3a8a;margin-bottom:12px;font-size:1em">📅 Vue mensuelle par semaine</h2>
+
+<div class="classe-selector">
+<label>📋 Classe :</label>
+<select id="selectClasseMensuel" onchange="changerClasseMensuel(this.value)"></select>
+<label style="margin-left:10px">🗓️ Semaine :</label>
+<select id="selectSemaine" onchange="changerSemaine(this.value)">
+<option value="S1">Semaine 1</option>
+<option value="S2">Semaine 2</option>
+<option value="S3">Semaine 3</option>
+<option value="S4">Semaine 4</option>
+</select>
+</div>
+
+<div class="info-box">
+💡 Chaque semaine a son propre emploi du temps. Pratique pour les semaines d'examens ou les semaines spéciales.
+</div>
+
+<div class="planning-wrapper"><div class="planning" id="planningMensuel"></div></div>
+</div>
+
+<!-- ========== ONGLET SALLES ========== -->
 <div id="tab-salles" class="panel">
 <div class="manager">
 <h3>🛠️ Gérer les salles</h3>
 <div class="tags-list" id="sallesList"></div>
 <div class="add-form">
-<input type="text" id="newSalleInput" placeholder="Ex : B204" onkeypress="if(event.key==='Enter'){ajouterSalle();event.preventDefault();}">
+<input type="text" id="newSalleInput" placeholder="Ex : S1, S2, Amphi A" onkeypress="if(event.key==='Enter'){ajouterSalle();event.preventDefault();}">
 <button onclick="ajouterSalle()">+ Ajouter</button>
 </div>
 </div>
@@ -135,35 +102,41 @@ h1{text-align:center;color:#1e3a8a;font-size:1.1em;margin-bottom:4px}
 <div id="sallesOccupation"></div>
 </div>
 
+<!-- ========== ONGLET MATIERES ========== -->
 <div id="tab-matieres" class="panel">
 <div class="manager">
 <h3>🛠️ Gérer les matières</h3>
 <div class="tags-list" id="matieresList"></div>
 <div class="add-form">
-<input type="text" id="newMatiereInput" placeholder="Ex : MATHEMATIQUE" onkeypress="if(event.key==='Enter'){ajouterMatiere();event.preventDefault();}">
-<input type="text" id="newMatiereCode" placeholder="Code (ex: S1)" onkeypress="if(event.key==='Enter'){ajouterMatiere();event.preventDefault();}">
+<input type="text" id="newMatiereInput" placeholder="Ex : GTC, MATHEMATIQUE" onkeypress="if(event.key==='Enter'){ajouterMatiere();event.preventDefault();}">
 <button onclick="ajouterMatiere()">+ Ajouter</button>
 </div>
 </div>
 <div class="info-box">
-💡 Ajoute le <strong>nom</strong> de la matière et son <strong>code</strong>. Le code apparaîtra sur le PDF/Word/Excel.
+💡 Ajoute simplement le <strong>nom</strong> de la matière. Pas besoin de code.
 </div>
 </div>
 
+<!-- ========== ONGLET PROFS ========== -->
 <div id="tab-profs" class="panel">
 <div class="manager">
 <h3>🛠️ Gérer les professeurs</h3>
 <div class="tags-list" id="profsList"></div>
 <div class="add-form">
-<input type="text" id="newProfInput" placeholder="Ex : M. TRESOR" onkeypress="if(event.key==='Enter'){ajouterProf();event.preventDefault();}">
+<input type="text" id="newProfInput" placeholder="Ex : ADOU" onkeypress="if(event.key==='Enter'){ajouterProf();event.preventDefault();}">
 <select id="newProfMatiere"><option value="">— Matière —</option></select>
+<select id="newProfSalle"><option value="">— Salle —</option></select>
 <button onclick="ajouterProf()">+ Ajouter</button>
 </div>
+</div>
+<div class="info-box">
+💡 Pour chaque prof, associe une <strong>matière</strong> et une <strong>salle</strong>. Ces infos apparaîtront dans le tableau récapitulatif des exports PDF/Word/Excel.
 </div>
 <h3 style="color:#1e3a8a;margin-bottom:8px;font-size:.9em;">📊 Charge horaire des professeurs</h3>
 <div id="profsCharge"></div>
 </div>
 
+<!-- ========== ONGLET CLASSES ========== -->
 <div id="tab-classes" class="panel">
 <div class="manager">
 <h3>🛠️ Gérer les classes</h3>
@@ -182,6 +155,7 @@ h1{text-align:center;color:#1e3a8a;font-size:1.1em;margin-bottom:4px}
 
 </div>
 
+<!-- ========== MODAL ========== -->
 <div class="modal-overlay" id="modal">
 <div class="modal">
 <h2 id="modalTitle">Ajouter un cours</h2>
@@ -243,24 +217,129 @@ h1{text-align:center;color:#1e3a8a;font-size:1.1em;margin-bottom:4px}
 </div>
 
 <script>
-var JOURS=['LUNDI','MARDI','MERCREDI','JEUDI','VENDREDI','SAMEDI'];
+// JAVASCRIPT À COLLER ICI (MESSAGE 3)
+</script>
+</body>
+</html><style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Segoe UI',system-ui,sans-serif;background:linear-gradient(135deg,#1e3a8a,#3b82f6);min-height:100vh;padding:8px}
+.container{max-width:1200px;margin:0 auto;background:#fff;border-radius:12px;padding:12px;box-shadow:0 10px 30px rgba(0,0,0,.3)}
+h1{text-align:center;color:#1e3a8a;font-size:1.1em;margin-bottom:4px}
+.subtitle{text-align:center;color:#7f8c8d;font-size:.72em;margin-bottom:10px}
+.tabs{display:flex;gap:3px;justify-content:center;margin-bottom:10px;background:#ecf0f1;padding:4px;border-radius:8px;flex-wrap:wrap}
+.tab{flex:1;min-width:75px;padding:7px;border:none;background:transparent;border-radius:6px;cursor:pointer;font-weight:600;color:#555;font-size:.68em}
+.tab.active{background:#fff;color:#1e3a8a;box-shadow:0 1px 3px rgba(0,0,0,.1)}
+.tab-add-main{display:block;width:100%;max-width:320px;margin:0 auto 10px;padding:12px 18px;background:linear-gradient(135deg,#1e3a8a,#3b82f6);color:#fff;border:none;border-radius:10px;font-size:.95em;font-weight:700;cursor:pointer;box-shadow:0 4px 12px rgba(30,58,138,.4);transition:.2s}
+.tab-add-main:hover{transform:translateY(-2px);box-shadow:0 6px 18px rgba(30,58,138,.5)}
+.tab-add-main:active{transform:scale(.97)}
+.classe-selector{display:flex;align-items:center;justify-content:center;gap:8px;margin-bottom:10px;padding:8px;background:#f8f9fa;border-radius:8px;border-left:4px solid #1e3a8a;flex-wrap:wrap}
+.classe-selector label{font-weight:600;color:#1e3a8a;font-size:.82em}
+.classe-selector select{padding:6px 10px;border:2px solid #dfe6e9;border-radius:6px;font-size:.85em;font-weight:600;background:#fff;min-width:120px}
+.classe-selector select:focus{outline:none;border-color:#1e3a8a}
+.toolbar{display:flex;flex-wrap:wrap;gap:6px;justify-content:center;margin-bottom:10px}
+.toolbar button{padding:6px 10px;border:none;border-radius:6px;background:#1e3a8a;color:#fff;font-weight:600;cursor:pointer;font-size:.72em}
+.toolbar button.danger{background:#e74c3c}
+.toolbar button.success{background:#27ae60}
+.toolbar button.pdf{background:#e67e22}
+.toolbar button.word{background:#2b579a}
+.toolbar button.excel{background:#217346}
+.planning-wrapper{overflow-x:auto;-webkit-overflow-scrolling:touch;border-radius:8px}
+.planning{display:grid;grid-template-columns:85px repeat(6,minmax(80px,1fr));gap:2px;background:#dfe6e9;padding:2px;border-radius:8px;min-width:620px}
+.header{background:linear-gradient(135deg,#1e3a8a,#3b82f6);color:#fff;padding:7px 3px;text-align:center;font-weight:600;font-size:.72em;border-radius:4px}
+.header.samedi{background:linear-gradient(135deg,#7c3aed,#a855f7)}
+.hour{padding:4px;text-align:center;color:#555;font-size:.6em;background:#ecf0f1;border-radius:4px;display:flex;align-items:center;justify-content:center;font-weight:600;min-height:42px;white-space:nowrap}
+.slot{background:#f8f9fa;border-radius:4px;min-height:42px;padding:3px;font-size:.68em;cursor:pointer;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;overflow:hidden;touch-action:manipulation;-webkit-tap-highlight-color:rgba(30,58,138,.3);user-select:none;-webkit-user-select:none;transition:.15s}
+.slot:active{background:#d6ecfa;transform:scale(.97)}
+.slot.filled{color:#fff;font-weight:600;box-shadow:0 1px 3px rgba(0,0,0,.15)}
+.slot.filled[style*="rgb(189, 195, 199)"]{color:#000 !important}
+.slot.filled[style*="#bdc3c7"]{color:#000 !important}
+.slot.filled:hover{transform:scale(1.03);box-shadow:0 3px 8px rgba(0,0,0,.25)}
+.slot .matiere{font-size:.92em;line-height:1.1;margin-bottom:1px}
+.slot .prof{font-size:.75em;opacity:.95;line-height:1.1}
+.slot .salle{font-size:.72em;opacity:.9;font-style:italic}
+.panel{display:none}
+.panel.active{display:block}
+.card{background:#f8f9fa;border-radius:8px;padding:10px;margin-bottom:8px;border-left:3px solid #1e3a8a}
+.card h3{color:#1e3a8a;margin-bottom:3px;font-size:.9em;display:flex;justify-content:space-between;align-items:center;gap:6px;flex-wrap:wrap}
+.card .badge{font-size:.65em;padding:2px 6px;border-radius:10px;background:#1e3a8a;color:#fff;font-weight:600;white-space:nowrap}
+.card .badge.free{background:#27ae60}
+.card .badge.busy{background:#e74c3c}
+.card .badge.gold{background:#f39c12}
+.card-occupations{margin-top:6px;font-size:.75em;color:#555}
+.occupation-item{padding:4px 6px;background:#fff;border-radius:4px;margin-bottom:3px;display:flex;justify-content:space-between;gap:6px;border-left:2px solid #1e3a8a;flex-wrap:wrap}
+.occupation-item .time{font-weight:600;color:#1e3a8a;white-space:nowrap}
+.occupation-item .classe{background:#dbeafe;color:#1e3a8a;padding:1px 5px;border-radius:3px;font-size:.85em;font-weight:600}
+.empty-msg{color:#95a5a6;font-style:italic;font-size:.8em;padding:6px 0}
+.manager{background:#ecf0f1;border-radius:8px;padding:10px;margin-bottom:12px}
+.manager h3{color:#1e3a8a;margin-bottom:8px;font-size:.85em}
+.tags-list{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:8px}
+.tag{background:#fff;padding:4px 8px;border-radius:16px;font-size:.75em;display:flex;align-items:center;gap:5px;box-shadow:0 1px 2px rgba(0,0,0,.1)}
+.tag button{background:none;border:none;color:#e74c3c;cursor:pointer;font-size:1em;font-weight:bold;padding:0;line-height:1}
+.tag button.dup{color:#27ae60}
+.tag button.dup:hover{color:#229954}
+.add-form{display:flex;gap:6px;flex-wrap:wrap}
+.add-form input,.add-form select{flex:1;padding:6px 10px;border:2px solid #dfe6e9;border-radius:6px;font-size:.8em;font-family:inherit;min-width:100px}
+.add-form input:focus,.add-form select:focus{outline:none;border-color:#1e3a8a}
+.add-form button{padding:6px 10px;border:none;border-radius:6px;background:#27ae60;color:#fff;font-weight:600;cursor:pointer;font-size:.78em;white-space:nowrap}
+.modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:1000;justify-content:center;align-items:center;padding:15px}
+.modal-overlay.active{display:flex}
+.modal{background:#fff;border-radius:10px;padding:16px;width:100%;max-width:420px;max-height:90vh;overflow-y:auto}
+.modal h2{margin-bottom:10px;color:#1e3a8a;font-size:1em}
+.modal label{display:block;margin-bottom:4px;color:#555;font-size:.78em;font-weight:600}
+.modal input,.modal select{width:100%;padding:8px;border:2px solid #dfe6e9;border-radius:6px;margin-bottom:9px;font-size:.88em;font-family:inherit}
+.modal input:focus,.modal select:focus{outline:none;border-color:#1e3a8a}
+.dispo-info{background:#dbeafe;border-left:3px solid #1e3a8a;padding:8px 10px;border-radius:5px;font-size:.72em;color:#1e3a8a;margin-bottom:9px;line-height:1.4}
+.dispo-info.ok{background:#d5f4e6;border-left-color:#27ae60;color:#1e8449}
+.dispo-info.warning{background:#fdecea;border-left-color:#e74c3c;color:#c0392b}
+.dispo-info .titre{font-weight:700;margin-bottom:4px}
+.modal-actions{display:flex;gap:6px;margin-top:5px;flex-wrap:wrap}
+.modal-actions button{flex:1;min-width:80px;padding:9px;border:none;border-radius:6px;font-weight:600;cursor:pointer;font-size:.8em}
+.btn-save{background:#27ae60;color:#fff}
+.btn-save:disabled{background:#95a5a6;cursor:not-allowed}
+.btn-cancel{background:#ecf0f1;color:#555}
+.btn-delete{background:#e74c3c;color:#fff}
+.legende{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin-top:10px;padding-top:10px;border-top:1px solid #ecf0f1}
+.legende-item{display:flex;align-items:center;gap:5px;font-size:.75em;color:#555}
+.legende-color{width:12px;height:12px;border-radius:3px}
+.info-box{background:#fffbea;border-left:4px solid #f39c12;padding:10px;border-radius:6px;margin-bottom:12px;font-size:.78em;color:#7d6608;line-height:1.4}
+/* ===== STATS ===== */
+.stats-section{background:#f8f9fa;border-radius:8px;padding:12px;margin-bottom:12px;border-left:4px solid #1e3a8a}
+.stats-section h3{color:#1e3a8a;font-size:.9em;margin-bottom:10px;text-transform:uppercase;letter-spacing:.5px}
+.stats-table{width:100%;border-collapse:collapse;font-size:.82em}
+.stats-table th{background:#1e3a8a;color:#fff;padding:6px 8px;text-align:left;font-weight:600}
+.stats-table td{padding:6px 8px;border-bottom:1px solid #ecf0f1}
+.stats-table tr:hover{background:#f0f9ff}
+.stats-table .rank{font-weight:bold;width:40px;text-align:center}
+.stats-table .hours{text-align:right;font-weight:700;color:#1e3a8a;white-space:nowrap}
+.stats-badge{display:inline-block;padding:2px 6px;border-radius:10px;font-size:.75em;font-weight:600}
+.stats-badge.gold{background:#f39c12;color:#fff}
+.stats-badge.silver{background:#95a5a6;color:#fff}
+.stats-badge.bronze{background:#cd7f32;color:#fff}
+.stats-total{display:flex;justify-content:space-between;padding:10px 12px;background:#dbeafe;border-radius:6px;margin-bottom:6px;font-weight:600;color:#1e3a8a}
+.stats-total .val{font-size:1.15em;font-weight:700}
+</style>var JOURS=['LUNDI','MARDI','MERCREDI','JEUDI','VENDREDI','SAMEDI'];
 var HEURES=['08H00-9H00','9H00-10H00','10H00-11H00','11H00-12H00','12H00-13H00','13H00-14H00','14H00-15H00','15H00-16H00','16H00-17H00','17H00-18H00'];
 
 var etat = chargerDepuisStorage('emploiDuTempsITA', {
   classes: [],
-  matieres: [],
+  matieres: ['GTC'],
   salles: [],
-  professeurs: [],
+  professeurs: [{nom:'ADOU', matiere:'', salle:''}],
   emploisDuTemps: {},
-  classeActive: ''
+  emploisSemaines: {},
+  classeActive: '',
+  semaineActive: 'S1'
 });
 
-if(!etat.matieres) etat.matieres = [];
+if(!etat.matieres || etat.matieres.length===0) etat.matieres = ['GTC'];
 if(!etat.salles) etat.salles = [];
-if(!etat.professeurs) etat.professeurs = [];
+if(!etat.professeurs || etat.professeurs.length===0) etat.professeurs = [{nom:'ADOU', matiere:'', salle:''}];
+if(!etat.emploisSemaines) etat.emploisSemaines = {};
+if(!etat.semaineActive) etat.semaineActive = 'S1';
 
 var slotEnEdition=null;
 var modeAjoutRapide=false;
+var modeMensuel=false;
 
 function sauvegarderStorage(){
   try{ localStorage.setItem('emploiDuTempsITA', JSON.stringify(etat)); }catch(e){}
@@ -281,12 +360,27 @@ function changerOnglet(onglet,btn){
   if(onglet==='matieres') afficherMatieres();
   if(onglet==='profs') afficherProfs();
   if(onglet==='classes') afficherClasses();
+  if(onglet==='stats') afficherStats();
+  if(onglet==='mensuel'){ afficherSelecteurMensuel(); afficherGrilleMensuel(); }
 }
 
 function changerClasseActive(classe){
   etat.classeActive = classe;
   sauvegarderStorage();
   afficher();
+}
+
+function changerClasseMensuel(classe){
+  etat.classeActive = classe;
+  sauvegarderStorage();
+  afficherSelecteurMensuel();
+  afficherGrilleMensuel();
+}
+
+function changerSemaine(sem){
+  etat.semaineActive = sem;
+  sauvegarderStorage();
+  afficherGrilleMensuel();
 }
 
 function afficher(){
@@ -308,6 +402,20 @@ function afficherSelecteurClasse(){
   sel.innerHTML = etat.classes.map(function(c){
     return '<option value="'+c+'"'+(c===etat.classeActive?' selected':'')+'>'+c+'</option>';
   }).join('');
+}
+
+function getEDTSemaine(classe, semaine){
+  if(!etat.emploisSemaines[classe]) etat.emploisSemaines[classe] = {};
+  if(!etat.emploisSemaines[classe][semaine]){
+    var base = etat.emploisDuTemps[classe] || {};
+    etat.emploisSemaines[classe][semaine] = JSON.parse(JSON.stringify(base));
+  }
+  return etat.emploisSemaines[classe][semaine];
+}
+
+function getEDTCourant(){
+  if(modeMensuel) return getEDTSemaine(etat.classeActive, etat.semaineActive);
+  return etat.emploisDuTemps[etat.classeActive] || {};
 }
 
 function afficherGrille(){
@@ -336,45 +444,76 @@ function afficherGrille(){
       if(cours){
         slot.className='slot filled';
         slot.style.background=cours.couleur;
-        var mat = getMatiereAffichage(cours.matiere);
-        slot.innerHTML='<div class="matiere">'+mat+'</div>'+
+        slot.innerHTML='<div class="matiere">'+cours.matiere+'</div>'+
         (cours.prof?'<div class="prof">'+cours.prof+'</div>':'')+
         (cours.salle?'<div class="salle">📍 '+cours.salle+'</div>':'');
-      }else{
-        slot.className='slot';
-      }
-      slot.onclick=function(e){
-        e.preventDefault();
-        e.stopPropagation();
-        ouvrirModal(ji,hi,cours||null);
-      };
+      }else{ slot.className='slot'; }
+      slot.onclick=function(e){ e.preventDefault(); e.stopPropagation(); modeMensuel=false; ouvrirModal(ji,hi,cours||null); };
       planning.appendChild(slot);
     });
   });
 }
 
-function getMatiereAffichage(nomMatiere){
-  for(var i=0; i<etat.matieres.length; i++){
-    if(etat.matieres[i].nom === nomMatiere){
-      return nomMatiere + (etat.matieres[i].code ? ' --' + etat.matieres[i].code : '');
-    }
+function afficherSelecteurMensuel(){
+  var sel = document.getElementById('selectClasseMensuel');
+  if(etat.classes.length === 0){
+    sel.innerHTML = '<option>Aucune classe</option>';
+    return;
   }
-  return nomMatiere;
+  if(etat.classes.indexOf(etat.classeActive) === -1) etat.classeActive = etat.classes[0];
+  sel.innerHTML = etat.classes.map(function(c){
+    return '<option value="'+c+'"'+(c===etat.classeActive?' selected':'')+'>'+c+'</option>';
+  }).join('');
+  document.getElementById('selectSemaine').value = etat.semaineActive;
+}
+
+function afficherGrilleMensuel(){
+  var planning=document.getElementById('planningMensuel');
+  planning.innerHTML='';
+
+  if(etat.classes.length === 0){
+    planning.innerHTML = '<p style="grid-column:1/-1;text-align:center;padding:20px;color:#999">Aucune classe.</p>';
+    return;
+  }
+
+  var edt = getEDTSemaine(etat.classeActive, etat.semaineActive);
+
+  planning.innerHTML += '<div class="header">HEURE</div>';
+  JOURS.forEach(function(j,i){
+    var cls=i===5?'header samedi':'header';
+    planning.innerHTML+='<div class="'+cls+'">'+j+'</div>';
+  });
+
+  HEURES.forEach(function(heure,hi){
+    planning.innerHTML+='<div class="hour">'+heure+'</div>';
+    JOURS.forEach(function(_,ji){
+      var key=ji+'-'+hi;
+      var cours=edt[key];
+      var slot=document.createElement('div');
+      if(cours){
+        slot.className='slot filled';
+        slot.style.background=cours.couleur;
+        slot.innerHTML='<div class="matiere">'+cours.matiere+'</div>'+
+        (cours.prof?'<div class="prof">'+cours.prof+'</div>':'')+
+        (cours.salle?'<div class="salle">📍 '+cours.salle+'</div>':'');
+      }else{ slot.className='slot'; }
+      slot.onclick=function(e){ e.preventDefault(); e.stopPropagation(); modeMensuel=true; ouvrirModal(ji,hi,cours||null); };
+      planning.appendChild(slot);
+    });
+  });
 }
 
 function afficherLegende(){
   var legende=document.getElementById('legende');
   var edt = etat.emploisDuTemps[etat.classeActive] || {};
   var matieres={};
-  Object.values(edt).forEach(function(c){
-    if(!matieres[c.matiere])matieres[c.matiere]=c.couleur;
-  });
+  Object.values(edt).forEach(function(c){ if(!matieres[c.matiere])matieres[c.matiere]=c.couleur; });
   if(Object.keys(matieres).length===0){
     legende.innerHTML='<span style="color:#999;font-size:.8em">Aucun cours pour '+etat.classeActive+'</span>';
     return;
   }
   legende.innerHTML=Object.entries(matieres).map(function(entry){
-    return '<div class="legende-item"><div class="legende-color" style="background:'+entry[1]+'"></div><span>'+getMatiereAffichage(entry[0])+'</span></div>';
+    return '<div class="legende-item"><div class="legende-color" style="background:'+entry[1]+'"></div><span>'+entry[0]+'</span></div>';
   }).join('');
 }
 
@@ -382,9 +521,9 @@ function mettreAJourSelects(){
   var selMat = document.getElementById('inputMatiere');
   var valMat = selMat.value;
   selMat.innerHTML = '<option value="">— Choisir —</option>'+etat.matieres.map(function(m){
-    return '<option value="'+m.nom+'">'+m.nom+(m.code?' --'+m.code:'')+'</option>';
+    return '<option value="'+m+'">'+m+'</option>';
   }).join('');
-  if(etat.matieres.some(function(m){return m.nom===valMat;})) selMat.value = valMat;
+  if(etat.matieres.indexOf(valMat) !== -1) selMat.value = valMat;
 
   var selProf = document.getElementById('inputProf');
   var valProf = selProf.value;
@@ -401,8 +540,13 @@ function mettreAJourSelects(){
   if(etat.salles.indexOf(valSal) !== -1) selSal.value = valSal;
 
   var selProfMat = document.getElementById('newProfMatiere');
-  selProfMat.innerHTML = '<option value="">— Matière —</option>'+etat.matieres.map(function(m){
-    return '<option value="'+m.nom+'">'+m.nom+(m.code?' --'+m.code:'')+'</option>';
+  if(selProfMat) selProfMat.innerHTML = '<option value="">— Matière —</option>'+etat.matieres.map(function(m){
+    return '<option value="'+m+'">'+m+'</option>';
+  }).join('');
+
+  var selProfSal = document.getElementById('newProfSalle');
+  if(selProfSal) selProfSal.innerHTML = '<option value="">— Salle —</option>'+etat.salles.map(function(s){
+    return '<option value="'+s+'">'+s+'</option>';
   }).join('');
 }
 
@@ -420,6 +564,7 @@ function verifierConflits(){
 
   var conflitsSalle = [];
   var conflitsProf = [];
+  var edtSource = modeMensuel ? getEDTSemaine(etat.classeActive, etat.semaineActive) : (etat.emploisDuTemps[etat.classeActive]||{});
 
   Object.keys(etat.emploisDuTemps).forEach(function(classe){
     if(classe === etat.classeActive) return;
@@ -445,11 +590,11 @@ function verifierConflits(){
     var html = '<div class="titre">🚨 Conflit(s) détecté(s) — Enregistrement bloqué</div>';
     if(conflitsSalle.length > 0){
       html += '<strong>🏫 Salle '+salle+' :</strong><br>';
-      html += conflitsSalle.map(function(c){ return '• '+c.classe+' ('+getMatiereAffichage(c.matiere)+')'; }).join('<br>')+'<br>';
+      html += conflitsSalle.map(function(c){ return '• '+c.classe+' ('+c.matiere+')'; }).join('<br>')+'<br>';
     }
     if(conflitsProf.length > 0){
       html += '<strong>👨‍🏫 '+prof+' :</strong><br>';
-      html += conflitsProf.map(function(c){ return '• '+c.classe+' ('+getMatiereAffichage(c.matiere)+', '+c.salle+')'; }).join('<br>')+'<br>';
+      html += conflitsProf.map(function(c){ return '• '+c.classe+' ('+c.matiere+', '+c.salle+')'; }).join('<br>')+'<br>';
     }
     html += '<em>Change de salle, de prof ou de créneau.</em>';
     info.innerHTML = html;
@@ -473,10 +618,8 @@ function afficherSalles(){
     occup.innerHTML='<p class="empty-msg">Ajoute des salles pour voir leur occupation.</p>';
     return;
   }
-
   var parSalle={};
   etat.salles.forEach(function(s){parSalle[s]=[];});
-
   Object.keys(etat.emploisDuTemps).forEach(function(classe){
     var edt = etat.emploisDuTemps[classe] || {};
     Object.keys(edt).forEach(function(key){
@@ -488,11 +631,7 @@ function afficherSalles(){
       parSalle[c.salle].push({classe: classe, jour: JOURS[ji], heure: HEURES[hi], matiere: c.matiere, jourIdx: ji, heureIdx: hi});
     });
   });
-
-  Object.values(parSalle).forEach(function(arr){
-    arr.sort(function(a,b){return a.jourIdx-b.jourIdx||a.heureIdx-b.heureIdx;});
-  });
-
+  Object.values(parSalle).forEach(function(arr){ arr.sort(function(a,b){return a.jourIdx-b.jourIdx||a.heureIdx-b.heureIdx;}); });
   occup.innerHTML = etat.salles.map(function(s){
     var occ = parSalle[s] || [];
     var total = occ.length;
@@ -500,7 +639,7 @@ function afficherSalles(){
     var badgeTxt = total===0?'Libre':total+' cours';
     var html = '<div class="card"><h3>🏫 '+s+' <span class="badge '+badgeCls+'">'+badgeTxt+'</span></h3><div class="card-occupations">';
     if(total===0){ html += '<span class="empty-msg">Aucune occupation</span>'; }
-    else{ html += occ.map(function(o){ return '<div class="occupation-item"><span class="classe">'+o.classe+'</span><span>'+getMatiereAffichage(o.matiere)+'</span><span class="time">'+o.jour+' · '+o.heure+'</span></div>'; }).join(''); }
+    else{ html += occ.map(function(o){ return '<div class="occupation-item"><span class="classe">'+o.classe+'</span><span>'+o.matiere+'</span><span class="time">'+o.jour+' · '+o.heure+'</span></div>'; }).join(''); }
     html += '</div></div>';
     return html;
   }).join('');
@@ -539,30 +678,27 @@ function afficherMatieres(){
     list.innerHTML='<span style="color:#95a5a6;font-size:.8em;font-style:italic">Aucune matière</span>';
   }else{
     list.innerHTML=etat.matieres.map(function(m){
-      return '<div class="tag"><span>📖 '+m.nom+(m.code?' --'+m.code:'')+'</span><button onclick="supprimerMatiere(\''+m.nom.replace(/'/g,"\\'")+'\')">✕</button></div>';
+      return '<div class="tag"><span>📖 '+m+'</span><button onclick="supprimerMatiere(\''+m.replace(/'/g,"\\'")+'\')">✕</button></div>';
     }).join('');
   }
 }
 
 function ajouterMatiere(){
   var input=document.getElementById('newMatiereInput');
-  var inputCode=document.getElementById('newMatiereCode');
   var nom=input.value.trim();
-  var code=inputCode.value.trim();
   if(!nom)return;
-  if(etat.matieres.some(function(m){return m.nom===nom;})){alert('Cette matière existe déjà');return;}
-  etat.matieres.push({nom:nom, code:code});
-  etat.matieres.sort(function(a,b){return a.nom.localeCompare(b.nom);});
+  if(etat.matieres.indexOf(nom)!==-1){alert('Cette matière existe déjà');return;}
+  etat.matieres.push(nom);
+  etat.matieres.sort();
   sauvegarderStorage();
   input.value='';
-  inputCode.value='';
   afficherMatieres();
   mettreAJourSelects();
 }
 
 function supprimerMatiere(nom){
   if(!confirm('Supprimer la matière "'+nom+'" ?'))return;
-  etat.matieres = etat.matieres.filter(function(m){return m.nom!==nom;});
+  etat.matieres = etat.matieres.filter(function(m){return m!==nom;});
   sauvegarderStorage();
   afficherMatieres();
   mettreAJourSelects();
@@ -575,19 +711,20 @@ function afficherProfs(){
     list.innerHTML='<span style="color:#95a5a6;font-size:.8em;font-style:italic">Aucun professeur</span>';
   }else{
     list.innerHTML=etat.professeurs.map(function(p){
-      return '<div class="tag"><span>👨‍🏫 '+p.nom+(p.matiere?' ('+p.matiere+')':'')+'</span><button onclick="supprimerProf(\''+p.nom.replace(/'/g,"\\'")+'\')">✕</button></div>';
+      var info = p.nom;
+      if(p.matiere) info += ' — '+p.matiere;
+      if(p.salle) info += ' — '+p.salle;
+      return '<div class="tag"><span>👨‍🏫 '+info+'</span><button onclick="supprimerProf(\''+p.nom.replace(/'/g,"\\'")+'\')">✕</button></div>';
     }).join('');
   }
 
   var charge = document.getElementById('profsCharge');
   if(etat.professeurs.length===0){
-    charge.innerHTML = '<p class="empty-msg">Ajoute des professeurs pour voir leur charge horaire.</p>';
+    charge.innerHTML = '<p class="empty-msg">Ajoute des professeurs pour voir leur charge.</p>';
     return;
   }
-
   var parProf = {};
   etat.professeurs.forEach(function(p){ parProf[p.nom] = []; });
-
   Object.keys(etat.emploisDuTemps).forEach(function(classe){
     var edt = etat.emploisDuTemps[classe] || {};
     Object.keys(edt).forEach(function(key){
@@ -598,19 +735,16 @@ function afficherProfs(){
       parProf[c.prof].push({classe: classe, jour: JOURS[ji], heure: HEURES[hi], matiere: c.matiere, jourIdx: ji, heureIdx: hi});
     });
   });
-
-  Object.values(parProf).forEach(function(arr){
-    arr.sort(function(a,b){return a.jourIdx-b.jourIdx||a.heureIdx-b.heureIdx;});
-  });
-
+  Object.values(parProf).forEach(function(arr){ arr.sort(function(a,b){return a.jourIdx-b.jourIdx||a.heureIdx-b.heureIdx;}); });
   charge.innerHTML = etat.professeurs.map(function(p){
     var occ = parProf[p.nom] || [];
     var total = occ.length;
     var badgeCls = total===0?'free':'busy';
     var badgeTxt = total===0?'Disponible':total+' h/sem';
-    var html = '<div class="card"><h3>👨‍🏫 '+p.nom+(p.matiere?' — '+p.matiere:'')+' <span class="badge '+badgeCls+'">'+badgeTxt+'</span></h3><div class="card-occupations">';
+    var titre = p.nom + (p.matiere?' — '+p.matiere:'') + (p.salle?' — '+p.salle:'');
+    var html = '<div class="card"><h3>👨‍🏫 '+titre+' <span class="badge '+badgeCls+'">'+badgeTxt+'</span></h3><div class="card-occupations">';
     if(total===0){ html += '<span class="empty-msg">Aucun cours assigné</span>'; }
-    else{ html += occ.map(function(o){ return '<div class="occupation-item"><span class="classe">'+o.classe+'</span><span>'+getMatiereAffichage(o.matiere)+'</span><span class="time">'+o.jour+' · '+o.heure+'</span></div>'; }).join(''); }
+    else{ html += occ.map(function(o){ return '<div class="occupation-item"><span class="classe">'+o.classe+'</span><span>'+o.matiere+'</span><span class="time">'+o.jour+' · '+o.heure+'</span></div>'; }).join(''); }
     html += '</div></div>';
     return html;
   }).join('');
@@ -619,15 +753,18 @@ function afficherProfs(){
 function ajouterProf(){
   var input=document.getElementById('newProfInput');
   var selMat=document.getElementById('newProfMatiere');
+  var selSal=document.getElementById('newProfSalle');
   var nom=input.value.trim();
   var matiere=selMat.value;
+  var salle=selSal.value;
   if(!nom)return;
   if(etat.professeurs.some(function(p){return p.nom===nom;})){alert('Ce professeur existe déjà');return;}
-  etat.professeurs.push({nom:nom, matiere:matiere});
+  etat.professeurs.push({nom:nom, matiere:matiere, salle:salle});
   etat.professeurs.sort(function(a,b){return a.nom.localeCompare(b.nom);});
   sauvegarderStorage();
   input.value='';
   selMat.value='';
+  selSal.value='';
   afficherProfs();
   mettreAJourSelects();
 }
@@ -653,13 +790,11 @@ function afficherClasses(){
         '<button onclick="supprimerClasse(\''+cEsc+'\')">✕</button></div>';
     }).join('');
   }
-
   var resume = document.getElementById('classesResume');
   if(etat.classes.length===0){
     resume.innerHTML = '<p class="empty-msg">Ajoute des classes pour voir le résumé.</p>';
     return;
   }
-
   resume.innerHTML = etat.classes.map(function(c){
     var edt = etat.emploisDuTemps[c] || {};
     var nb = Object.keys(edt).length;
@@ -689,12 +824,10 @@ function supprimerClasse(nom){
   if(nb > 0) msg += ' et ses '+nb+' cours';
   msg += ' ? Cette action est irréversible.';
   if(!confirm(msg))return;
-
   etat.classes = etat.classes.filter(function(c){return c!==nom;});
   delete etat.emploisDuTemps[nom];
-
+  if(etat.emploisSemaines && etat.emploisSemaines[nom]) delete etat.emploisSemaines[nom];
   if(etat.classeActive === nom) etat.classeActive = etat.classes[0] || '';
-
   sauvegarderStorage();
   afficherClasses();
   afficher();
@@ -706,15 +839,69 @@ function dupliquerClasse(nom){
   nouvelle = nouvelle.trim();
   if(!nouvelle) return;
   if(etat.classes.indexOf(nouvelle) !== -1){alert('Cette classe existe déjà');return;}
-
   etat.classes.push(nouvelle);
   etat.classes.sort();
   etat.emploisDuTemps[nouvelle] = JSON.parse(JSON.stringify(etat.emploisDuTemps[nom] || {}));
-
   sauvegarderStorage();
   afficherClasses();
   afficher();
   alert('✅ Classe "'+nouvelle+'" créée avec ' + Object.keys(etat.emploisDuTemps[nouvelle]).length + ' cours copiés.');
+}
+
+/* ===== STATS ===== */
+function afficherStats(){
+  // Heures par prof
+  var heuresProfs = {};
+  etat.professeurs.forEach(function(p){ heuresProfs[p.nom] = 0; });
+  Object.keys(etat.emploisDuTemps).forEach(function(classe){
+    var edt = etat.emploisDuTemps[classe] || {};
+    Object.keys(edt).forEach(function(key){
+      var c = edt[key];
+      if(c.prof && heuresProfs[c.prof] !== undefined) heuresProfs[c.prof]++;
+      else if(c.prof) heuresProfs[c.prof] = (heuresProfs[c.prof]||0) + 1;
+    });
+  });
+  var arrProfs = Object.entries(heuresProfs).sort(function(a,b){return b[1]-a[1];});
+  var maxProf = arrProfs.length > 0 ? arrProfs[0][1] : 0;
+  var htmlProfs = '<table class="stats-table"><thead><tr><th>#</th><th>Professeur</th><th class="hours">Heures</th></tr></thead><tbody>';
+  arrProfs.forEach(function(e, i){
+    var rankClass = '';
+    var medal = '';
+    if(i===0 && e[1]>0){ rankClass='gold'; medal='🥇'; }
+    else if(i===1 && e[1]>0){ rankClass='silver'; medal='🥈'; }
+    else if(i===2 && e[1]>0){ rankClass='bronze'; medal='🥉'; }
+    htmlProfs += '<tr><td class="rank"><span class="stats-badge '+rankClass+'">'+(i+1)+'</span> '+medal+'</td><td>'+e[0]+'</td><td class="hours">'+e[1]+' h</td></tr>';
+  });
+  if(arrProfs.length === 0) htmlProfs += '<tr><td colspan="3" style="text-align:center;color:#999">Aucun prof</td></tr>';
+  htmlProfs += '</tbody></table>';
+  document.getElementById('statsProfs').innerHTML = htmlProfs;
+
+  // Classement des classes
+  var heuresClasses = {};
+  etat.classes.forEach(function(c){ heuresClasses[c] = Object.keys(etat.emploisDuTemps[c]||{}).length; });
+  var arrClasses = Object.entries(heuresClasses).sort(function(a,b){return b[1]-a[1];});
+  var htmlClasses = '<table class="stats-table"><thead><tr><th>#</th><th>Classe</th><th class="hours">Heures</th></tr></thead><tbody>';
+  arrClasses.forEach(function(e, i){
+    var rankClass = '';
+    var medal = '';
+    if(i===0 && e[1]>0){ rankClass='gold'; medal='🥇'; }
+    else if(i===1 && e[1]>0){ rankClass='silver'; medal='🥈'; }
+    else if(i===2 && e[1]>0){ rankClass='bronze'; medal='🥉'; }
+    htmlClasses += '<tr><td class="rank"><span class="stats-badge '+rankClass+'">'+(i+1)+'</span> '+medal+'</td><td>'+e[0]+'</td><td class="hours">'+e[1]+' h</td></tr>';
+  });
+  if(arrClasses.length === 0) htmlClasses += '<tr><td colspan="3" style="text-align:center;color:#999">Aucune classe</td></tr>';
+  htmlClasses += '</tbody></table>';
+  document.getElementById('statsClasses').innerHTML = htmlClasses;
+
+  // Totaux généraux
+  var totalProfs = arrProfs.reduce(function(s,e){return s+e[1];}, 0);
+  var totalClasses = arrClasses.reduce(function(s,e){return s+e[1];}, 0);
+  var totalGeneral = totalClasses;
+  var htmlTot = '';
+  htmlTot += '<div class="stats-total"><span>👨‍🏫 Total heures tous les profs</span><span class="val">'+totalProfs+' h</span></div>';
+  htmlTot += '<div class="stats-total"><span>📋 Total heures toutes les classes</span><span class="val">'+totalClasses+' h</span></div>';
+  htmlTot += '<div class="stats-total"><span>⏱️ Total général</span><span class="val">'+totalGeneral+' h</span></div>';
+  document.getElementById('statsTotaux').innerHTML = htmlTot;
 }
 
 /* ===== MODAL ===== */
@@ -759,7 +946,6 @@ function ouvrirModal(jourIndex,heureIndex,cours){
     document.getElementById('inputCouleur').value='#bdc3c7';
     document.getElementById('btnDelete').style.display='none';
   }
-
   document.getElementById('dispoInfo').style.display='none';
   document.getElementById('btnSave').disabled = false;
   document.getElementById('modal').classList.add('active');
@@ -776,46 +962,59 @@ function fermerModal(){
 function sauvegarderCours(){
   var matiere=document.getElementById('inputMatiere').value;
   if(!matiere){alert('Veuillez choisir une matière');return;}
-
   var ji,hi;
   if(modeAjoutRapide){
     ji=parseInt(document.getElementById('inputJour').value);
     hi=parseInt(document.getElementById('inputHeure').value);
     slotEnEdition={jourIndex:ji,heureIndex:hi};
-  }else{
-    ji=slotEnEdition.jourIndex;
-    hi=slotEnEdition.heureIndex;
-  }
+  }else{ ji=slotEnEdition.jourIndex; hi=slotEnEdition.heureIndex; }
   var key=ji+'-'+hi;
-  var edt = etat.emploisDuTemps[etat.classeActive] || {};
 
-  if(edt[key] && modeAjoutRapide){
-    if(!confirm('⚠️ Un cours existe déjà à '+JOURS[ji]+' '+HEURES[hi]+' pour '+etat.classeActive+'. Le remplacer ?'))return;
-  }
-
-  edt[key]={
+  var cours = {
     matiere:matiere,
     prof:document.getElementById('inputProf').value,
     salle:document.getElementById('inputSalle').value,
     couleur:document.getElementById('inputCouleur').value
   };
-  etat.emploisDuTemps[etat.classeActive] = edt;
 
+  if(modeMensuel){
+    var edtM = getEDTSemaine(etat.classeActive, etat.semaineActive);
+    if(edtM[key] && modeAjoutRapide){
+      if(!confirm('⚠️ Un cours existe déjà à '+JOURS[ji]+' '+HEURES[hi]+'. Le remplacer ?'))return;
+    }
+    edtM[key] = cours;
+    if(!etat.emploisSemaines[etat.classeActive]) etat.emploisSemaines[etat.classeActive] = {};
+    etat.emploisSemaines[etat.classeActive][etat.semaineActive] = edtM;
+  }else{
+    var edt = etat.emploisDuTemps[etat.classeActive] || {};
+    if(edt[key] && modeAjoutRapide){
+      if(!confirm('⚠️ Un cours existe déjà à '+JOURS[ji]+' '+HEURES[hi]+'. Le remplacer ?'))return;
+    }
+    edt[key] = cours;
+    etat.emploisDuTemps[etat.classeActive] = edt;
+  }
   sauvegarderStorage();
   fermerModal();
-  afficher();
+  if(modeMensuel){ afficherGrilleMensuel(); } else { afficher(); }
 }
 
 function supprimerCours(){
   if(!slotEnEdition)return;
   if(!confirm('🗑️ Supprimer ce cours ?'))return;
   var key=slotEnEdition.jourIndex+'-'+slotEnEdition.heureIndex;
-  var edt = etat.emploisDuTemps[etat.classeActive] || {};
-  delete edt[key];
-  etat.emploisDuTemps[etat.classeActive] = edt;
+  if(modeMensuel){
+    var edtM = getEDTSemaine(etat.classeActive, etat.semaineActive);
+    delete edtM[key];
+    if(!etat.emploisSemaines[etat.classeActive]) etat.emploisSemaines[etat.classeActive] = {};
+    etat.emploisSemaines[etat.classeActive][etat.semaineActive] = edtM;
+  }else{
+    var edt = etat.emploisDuTemps[etat.classeActive] || {};
+    delete edt[key];
+    etat.emploisDuTemps[etat.classeActive] = edt;
+  }
   sauvegarderStorage();
   fermerModal();
-  afficher();
+  if(modeMensuel){ afficherGrilleMensuel(); } else { afficher(); }
 }
 
 function effacerClasseActive(){
@@ -844,13 +1043,29 @@ function getEnteteHTML(){
   return html;
 }
 
+function getTableauRecapHTML(style){
+  var html = '<table style="'+(style||'')+'">';
+  html += '<thead><tr><th>MATIÈRES</th><th>PROFESSEURS</th><th>SALLES</th></tr></thead><tbody>';
+  var lignes = etat.professeurs.length > 0 ? etat.professeurs.length : 1;
+  for(var i=0; i<lignes; i++){
+    var p = etat.professeurs[i] || {nom:'', matiere:'', salle:''};
+    html += '<tr><td>'+(p.matiere||'')+'</td><td>'+(p.nom||'')+'</td><td>'+(p.salle||'')+'</td></tr>';
+  }
+  // Ajouter les matières orphelines (sans prof associé)
+  etat.matieres.forEach(function(m){
+    var trouve = etat.professeurs.some(function(p){ return p.matiere === m; });
+    if(!trouve){ html += '<tr><td>'+m+'</td><td></td><td></td></tr>'; }
+  });
+  html += '</tbody></table>';
+  return html;
+}
+
 /* ===== EXPORT PDF ===== */
 function exporterPDF(){
   if(etat.classes.length === 0){ alert('Aucune classe'); return; }
   var edt = etat.emploisDuTemps[etat.classeActive] || {};
   var win=window.open('','_blank');
   if(!win){alert('Autorisez les pop-ups');return;}
-
   var html='<!DOCTYPE html><html><head><meta charset="UTF-8"><title>Emploi du temps - '+etat.classeActive+'</title>';
   html+='<style>';
   html+='*{box-sizing:border-box;margin:0;padding:0}';
@@ -869,10 +1084,10 @@ function exporterPDF(){
   html+='@media print{body{padding:0}}';
   html+='.layout{display:flex;gap:6px;align-items:flex-start}';
   html+='.grid-part{flex:3}';
-  html+='.table-part{flex:1}';
-  html+='.table-part table{font-size:6px}';
-  html+='.table-part th{font-size:7px;padding:2px}';
-  html+='.table-part td{padding:2px}';
+  html+='.table-part{flex:1.2}';
+  html+='.table-part table{font-size:7px}';
+  html+='.table-part th{font-size:8px;padding:3px}';
+  html+='.table-part td{padding:3px;font-size:7px}';
   html+='</style></head><body>';
   html += getEnteteHTML();
   html += '<div class="layout">';
@@ -888,7 +1103,7 @@ function exporterPDF(){
       if(c){
         var txtColor = (c.couleur === '#bdc3c7' || c.couleur === '#ffffff') ? '#000' : '#fff';
         html+='<td class="cours slot-cell" style="background:'+c.couleur+';color:'+txtColor+'">';
-        html+='<div class="mat">'+getMatiereAffichage(c.matiere)+'</div>';
+        html+='<div class="mat">'+c.matiere+'</div>';
         if(c.prof)html+='<div class="pr">'+c.prof+'</div>';
         if(c.salle)html+='<div class="sa">'+c.salle+'</div>';
         html+='</td>';
@@ -899,15 +1114,7 @@ function exporterPDF(){
   html+='</tbody></table>';
   html += '</div>';
   html += '<div class="table-part">';
-  html += '<table><thead><tr><th>MATIÈRES</th><th>PROFESSEURS</th></tr></thead><tbody>';
-  etat.matieres.forEach(function(m){
-    var profNom = '';
-    for(var i=0; i<etat.professeurs.length; i++){
-      if(etat.professeurs[i].matiere === m.nom){ profNom = etat.professeurs[i].nom; break; }
-    }
-    html += '<tr><td>'+m.nom+(m.code?' --'+m.code:'')+'</td><td>'+(profNom||'')+'</td></tr>';
-  });
-  html += '</tbody></table>';
+  html += getTableauRecapHTML('width:100%');
   html += '</div>';
   html += '</div>';
   html+='<p style="text-align:center;font-size:6px;color:#999;margin-top:5px">Généré le '+new Date().toLocaleDateString('fr-FR')+'</p>';
@@ -921,7 +1128,6 @@ function exporterPDF(){
 function exporterWord(){
   if(etat.classes.length === 0){ alert('Aucune classe'); return; }
   var edt = etat.emploisDuTemps[etat.classeActive] || {};
-
   var html = '<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:w="urn:schemas-microsoft-com:office:word" xmlns="http://www.w3.org/TR/REC-html40">';
   html += '<head><meta charset="utf-8"><title>Emploi du temps - '+etat.classeActive+'</title>';
   html += '<style>';
@@ -932,6 +1138,7 @@ function exporterWord(){
   html += 'th{background:#1e3a8a;color:#fff;font-weight:bold}';
   html += 'th.sam{background:#7c3aed}';
   html += 'td.hour{background:#ecf0f1;font-weight:bold;font-size:8pt}';
+  html += '.recap td{font-size:8pt}';
   html += '</style></head><body>';
   html += getEnteteHTML();
   html += '<table><tr><th>HEURE</th>';
@@ -945,7 +1152,7 @@ function exporterWord(){
       if(c){
         var txtColor = (c.couleur === '#bdc3c7' || c.couleur === '#ffffff') ? '#000' : '#fff';
         html += '<td style="background:'+c.couleur+';color:'+txtColor+'">';
-        html += '<div style="font-weight:bold;font-size:9pt">'+getMatiereAffichage(c.matiere)+'</div>';
+        html += '<div style="font-weight:bold;font-size:9pt">'+c.matiere+'</div>';
         if(c.prof) html += '<div style="font-size:7pt">'+c.prof+'</div>';
         if(c.salle) html += '<div style="font-size:7pt;font-style:italic">'+c.salle+'</div>';
         html += '</td>';
@@ -954,18 +1161,19 @@ function exporterWord(){
     html += '</tr>';
   });
   html += '</table>';
-  html += '<br><table><tr><th>MATIÈRES</th><th>PROFESSEURS</th></tr>';
+  html += '<br><table class="recap"><tr><th>MATIÈRES</th><th>PROFESSEURS</th><th>SALLES</th></tr>';
+  var lignes = etat.professeurs.length > 0 ? etat.professeurs.length : 1;
+  for(var i=0; i<lignes; i++){
+    var p = etat.professeurs[i] || {nom:'', matiere:'', salle:''};
+    html += '<tr><td>'+(p.matiere||'')+'</td><td>'+(p.nom||'')+'</td><td>'+(p.salle||'')+'</td></tr>';
+  }
   etat.matieres.forEach(function(m){
-    var profNom = '';
-    for(var i=0; i<etat.professeurs.length; i++){
-      if(etat.professeurs[i].matiere === m.nom){ profNom = etat.professeurs[i].nom; break; }
-    }
-    html += '<tr><td>'+m.nom+(m.code?' --'+m.code:'')+'</td><td>'+(profNom||'')+'</td></tr>';
+    var trouve = etat.professeurs.some(function(p){ return p.matiere === m; });
+    if(!trouve){ html += '<tr><td>'+m+'</td><td></td><td></td></tr>'; }
   });
   html += '</table>';
   html += '<p style="text-align:center;font-size:7pt;color:#999;margin-top:10pt">Généré le '+new Date().toLocaleDateString('fr-FR')+'</p>';
   html += '</body></html>';
-
   var blob = new Blob(['\ufeff', html], {type: 'application/msword'});
   var url = URL.createObjectURL(blob);
   var a = document.createElement('a');
@@ -979,7 +1187,6 @@ function exporterWord(){
 function exporterExcel(){
   if(etat.classes.length === 0){ alert('Aucune classe'); return; }
   var edt = etat.emploisDuTemps[etat.classeActive] || {};
-
   var html = '<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:x="urn:schemas-microsoft-com:office:excel" xmlns="http://www.w3.org/TR/REC-html40">';
   html += '<head><meta charset="utf-8">';
   html += '<!--[if gte mso 9]><xml><x:ExcelWorkbook><x:ExcelWorksheets><x:ExcelWorksheet>';
@@ -997,8 +1204,6 @@ function exporterExcel(){
   html += '.titre{font-family:Arial;font-size:14pt;font-weight:bold;text-align:center;color:#1e3a8a}';
   html += '.classe{font-family:Arial;font-size:16pt;font-weight:bold;text-align:center;border:2px solid #000;padding:5px}';
   html += '</style></head><body>';
-
-  // En-tête
   html += '<table style="border:none;width:100%">';
   html += '<tr><td colspan="7" class="entete" style="border:none">RÉPUBLIQUE DE CÔTE D\'IVOIRE</td></tr>';
   html += '<tr><td colspan="7" class="sub" style="border:none">Union-Discipline-Travail</td></tr>';
@@ -1012,8 +1217,6 @@ function exporterExcel(){
   html += '<tr><td colspan="7" class="titre" style="background:#dbeafe">EMPLOI DU TEMPS</td></tr>';
   html += '</table>';
   html += '<br>';
-
-  // Grille EDT
   html += '<table>';
   html += '<tr><th>HEURE</th>';
   JOURS.forEach(function(j,i){ html += '<th'+(i===5?' class="sam"':'')+'>'+j+'</th>'; });
@@ -1023,30 +1226,27 @@ function exporterExcel(){
     JOURS.forEach(function(_,ji){
       var key=ji+'-'+hi;
       var c=edt[key];
-      if(c){
-        html += '<td>'+getMatiereAffichage(c.matiere)+(c.prof?'<br>'+c.prof:'')+(c.salle?'<br>'+c.salle:'')+'</td>';
-      }else{ html += '<td></td>'; }
+      if(c){ html += '<td>'+c.matiere+(c.prof?'<br>'+c.prof:'')+(c.salle?'<br>'+c.salle:'')+'</td>'; }
+      else{ html += '<td></td>'; }
     });
     html += '</tr>';
   });
   html += '</table>';
   html += '<br><br>';
-
-  // Tableau Matières / Profs
   html += '<table>';
-  html += '<tr><th>MATIÈRES</th><th>PROFESSEURS</th></tr>';
+  html += '<tr><th>MATIÈRES</th><th>PROFESSEURS</th><th>SALLES</th></tr>';
+  var lignes = etat.professeurs.length > 0 ? etat.professeurs.length : 1;
+  for(var i=0; i<lignes; i++){
+    var p = etat.professeurs[i] || {nom:'', matiere:'', salle:''};
+    html += '<tr><td>'+(p.matiere||'')+'</td><td>'+(p.nom||'')+'</td><td>'+(p.salle||'')+'</td></tr>';
+  }
   etat.matieres.forEach(function(m){
-    var profNom = '';
-    for(var i=0; i<etat.professeurs.length; i++){
-      if(etat.professeurs[i].matiere === m.nom){ profNom = etat.professeurs[i].nom; break; }
-    }
-    html += '<tr><td>'+m.nom+(m.code?' --'+m.code:'')+'</td><td>'+(profNom||'')+'</td></tr>';
+    var trouve = etat.professeurs.some(function(p){ return p.matiere === m; });
+    if(!trouve){ html += '<tr><td>'+m+'</td><td></td><td></td></tr>'; }
   });
   html += '</table>';
-
   html += '<p style="text-align:center;font-size:8pt;color:#999;margin-top:10px;font-family:Arial">Généré le '+new Date().toLocaleDateString('fr-FR')+'</p>';
   html += '</body></html>';
-
   var blob = new Blob(['\ufeff', html], {type: 'application/vnd.ms-excel'});
   var url = URL.createObjectURL(blob);
   var a = document.createElement('a');
@@ -1078,15 +1278,13 @@ function restaurerJSON(event){
       var data=JSON.parse(e.target.result);
       if(data.classes){ etat = data; }
       else{ alert('❌ Fichier non reconnu'); event.target.value=''; return; }
-
-      if(!etat.matieres) etat.matieres = [];
+      if(!etat.matieres) etat.matieres = ['GTC'];
       if(!etat.salles) etat.salles = [];
-      if(!etat.professeurs) etat.professeurs = [];
+      if(!etat.professeurs || etat.professeurs.length===0) etat.professeurs = [{nom:'ADOU', matiere:'', salle:''}];
       if(!etat.emploisDuTemps) etat.emploisDuTemps = {};
-      if(!etat.classeActive || etat.classes.indexOf(etat.classeActive) === -1){
-        etat.classeActive = etat.classes[0] || '';
-      }
-
+      if(!etat.emploisSemaines) etat.emploisSemaines = {};
+      if(!etat.semaineActive) etat.semaineActive = 'S1';
+      if(!etat.classeActive || etat.classes.indexOf(etat.classeActive) === -1){ etat.classeActive = etat.classes[0] || ''; }
       sauvegarderStorage();
       afficher();
       afficherSalles();
@@ -1094,9 +1292,7 @@ function restaurerJSON(event){
       afficherProfs();
       afficherClasses();
       alert('✅ Restauration réussie !');
-    }catch(err){
-      alert('❌ Fichier invalide : ' + err.message);
-    }
+    }catch(err){ alert('❌ Fichier invalide : ' + err.message); }
   };
   reader.readAsText(file);
   event.target.value='';
@@ -1110,6 +1306,3 @@ document.addEventListener('keydown',function(e){
 });
 
 afficher();
-</script>
-</body>
-</html>
