@@ -3,27 +3,29 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Emploi du temps</title>
+<title>Emploi du temps - Multi-classes</title>
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
 body{font-family:'Segoe UI',system-ui,sans-serif;background:linear-gradient(135deg,#667eea,#764ba2);min-height:100vh;padding:8px}
-.container{max-width:1100px;margin:0 auto;background:#fff;border-radius:12px;padding:12px;box-shadow:0 10px 30px rgba(0,0,0,.3)}
+.container{max-width:1200px;margin:0 auto;background:#fff;border-radius:12px;padding:12px;box-shadow:0 10px 30px rgba(0,0,0,.3)}
 h1{text-align:center;color:#2c3e50;font-size:1.1em;margin-bottom:4px}
 .subtitle{text-align:center;color:#7f8c8d;font-size:.72em;margin-bottom:10px}
-.tabs{display:flex;gap:4px;justify-content:center;margin-bottom:10px;background:#ecf0f1;padding:4px;border-radius:8px;max-width:400px;margin-left:auto;margin-right:auto}
-.tab{flex:1;padding:7px;border:none;background:transparent;border-radius:6px;cursor:pointer;font-weight:600;color:#555;font-size:.75em}
+.tabs{display:flex;gap:3px;justify-content:center;margin-bottom:10px;background:#ecf0f1;padding:4px;border-radius:8px;flex-wrap:wrap}
+.tab{flex:1;min-width:80px;padding:7px;border:none;background:transparent;border-radius:6px;cursor:pointer;font-weight:600;color:#555;font-size:.72em}
 .tab.active{background:#fff;color:#2c3e50;box-shadow:0 1px 3px rgba(0,0,0,.1)}
-
-.btn-add-main{display:block;width:100%;max-width:320px;margin:0 auto 12px;padding:14px 20px;background:linear-gradient(135deg,#27ae60,#2ecc71);color:#fff;border:none;border-radius:10px;font-size:1em;font-weight:700;cursor:pointer;box-shadow:0 4px 12px rgba(39,174,96,.4);transition:.2s;letter-spacing:.3px}
-.btn-add-main:hover{transform:translateY(-2px);box-shadow:0 6px 18px rgba(39,174,96,.5)}
-.btn-add-main:active{transform:scale(.97)}
-
+.tab-add-main{display:block;width:100%;max-width:320px;margin:0 auto 10px;padding:12px 18px;background:linear-gradient(135deg,#27ae60,#2ecc71);color:#fff;border:none;border-radius:10px;font-size:.95em;font-weight:700;cursor:pointer;box-shadow:0 4px 12px rgba(39,174,96,.4);transition:.2s}
+.tab-add-main:hover{transform:translateY(-2px);box-shadow:0 6px 18px rgba(39,174,96,.5)}
+.tab-add-main:active{transform:scale(.97)}
+.classe-selector{display:flex;align-items:center;justify-content:center;gap:8px;margin-bottom:10px;padding:8px;background:#f8f9fa;border-radius:8px;border-left:4px solid #3498db}
+.classe-selector label{font-weight:600;color:#2c3e50;font-size:.82em}
+.classe-selector select{padding:6px 10px;border:2px solid #dfe6e9;border-radius:6px;font-size:.85em;font-weight:600;background:#fff;min-width:140px}
+.classe-selector select:focus{outline:none;border-color:#3498db}
 .toolbar{display:flex;flex-wrap:wrap;gap:6px;justify-content:center;margin-bottom:10px}
 .toolbar button{padding:6px 10px;border:none;border-radius:6px;background:#3498db;color:#fff;font-weight:600;cursor:pointer;font-size:.72em}
 .toolbar button.danger{background:#e74c3c}
 .toolbar button.success{background:#27ae60}
 .toolbar button.pdf{background:#e67e22}
-
+.toolbar button.word{background:#2b579a}
 .planning-wrapper{overflow-x:auto;-webkit-overflow-scrolling:touch;border-radius:8px}
 .planning{display:grid;grid-template-columns:70px repeat(6,minmax(80px,1fr));gap:2px;background:#dfe6e9;padding:2px;border-radius:8px;min-width:620px}
 .header{background:linear-gradient(135deg,#2c3e50,#34495e);color:#fff;padding:7px 3px;text-align:center;font-weight:600;font-size:.72em;border-radius:4px}
@@ -36,86 +38,134 @@ h1{text-align:center;color:#2c3e50;font-size:1.1em;margin-bottom:4px}
 .slot .matiere{font-size:.95em;line-height:1.1;margin-bottom:1px}
 .slot .prof{font-size:.75em;opacity:.95;line-height:1.1}
 .slot .salle{font-size:.72em;opacity:.9;font-style:italic}
-
 .panel{display:none}
 .panel.active{display:block}
-.salle-card{background:#f8f9fa;border-radius:8px;padding:10px;margin-bottom:8px;border-left:3px solid #3498db}
-.salle-card h3{color:#2c3e50;margin-bottom:3px;font-size:.9em;display:flex;justify-content:space-between;align-items:center;gap:6px}
-.salle-card .badge{font-size:.65em;padding:2px 6px;border-radius:10px;background:#3498db;color:#fff;font-weight:600;white-space:nowrap}
-.salle-card .badge.free{background:#27ae60}
-.salle-card .badge.busy{background:#e74c3c}
-.salle-occupations{margin-top:6px;font-size:.75em;color:#555}
-.occupation-item{padding:4px 6px;background:#fff;border-radius:4px;margin-bottom:3px;display:flex;justify-content:space-between;gap:6px;border-left:2px solid #3498db}
+.card{background:#f8f9fa;border-radius:8px;padding:10px;margin-bottom:8px;border-left:3px solid #3498db}
+.card h3{color:#2c3e50;margin-bottom:3px;font-size:.9em;display:flex;justify-content:space-between;align-items:center;gap:6px;flex-wrap:wrap}
+.card .badge{font-size:.65em;padding:2px 6px;border-radius:10px;background:#3498db;color:#fff;font-weight:600;white-space:nowrap}
+.card .badge.free{background:#27ae60}
+.card .badge.busy{background:#e74c3c}
+.card-occupations{margin-top:6px;font-size:.75em;color:#555}
+.occupation-item{padding:4px 6px;background:#fff;border-radius:4px;margin-bottom:3px;display:flex;justify-content:space-between;gap:6px;border-left:2px solid #3498db;flex-wrap:wrap}
 .occupation-item .time{font-weight:600;color:#2c3e50;white-space:nowrap}
+.occupation-item .classe{background:#e8f4fc;color:#2c3e50;padding:1px 5px;border-radius:3px;font-size:.85em;font-weight:600}
 .empty-msg{color:#95a5a6;font-style:italic;font-size:.8em;padding:6px 0}
-.salles-manager{background:#ecf0f1;border-radius:8px;padding:10px;margin-bottom:12px}
-.salles-manager h3{color:#2c3e50;margin-bottom:8px;font-size:.85em}
-.salles-list{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:8px}
-.salle-tag{background:#fff;padding:4px 8px;border-radius:16px;font-size:.75em;display:flex;align-items:center;gap:5px;box-shadow:0 1px 2px rgba(0,0,0,.1)}
-.salle-tag button{background:none;border:none;color:#e74c3c;cursor:pointer;font-size:1em;font-weight:bold;padding:0;line-height:1}
-.add-salle-form{display:flex;gap:6px}
-.add-salle-form input{flex:1;padding:6px 10px;border:2px solid #dfe6e9;border-radius:6px;font-size:.8em;font-family:inherit;min-width:0}
-.add-salle-form input:focus{outline:none;border-color:#3498db}
-.add-salle-form button{padding:6px 10px;border:none;border-radius:6px;background:#27ae60;color:#fff;font-weight:600;cursor:pointer;font-size:.78em;white-space:nowrap}
-
+.manager{background:#ecf0f1;border-radius:8px;padding:10px;margin-bottom:12px}
+.manager h3{color:#2c3e50;margin-bottom:8px;font-size:.85em}
+.tags-list{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:8px}
+.tag{background:#fff;padding:4px 8px;border-radius:16px;font-size:.75em;display:flex;align-items:center;gap:5px;box-shadow:0 1px 2px rgba(0,0,0,.1)}
+.tag button{background:none;border:none;color:#e74c3c;cursor:pointer;font-size:1em;font-weight:bold;padding:0;line-height:1}
+.tag button.dup{color:#27ae60}
+.tag button.dup:hover{color:#229954}
+.add-form{display:flex;gap:6px;flex-wrap:wrap}
+.add-form input{flex:1;padding:6px 10px;border:2px solid #dfe6e9;border-radius:6px;font-size:.8em;font-family:inherit;min-width:120px}
+.add-form input:focus{outline:none;border-color:#3498db}
+.add-form button{padding:6px 10px;border:none;border-radius:6px;background:#27ae60;color:#fff;font-weight:600;cursor:pointer;font-size:.78em;white-space:nowrap}
 .modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:1000;justify-content:center;align-items:center;padding:15px}
 .modal-overlay.active{display:flex}
-.modal{background:#fff;border-radius:10px;padding:16px;width:100%;max-width:380px;max-height:90vh;overflow-y:auto}
+.modal{background:#fff;border-radius:10px;padding:16px;width:100%;max-width:400px;max-height:90vh;overflow-y:auto}
 .modal h2{margin-bottom:10px;color:#2c3e50;font-size:1em}
 .modal label{display:block;margin-bottom:4px;color:#555;font-size:.78em;font-weight:600}
 .modal input,.modal select{width:100%;padding:8px;border:2px solid #dfe6e9;border-radius:6px;margin-bottom:9px;font-size:.88em;font-family:inherit}
 .modal input:focus,.modal select:focus{outline:none;border-color:#3498db}
 .dispo-info{background:#e8f4fc;border-left:3px solid #3498db;padding:8px 10px;border-radius:5px;font-size:.72em;color:#2c3e50;margin-bottom:9px;line-height:1.3}
+.dispo-info.warning{background:#fdecea;border-left-color:#e74c3c;color:#c0392b}
 .dispo-info .titre{font-weight:700;margin-bottom:2px}
-.modal-actions{display:flex;gap:6px;margin-top:5px}
-.modal-actions button{flex:1;padding:9px;border:none;border-radius:6px;font-weight:600;cursor:pointer;font-size:.8em}
+.modal-actions{display:flex;gap:6px;margin-top:5px;flex-wrap:wrap}
+.modal-actions button{flex:1;min-width:80px;padding:9px;border:none;border-radius:6px;font-weight:600;cursor:pointer;font-size:.8em}
 .btn-save{background:#27ae60;color:#fff}
+.btn-save:disabled{background:#95a5a6;cursor:not-allowed}
 .btn-cancel{background:#ecf0f1;color:#555}
 .btn-delete{background:#e74c3c;color:#fff}
 .legende{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin-top:10px;padding-top:10px;border-top:1px solid #ecf0f1}
 .legende-item{display:flex;align-items:center;gap:5px;font-size:.75em;color:#555}
 .legende-color{width:12px;height:12px;border-radius:3px}
+.info-box{background:#fffbea;border-left:4px solid #f39c12;padding:10px;border-radius:6px;margin-bottom:12px;font-size:.78em;color:#7d6608;line-height:1.4}
 </style>
 </head>
 <body>
 <div class="container">
-<h1>📚 Emploi du temps scolaire</h1>
-<p class="subtitle">Clique sur une cellule pour modifier, ou sur le bouton vert pour ajouter</p>
+<h1>📚 Emploi du temps - Multi-classes</h1>
+<p class="subtitle">Gérez plusieurs classes avec leurs propres emplois du temps</p>
 
 <div class="tabs">
 <button class="tab active" onclick="changerOnglet('edt',this)">📅 Emploi du temps</button>
 <button class="tab" onclick="changerOnglet('salles',this)">🏫 Salles</button>
+<button class="tab" onclick="changerOnglet('matieres',this)">📖 Matières</button>
+<button class="tab" onclick="changerOnglet('classes',this)">📋 Classes</button>
 </div>
 
+<!-- ONGLET EMPLOI DU TEMPS -->
 <div id="tab-edt" class="panel active">
+<div class="classe-selector">
+<label>📋 Classe active :</label>
+<select id="selectClasse" onchange="changerClasseActive(this.value)"></select>
+</div>
 
-<button class="btn-add-main" onclick="ouvrirAjoutRapide()">➕ Ajouter un cours</button>
+<button class="tab-add-main" onclick="ouvrirAjoutRapide()">➕ Ajouter un cours</button>
 
 <div class="toolbar">
-<button class="pdf" onclick="exporterPDF()">📄 Exporter en PDF</button>
+<button class="pdf" onclick="exporterPDF()">📄 PDF</button>
+<button class="word" onclick="exporterWord()">📝 Word</button>
 <button onclick="exporterJSON()">💾 Sauvegarder</button>
 <button class="success" onclick="document.getElementById('restoreFile').click()">📂 Restaurer</button>
-<button class="danger" onclick="toutEffacer()">🗑️ Tout effacer</button>
+<button class="danger" onclick="effacerClasseActive()">🗑️ Vider la classe</button>
 <input type="file" id="restoreFile" accept=".json" style="display:none" onchange="restaurerJSON(event)">
 </div>
+
 <div class="planning-wrapper"><div class="planning" id="planning"></div></div>
 <div class="legende" id="legende"></div>
 </div>
 
+<!-- ONGLET SALLES -->
 <div id="tab-salles" class="panel">
-<div class="salles-manager">
+<div class="manager">
 <h3>🛠️ Gérer les salles</h3>
-<div class="salles-list" id="sallesList"></div>
-<div class="add-salle-form">
+<div class="tags-list" id="sallesList"></div>
+<div class="add-form">
 <input type="text" id="newSalleInput" placeholder="Ex : B204" onkeypress="if(event.key==='Enter'){ajouterSalle();event.preventDefault();}">
 <button onclick="ajouterSalle()">+ Ajouter</button>
 </div>
 </div>
-<h3 style="color:#2c3e50;margin-bottom:8px;font-size:.9em;">📊 Occupation des salles</h3>
+<h3 style="color:#2c3e50;margin-bottom:8px;font-size:.9em;">📊 Occupation des salles (toutes classes)</h3>
 <div id="sallesOccupation"></div>
+</div>
+
+<!-- ONGLET MATIERES -->
+<div id="tab-matieres" class="panel">
+<div class="manager">
+<h3>🛠️ Gérer les matières</h3>
+<div class="tags-list" id="matieresList"></div>
+<div class="add-form">
+<input type="text" id="newMatiereInput" placeholder="Ex : Mathématiques" onkeypress="if(event.key==='Enter'){ajouterMatiere();event.preventDefault();}">
+<button onclick="ajouterMatiere()">+ Ajouter</button>
+</div>
+</div>
+<div class="info-box">
+💡 Les matières que tu ajoutes ici apparaissent dans le menu déroulant du formulaire d'ajout de cours. C'est plus rapide que de taper à chaque fois.
 </div>
 </div>
 
+<!-- ONGLET CLASSES -->
+<div id="tab-classes" class="panel">
+<div class="manager">
+<h3>🛠️ Gérer les classes</h3>
+<div class="tags-list" id="classesList"></div>
+<div class="add-form">
+<input type="text" id="newClasseInput" placeholder="Ex : 6ème A" onkeypress="if(event.key==='Enter'){ajouterClasse();event.preventDefault();}">
+<button onclick="ajouterClasse()">+ Ajouter</button>
+</div>
+</div>
+<div class="info-box">
+💡 <strong>Dupliquer</strong> (icône 📋) crée une copie complète de l'emploi du temps d'une classe. Pratique pour partir d'une base et modifier quelques cours seulement.
+</div>
+<h3 style="color:#2c3e50;margin-bottom:8px;font-size:.9em;">📊 Résumé des classes</h3>
+<div id="classesResume"></div>
+</div>
+
+</div>
+
+<!-- MODAL -->
 <div class="modal-overlay" id="modal">
 <div class="modal">
 <h2 id="modalTitle">Ajouter un cours</h2>
@@ -147,10 +197,7 @@ h1{text-align:center;color:#2c3e50;font-size:1.1em;margin-bottom:4px}
 </div>
 
 <label>Matière</label>
-<input type="text" id="inputMatiere" placeholder="Ex : Mathématiques" list="matieresList">
-<datalist id="matieresList">
-<option value="Mathématiques"><option value="Français"><option value="Histoire-Géo"><option value="Anglais"><option value="Espagnol"><option value="SVT"><option value="Physique-Chimie"><option value="EPS"><option value="Arts plastiques"><option value="Musique"><option value="Technologie"><option value="Philosophie">
-</datalist>
+<select id="inputMatiere"><option value="">— Choisir —</option></select>
 
 <label>Professeur (optionnel)</label>
 <input type="text" id="inputProf" placeholder="Ex : M. Dupont">
@@ -174,7 +221,7 @@ h1{text-align:center;color:#2c3e50;font-size:1.1em;margin-bottom:4px}
 <div class="modal-actions">
 <button class="btn-delete" id="btnDelete" onclick="supprimerCours()" style="display:none">🗑️ Supprimer</button>
 <button class="btn-cancel" onclick="fermerModal()">Annuler</button>
-<button class="btn-save" onclick="sauvegarderCours()">Enregistrer</button>
+<button class="btn-save" id="btnSave" onclick="sauvegarderCours()">Enregistrer</button>
 </div>
 </div>
 </div>
@@ -182,384 +229,683 @@ h1{text-align:center;color:#2c3e50;font-size:1.1em;margin-bottom:4px}
 <script>
 var JOURS=['Lundi','Mardi','Mercredi','Jeudi','Vendredi','Samedi'];
 var HEURES=['7h-8h','8h-9h','9h-10h','10h-11h','11h-12h','12h-13h','13h-14h','14h-15h','15h-16h','16h-17h','17h-18h'];
-var emploiDuTemps=chargerDepuisStorage('emploiDuTemps',{});
-var listeSalles=chargerDepuisStorage('listeSalles',['B101','B102','Amphi A']);
+
+var etat = chargerDepuisStorage('emploiDuTempsMulti', {
+  classes: ['6ème A'],
+  matieres: [],
+  salles: [],
+  emploisDuTemps: { '6ème A': {} },
+  classeActive: '6ème A'
+});
+
 var slotEnEdition=null;
 var modeAjoutRapide=false;
 
-function changerOnglet(onglet,btn){
-document.querySelectorAll('.tab').forEach(function(t){t.classList.remove('active');});
-document.querySelectorAll('.panel').forEach(function(p){p.classList.remove('active');});
-btn.classList.add('active');
-document.getElementById('tab-'+onglet).classList.add('active');
-if(onglet==='salles')afficherSalles();
+/* ===== STORAGE ===== */
+function sauvegarderStorage(){
+  try{ localStorage.setItem('emploiDuTempsMulti', JSON.stringify(etat)); }catch(e){}
+}
+function chargerDepuisStorage(cle, defaut){
+  try{
+    var val = JSON.parse(localStorage.getItem(cle));
+    return val !== null && val !== undefined ? val : defaut;
+  }catch(e){ return defaut; }
 }
 
-function afficher(){
-var planning=document.getElementById('planning');
-planning.innerHTML='';
-planning.innerHTML+='<div class="header">Heure</div>';
-JOURS.forEach(function(j,i){
-var cls=i===5?'header samedi':'header';
-planning.innerHTML+='<div class="'+cls+'">'+j+'</div>';
-});
-HEURES.forEach(function(heure,hi){
-planning.innerHTML+='<div class="hour">'+heure+'</div>';
-JOURS.forEach(function(_,ji){
-var key=ji+'-'+hi;
-var cours=emploiDuTemps[key];
-var slot=document.createElement('div');
-if(cours){
-slot.className='slot filled';
-slot.style.background=cours.couleur;
-slot.innerHTML='<div class="matiere">'+cours.matiere+'</div>'+
-(cours.prof?'<div class="prof">'+cours.prof+'</div>':'')+
-(cours.salle?'<div class="salle">📍 '+cours.salle+'</div>':'');
-}else{
-slot.className='slot';
+/* ===== ONGLETS ===== */
+function changerOnglet(onglet,btn){
+  document.querySelectorAll('.tab').forEach(function(t){t.classList.remove('active');});
+  document.querySelectorAll('.panel').forEach(function(p){p.classList.remove('active');});
+  btn.classList.add('active');
+  document.getElementById('tab-'+onglet).classList.add('active');
+  if(onglet==='salles') afficherSalles();
+  if(onglet==='matieres') afficherMatieres();
+  if(onglet==='classes') afficherClasses();
 }
-slot.onclick=function(e){
-e.preventDefault();
-e.stopPropagation();
-ouvrirModal(ji,hi,cours||null);
-};
-planning.appendChild(slot);
-});
-});
-afficherLegende();
+
+/* ===== CLASSE ACTIVE ===== */
+function changerClasseActive(classe){
+  etat.classeActive = classe;
+  sauvegarderStorage();
+  afficher();
+}
+
+/* ===== AFFICHAGE PRINCIPAL ===== */
+function afficher(){
+  afficherSelecteurClasse();
+  afficherGrille();
+  afficherLegende();
+  mettreAJourSelects();
+}
+
+function afficherSelecteurClasse(){
+  var sel = document.getElementById('selectClasse');
+  if(etat.classes.length === 0){
+    sel.innerHTML = '<option>Aucune classe</option>';
+    return;
+  }
+  if(etat.classes.indexOf(etat.classeActive) === -1){
+    etat.classeActive = etat.classes[0];
+  }
+  sel.innerHTML = etat.classes.map(function(c){
+    return '<option value="'+c+'"'+(c===etat.classeActive?' selected':'')+'>'+c+'</option>';
+  }).join('');
+}
+
+function afficherGrille(){
+  var planning=document.getElementById('planning');
+  planning.innerHTML='';
+
+  if(etat.classes.length === 0){
+    planning.innerHTML = '<p style="grid-column:1/-1;text-align:center;padding:20px;color:#999">Aucune classe. Va dans l\'onglet 📋 Classes pour en créer une.</p>';
+    return;
+  }
+
+  var edt = etat.emploisDuTemps[etat.classeActive] || {};
+
+  planning.innerHTML += '<div class="header">Heure</div>';
+  JOURS.forEach(function(j,i){
+    var cls=i===5?'header samedi':'header';
+    planning.innerHTML+='<div class="'+cls+'">'+j+'</div>';
+  });
+
+  HEURES.forEach(function(heure,hi){
+    planning.innerHTML+='<div class="hour">'+heure+'</div>';
+    JOURS.forEach(function(_,ji){
+      var key=ji+'-'+hi;
+      var cours=edt[key];
+      var slot=document.createElement('div');
+      if(cours){
+        slot.className='slot filled';
+        slot.style.background=cours.couleur;
+        slot.innerHTML='<div class="matiere">'+cours.matiere+'</div>'+
+        (cours.prof?'<div class="prof">'+cours.prof+'</div>':'')+
+        (cours.salle?'<div class="salle">📍 '+cours.salle+'</div>':'');
+      }else{
+        slot.className='slot';
+      }
+      slot.onclick=function(e){
+        e.preventDefault();
+        e.stopPropagation();
+        ouvrirModal(ji,hi,cours||null);
+      };
+      planning.appendChild(slot);
+    });
+  });
 }
 
 function afficherLegende(){
-var legende=document.getElementById('legende');
-var matieres={};
-Object.values(emploiDuTemps).forEach(function(c){
-if(!matieres[c.matiere])matieres[c.matiere]=c.couleur;
-});
-if(Object.keys(matieres).length===0){
-legende.innerHTML='<span style="color:#999;font-size:.8em">Aucun cours enregistré</span>';
-return;
-}
-legende.innerHTML=Object.entries(matieres).map(function(entry){
-return '<div class="legende-item"><div class="legende-color" style="background:'+entry[1]+'"></div><span>'+entry[0]+'</span></div>';
-}).join('');
+  var legende=document.getElementById('legende');
+  var edt = etat.emploisDuTemps[etat.classeActive] || {};
+  var matieres={};
+  Object.values(edt).forEach(function(c){
+    if(!matieres[c.matiere])matieres[c.matiere]=c.couleur;
+  });
+  if(Object.keys(matieres).length===0){
+    legende.innerHTML='<span style="color:#999;font-size:.8em">Aucun cours pour '+etat.classeActive+'</span>';
+    return;
+  }
+  legende.innerHTML=Object.entries(matieres).map(function(entry){
+    return '<div class="legende-item"><div class="legende-color" style="background:'+entry[1]+'"></div><span>'+entry[0]+'</span></div>';
+  }).join('');
 }
 
+/* ===== SELECTS ===== */
+function mettreAJourSelects(){
+  var selMat = document.getElementById('inputMatiere');
+  var valMat = selMat.value;
+  selMat.innerHTML = '<option value="">— Choisir —</option>'+etat.matieres.map(function(m){
+    return '<option value="'+m+'">'+m+'</option>';
+  }).join('');
+  if(etat.matieres.indexOf(valMat) !== -1) selMat.value = valMat;
+
+  var selSal = document.getElementById('inputSalle');
+  var valSal = selSal.value;
+  selSal.innerHTML = '<option value="">— Aucune —</option>'+etat.salles.map(function(s){
+    return '<option value="'+s+'">'+s+'</option>';
+  }).join('');
+  if(etat.salles.indexOf(valSal) !== -1) selSal.value = valSal;
+}
+
+/* ===== GESTION DES SALLES ===== */
 function afficherSalles(){
-var list=document.getElementById('sallesList');
-if(listeSalles.length===0){
-list.innerHTML='<span style="color:#95a5a6;font-size:.8em;font-style:italic">Aucune salle</span>';
-}else{
-list.innerHTML=listeSalles.map(function(s){
-return '<div class="salle-tag"><span>🏫 '+s+'</span><button onclick="supprimerSalle(\''+s+'\')" title="Supprimer">✕</button></div>';
-}).join('');
-}
-var occup=document.getElementById('sallesOccupation');
-if(listeSalles.length===0){
-occup.innerHTML='<p class="empty-msg">Ajoute des salles pour voir leur occupation.</p>';
-return;
-}
-var parSalle={};
-listeSalles.forEach(function(s){parSalle[s]=[];});
-Object.entries(emploiDuTemps).forEach(function(entry){
-var key=entry[0],cours=entry[1];
-if(!cours.salle)return;
-var parts=key.split('-');
-var ji=Number(parts[0]),hi=Number(parts[1]);
-if(!parSalle[cours.salle])parSalle[cours.salle]=[];
-parSalle[cours.salle].push({jour:JOURS[ji],heure:HEURES[hi],matiere:cours.matiere,jourIdx:ji,heureIdx:hi});
-});
-Object.values(parSalle).forEach(function(arr){
-arr.sort(function(a,b){return a.jourIdx-b.jourIdx||a.heureIdx-b.heureIdx;});
-});
-occup.innerHTML=listeSalles.map(function(s){
-var occupations=parSalle[s]||[];
-var total=occupations.length;
-var badgeCls=total===0?'free':'busy';
-var badgeTxt=total===0?'Libre':total+' cours';
-var html='<div class="salle-card"><h3>🏫 '+s+' <span class="badge '+badgeCls+'">'+badgeTxt+'</span></h3><div class="salle-occupations">';
-if(total===0){
-html+='<span class="empty-msg">Aucun cours planifié</span>';
-}else{
-html+=occupations.map(function(o){
-return '<div class="occupation-item"><span>'+o.matiere+'</span><span class="time">'+o.jour+' · '+o.heure+'</span></div>';
-}).join('');
-}
-html+='</div></div>';
-return html;
-}).join('');
+  var list=document.getElementById('sallesList');
+  if(etat.salles.length===0){
+    list.innerHTML='<span style="color:#95a5a6;font-size:.8em;font-style:italic">Aucune salle</span>';
+  }else{
+    list.innerHTML=etat.salles.map(function(s){
+      return '<div class="tag"><span>🏫 '+s+'</span><button onclick="supprimerSalle(\''+s.replace(/'/g,"\\'")+'\')" title="Supprimer">✕</button></div>';
+    }).join('');
+  }
+
+  var occup=document.getElementById('sallesOccupation');
+  if(etat.salles.length===0){
+    occup.innerHTML='<p class="empty-msg">Ajoute des salles pour voir leur occupation.</p>';
+    return;
+  }
+
+  var parSalle={};
+  etat.salles.forEach(function(s){parSalle[s]=[];});
+
+  Object.keys(etat.emploisDuTemps).forEach(function(classe){
+    var edt = etat.emploisDuTemps[classe] || {};
+    Object.keys(edt).forEach(function(key){
+      var c = edt[key];
+      if(!c.salle) return;
+      var parts = key.split('-');
+      var ji = Number(parts[0]), hi = Number(parts[1]);
+      if(!parSalle[c.salle]) parSalle[c.salle] = [];
+      parSalle[c.salle].push({
+        classe: classe,
+        jour: JOURS[ji],
+        heure: HEURES[hi],
+        matiere: c.matiere,
+        jourIdx: ji,
+        heureIdx: hi
+      });
+    });
+  });
+
+  Object.values(parSalle).forEach(function(arr){
+    arr.sort(function(a,b){return a.jourIdx-b.jourIdx||a.heureIdx-b.heureIdx;});
+  });
+
+  occup.innerHTML = etat.salles.map(function(s){
+    var occ = parSalle[s] || [];
+    var total = occ.length;
+    var badgeCls = total===0?'free':'busy';
+    var badgeTxt = total===0?'Libre':total+' cours';
+    var html = '<div class="card"><h3>🏫 '+s+' <span class="badge '+badgeCls+'">'+badgeTxt+'</span></h3><div class="card-occupations">';
+    if(total===0){
+      html += '<span class="empty-msg">Aucune occupation</span>';
+    }else{
+      html += occ.map(function(o){
+        return '<div class="occupation-item"><span class="classe">'+o.classe+'</span><span>'+o.matiere+'</span><span class="time">'+o.jour+' · '+o.heure+'</span></div>';
+      }).join('');
+    }
+    html += '</div></div>';
+    return html;
+  }).join('');
 }
 
 function ajouterSalle(){
-var input=document.getElementById('newSalleInput');
-var nom=input.value.trim();
-if(!nom)return;
-if(listeSalles.indexOf(nom)!==-1){alert('Cette salle existe déjà');return;}
-listeSalles.push(nom);
-listeSalles.sort();
-sauvegarderStorage('listeSalles',listeSalles);
-input.value='';
-afficherSalles();
-mettreAJourSelectSalles();
+  var input=document.getElementById('newSalleInput');
+  var nom=input.value.trim();
+  if(!nom)return;
+  if(etat.salles.indexOf(nom)!==-1){alert('Cette salle existe déjà');return;}
+  etat.salles.push(nom);
+  etat.salles.sort();
+  sauvegarderStorage();
+  input.value='';
+  afficherSalles();
+  mettreAJourSelects();
 }
 
 function supprimerSalle(nom){
-var utilisee=Object.values(emploiDuTemps).some(function(c){return c.salle===nom;});
-if(utilisee){
-if(!confirm('⚠️ La salle "'+nom+'" est utilisée. La supprimer quand même ?'))return;
-Object.keys(emploiDuTemps).forEach(function(k){
-if(emploiDuTemps[k].salle===nom)emploiDuTemps[k].salle='';
-});
-sauvegarderStorage('emploiDuTemps',emploiDuTemps);
-afficher();
-}else{
-if(!confirm('Supprimer la salle "'+nom+'" ?'))return;
-}
-listeSalles=listeSalles.filter(function(s){return s!==nom;});
-sauvegarderStorage('listeSalles',listeSalles);
-afficherSalles();
-mettreAJourSelectSalles();
+  if(!confirm('Supprimer la salle "'+nom+'" ? Les cours concernés perdront leur salle.'))return;
+  Object.keys(etat.emploisDuTemps).forEach(function(classe){
+    var edt = etat.emploisDuTemps[classe];
+    Object.keys(edt).forEach(function(k){
+      if(edt[k].salle === nom) edt[k].salle = '';
+    });
+  });
+  etat.salles = etat.salles.filter(function(s){return s!==nom;});
+  sauvegarderStorage();
+  afficherSalles();
+  mettreAJourSelects();
+  afficher();
 }
 
-function mettreAJourSelectSalles(){
-var select=document.getElementById('inputSalle');
-var valActuelle=select.value;
-select.innerHTML='<option value="">— Aucune —</option>'+listeSalles.map(function(s){return '<option value="'+s+'">'+s+'</option>';}).join('');
-select.value=valActuelle;
+/* ===== GESTION DES MATIERES ===== */
+function afficherMatieres(){
+  var list=document.getElementById('matieresList');
+  if(etat.matieres.length===0){
+    list.innerHTML='<span style="color:#95a5a6;font-size:.8em;font-style:italic">Aucune matière</span>';
+  }else{
+    list.innerHTML=etat.matieres.map(function(m){
+      return '<div class="tag"><span>📖 '+m+'</span><button onclick="supprimerMatiere(\''+m.replace(/'/g,"\\'")+'\')" title="Supprimer">✕</button></div>';
+    }).join('');
+  }
 }
 
+function ajouterMatiere(){
+  var input=document.getElementById('newMatiereInput');
+  var nom=input.value.trim();
+  if(!nom)return;
+  if(etat.matieres.indexOf(nom)!==-1){alert('Cette matière existe déjà');return;}
+  etat.matieres.push(nom);
+  etat.matieres.sort();
+  sauvegarderStorage();
+  input.value='';
+  afficherMatieres();
+  mettreAJourSelects();
+}
+
+function supprimerMatiere(nom){
+  if(!confirm('Supprimer la matière "'+nom+'" ? Les cours concernés garderont leur matière mais elle ne sera plus dans la liste.'))return;
+  etat.matieres = etat.matieres.filter(function(m){return m!==nom;});
+  sauvegarderStorage();
+  afficherMatieres();
+  mettreAJourSelects();
+}
+
+/* ===== GESTION DES CLASSES ===== */
+function afficherClasses(){
+  var list=document.getElementById('classesList');
+  if(etat.classes.length===0){
+    list.innerHTML='<span style="color:#95a5a6;font-size:.8em;font-style:italic">Aucune classe</span>';
+  }else{
+    list.innerHTML=etat.classes.map(function(c){
+      var cEsc = c.replace(/'/g,"\\'");
+      return '<div class="tag"><span>📋 '+c+'</span>'+
+        '<button class="dup" onclick="dupliquerClasse(\''+cEsc+'\')" title="Dupliquer">📋</button>'+
+        '<button onclick="supprimerClasse(\''+cEsc+'\')" title="Supprimer">✕</button></div>';
+    }).join('');
+  }
+
+  var resume = document.getElementById('classesResume');
+  if(etat.classes.length===0){
+    resume.innerHTML = '<p class="empty-msg">Ajoute des classes pour voir le résumé.</p>';
+    return;
+  }
+
+  resume.innerHTML = etat.classes.map(function(c){
+    var edt = etat.emploisDuTemps[c] || {};
+    var nb = Object.keys(edt).length;
+    return '<div class="card"><h3>📋 '+c+' <span class="badge '+(nb===0?'free':'busy')+'">'+nb+' cours</span></h3></div>';
+  }).join('');
+}
+
+function ajouterClasse(){
+  var input=document.getElementById('newClasseInput');
+  var nom=input.value.trim();
+  if(!nom)return;
+  if(etat.classes.indexOf(nom)!==-1){alert('Cette classe existe déjà');return;}
+  etat.classes.push(nom);
+  etat.classes.sort();
+  if(!etat.emploisDuTemps[nom]) etat.emploisDuTemps[nom] = {};
+  sauvegarderStorage();
+  input.value='';
+  afficherClasses();
+  afficher();
+}
+
+function supprimerClasse(nom){
+  var edt = etat.emploisDuTemps[nom] || {};
+  var nb = Object.keys(edt).length;
+  var msg = 'Supprimer la classe "'+nom+'"';
+  if(nb > 0) msg += ' et ses '+nb+' cours';
+  msg += ' ? Cette action est irréversible.';
+  if(!confirm(msg))return;
+
+  etat.classes = etat.classes.filter(function(c){return c!==nom;});
+  delete etat.emploisDuTemps[nom];
+
+  if(etat.classeActive === nom){
+    etat.classeActive = etat.classes[0] || '';
+  }
+
+  sauvegarderStorage();
+  afficherClasses();
+  afficher();
+}
+
+function dupliquerClasse(nom){
+  var nouvelle = prompt('Nom de la nouvelle classe :', nom + ' (copie)');
+  if(!nouvelle) return;
+  nouvelle = nouvelle.trim();
+  if(!nouvelle) return;
+  if(etat.classes.indexOf(nouvelle) !== -1){alert('Cette classe existe déjà');return;}
+
+  etat.classes.push(nouvelle);
+  etat.classes.sort();
+  etat.emploisDuTemps[nouvelle] = JSON.parse(JSON.stringify(etat.emploisDuTemps[nom] || {}));
+
+  sauvegarderStorage();
+  afficherClasses();
+  afficher();
+  alert('✅ Classe "'+nouvelle+'" créée avec ' + Object.keys(etat.emploisDuTemps[nouvelle]).length + ' cours copiés.');
+}
+
+/* ===== VERIFICATION DISPONIBILITE SALLE ===== */
 function verifierDisponibilite(){
-if(!slotEnEdition)return;
-var salle=document.getElementById('inputSalle').value;
-var info=document.getElementById('dispoInfo');
-var key=slotEnEdition.jourIndex+'-'+slotEnEdition.heureIndex;
-if(!salle){info.style.display='none';return;}
-var occupations=Object.entries(emploiDuTemps).filter(function(e){return e[1].salle===salle&&e[0]!==key;}).map(function(e){
-var parts=e[0].split('-');
-var ji=Number(parts[0]),hi=Number(parts[1]);
-return{jour:JOURS[ji],heure:HEURES[hi],matiere:e[1].matiere,jourIdx:ji,heureIdx:hi};
-}).sort(function(a,b){return a.jourIdx-b.jourIdx||a.heureIdx-b.heureIdx;});
-info.style.display='block';
-if(occupations.length===0){
-info.innerHTML='<div class="titre">✅ '+salle+' est libre cette semaine</div>Aucun autre cours n\'utilise cette salle.';
-}else{
-info.innerHTML='<div class="titre">📋 '+salle+' — '+occupations.length+' autre(s) occupation(s)</div>'+occupations.slice(0,4).map(function(o){return '• '+o.jour+' '+o.heure+' ('+o.matiere+')';}).join('<br>')+(occupations.length>4?'<br>… et '+(occupations.length-4)+' autre(s)':'');
-}
+  if(!slotEnEdition) return;
+  var salle = document.getElementById('inputSalle').value;
+  var info = document.getElementById('dispoInfo');
+  var btnSave = document.getElementById('btnSave');
+
+  if(!salle){ info.style.display='none'; btnSave.disabled = false; return; }
+
+  // Cherche conflit : autre classe utilisant la même salle au même créneau
+  var ji = slotEnEdition.jourIndex;
+  var hi = slotEnEdition.heureIndex;
+  var key = ji+'-'+hi;
+  var conflits = [];
+
+  Object.keys(etat.emploisDuTemps).forEach(function(classe){
+    if(classe === etat.classeActive) return; // on ne compare pas avec la classe active (elle peut avoir le même cours)
+    var edt = etat.emploisDuTemps[classe] || {};
+    if(edt[key] && edt[key].salle === salle){
+      conflits.push({classe: classe, matiere: edt[key].matiere});
+    }
+  });
+
+  info.style.display='block';
+  info.className = 'dispo-info';
+
+  if(conflits.length === 0){
+    info.innerHTML = '<div class="titre">✅ '+salle+' est libre à ce créneau</div>Aucune autre classe n\'utilise cette salle à '+JOURS[ji]+' '+HEURES[hi]+'.';
+    btnSave.disabled = false;
+  }else{
+    info.className = 'dispo-info warning';
+    info.innerHTML = '<div class="titre">⚠️ Conflit de salle détecté !</div>'+
+      conflits.map(function(c){ return '• <strong>'+c.classe+'</strong> utilise '+salle+' ('+c.matiere+')'; }).join('<br>')+
+      '<br><br><em>Choisis une autre salle ou un autre créneau.</em>';
+    btnSave.disabled = true;
+  }
 }
 
+/* ===== MODAL ===== */
 function ouvrirAjoutRapide(){
-modeAjoutRapide=true;
-slotEnEdition={jourIndex:0,heureIndex:0};
-var modal=document.getElementById('modal');
-var title=document.getElementById('modalTitle');
-var btnDelete=document.getElementById('btnDelete');
-var info=document.getElementById('dispoInfo');
-document.getElementById('selectJourHeure').style.display='block';
-document.getElementById('inputJour').value='0';
-document.getElementById('inputHeure').value='0';
-title.textContent='➕ Ajouter un cours';
-document.getElementById('inputMatiere').value='';
-document.getElementById('inputProf').value='';
-document.getElementById('inputSalle').value='';
-document.getElementById('inputCouleur').value='#3498db';
-btnDelete.style.display='none';
-info.style.display='none';
-mettreAJourSelectSalles();
-modal.classList.add('active');
-setTimeout(function(){document.getElementById('inputMatiere').focus();},100);
+  if(etat.classes.length === 0){ alert('Crée d\'abord une classe dans l\'onglet 📋 Classes'); return; }
+  modeAjoutRapide=true;
+  slotEnEdition={jourIndex:0,heureIndex:0};
+  var modal=document.getElementById('modal');
+  document.getElementById('modalTitle').textContent='➕ Ajouter un cours — '+etat.classeActive;
+  document.getElementById('selectJourHeure').style.display='block';
+  document.getElementById('inputJour').value='0';
+  document.getElementById('inputHeure').value='0';
+  document.getElementById('inputMatiere').value='';
+  document.getElementById('inputProf').value='';
+  document.getElementById('inputSalle').value='';
+  document.getElementById('inputCouleur').value='#3498db';
+  document.getElementById('btnDelete').style.display='none';
+  document.getElementById('dispoInfo').style.display='none';
+  document.getElementById('btnSave').disabled = false;
+  mettreAJourSelects();
+  modal.classList.add('active');
+  setTimeout(function(){document.getElementById('inputMatiere').focus();},100);
 }
 
 function ouvrirModal(jourIndex,heureIndex,cours){
-modeAjoutRapide=false;
-slotEnEdition={jourIndex:jourIndex,heureIndex:heureIndex};
-var modal=document.getElementById('modal');
-var title=document.getElementById('modalTitle');
-var btnDelete=document.getElementById('btnDelete');
-var info=document.getElementById('dispoInfo');
-document.getElementById('selectJourHeure').style.display='none';
-mettreAJourSelectSalles();
-if(cours){
-title.textContent='✏️ Modifier : '+JOURS[jourIndex]+' '+HEURES[heureIndex];
-document.getElementById('inputMatiere').value=cours.matiere;
-document.getElementById('inputProf').value=cours.prof||'';
-document.getElementById('inputSalle').value=cours.salle||'';
-document.getElementById('inputCouleur').value=cours.couleur;
-btnDelete.style.display='block';
-}else{
-title.textContent='➕ Ajouter : '+JOURS[jourIndex]+' '+HEURES[heureIndex];
-document.getElementById('inputMatiere').value='';
-document.getElementById('inputProf').value='';
-document.getElementById('inputSalle').value='';
-document.getElementById('inputCouleur').value='#3498db';
-btnDelete.style.display='none';
-}
-info.style.display='none';
-modal.classList.add('active');
-setTimeout(function(){document.getElementById('inputMatiere').focus();},100);
-if(document.getElementById('inputSalle').value)verifierDisponibilite();
+  modeAjoutRapide=false;
+  slotEnEdition={jourIndex:jourIndex,heureIndex:heureIndex};
+  var modal=document.getElementById('modal');
+  document.getElementById('selectJourHeure').style.display='none';
+  mettreAJourSelects();
+
+  if(cours){
+    document.getElementById('modalTitle').textContent='✏️ Modifier : '+JOURS[jourIndex]+' '+HEURES[heureIndex]+' — '+etat.classeActive;
+    document.getElementById('inputMatiere').value=cours.matiere || '';
+    document.getElementById('inputProf').value=cours.prof||'';
+    document.getElementById('inputSalle').value=cours.salle||'';
+    document.getElementById('inputCouleur').value=cours.couleur;
+    document.getElementById('btnDelete').style.display='block';
+  }else{
+    document.getElementById('modalTitle').textContent='➕ Ajouter : '+JOURS[jourIndex]+' '+HEURES[heureIndex]+' — '+etat.classeActive;
+    document.getElementById('inputMatiere').value='';
+    document.getElementById('inputProf').value='';
+    document.getElementById('inputSalle').value='';
+    document.getElementById('inputCouleur').value='#3498db';
+    document.getElementById('btnDelete').style.display='none';
+  }
+
+  document.getElementById('dispoInfo').style.display='none';
+  document.getElementById('btnSave').disabled = false;
+  modal.classList.add('active');
+  setTimeout(function(){document.getElementById('inputMatiere').focus();},100);
+  if(document.getElementById('inputSalle').value) verifierDisponibilite();
 }
 
 function fermerModal(){
-document.getElementById('modal').classList.remove('active');
-slotEnEdition=null;
-modeAjoutRapide=false;
+  document.getElementById('modal').classList.remove('active');
+  slotEnEdition=null;
+  modeAjoutRapide=false;
 }
 
 function sauvegarderCours(){
-var matiere=document.getElementById('inputMatiere').value.trim();
-if(!matiere){alert('Veuillez saisir une matière');return;}
-var ji,hi;
-if(modeAjoutRapide){
-ji=parseInt(document.getElementById('inputJour').value);
-hi=parseInt(document.getElementById('inputHeure').value);
-slotEnEdition={jourIndex:ji,heureIndex:hi};
-}else{
-ji=slotEnEdition.jourIndex;
-hi=slotEnEdition.heureIndex;
-}
-var key=ji+'-'+hi;
-if(emploiDuTemps[key] && modeAjoutRapide){
-if(!confirm('⚠️ Un cours existe déjà à '+JOURS[ji]+' '+HEURES[hi]+'. Le remplacer ?'))return;
-}
-emploiDuTemps[key]={
-matiere:matiere,
-prof:document.getElementById('inputProf').value.trim(),
-salle:document.getElementById('inputSalle').value,
-couleur:document.getElementById('inputCouleur').value
-};
-sauvegarderStorage('emploiDuTemps',emploiDuTemps);
-fermerModal();
-afficher();
+  var matiere=document.getElementById('inputMatiere').value;
+  if(!matiere){alert('Veuillez choisir une matière');return;}
+
+  var ji,hi;
+  if(modeAjoutRapide){
+    ji=parseInt(document.getElementById('inputJour').value);
+    hi=parseInt(document.getElementById('inputHeure').value);
+    slotEnEdition={jourIndex:ji,heureIndex:hi};
+  }else{
+    ji=slotEnEdition.jourIndex;
+    hi=slotEnEdition.heureIndex;
+  }
+  var key=ji+'-'+hi;
+  var edt = etat.emploisDuTemps[etat.classeActive] || {};
+
+  if(edt[key] && modeAjoutRapide){
+    if(!confirm('⚠️ Un cours existe déjà à '+JOURS[ji]+' '+HEURES[hi]+' pour '+etat.classeActive+'. Le remplacer ?'))return;
+  }
+
+  edt[key]={
+    matiere:matiere,
+    prof:document.getElementById('inputProf').value.trim(),
+    salle:document.getElementById('inputSalle').value,
+    couleur:document.getElementById('inputCouleur').value
+  };
+  etat.emploisDuTemps[etat.classeActive] = edt;
+
+  sauvegarderStorage();
+  fermerModal();
+  afficher();
 }
 
 function supprimerCours(){
-if(!slotEnEdition)return;
-if(!confirm('🗑️ Supprimer ce cours ?'))return;
-var key=ssauvegarderStorage('emploiDuTemps',emploiDuTemps);
-fermerModal();
-afficher();
+  if(!slotEnEdition)return;
+  if(!confirm('🗑️ Supprimer ce cours ?'))return;
+  var key=slotEnEdition.jourIndex+'-'+slotEnEdition.heureIndex;
+  var edt = etat.emploisDuTemps[etat.classeActive] || {};
+  delete edt[key];
+  etat.emploisDuTemps[etat.classeActive] = edt;
+  sauvegarderStorage();
+  fermerModal();
+  afficher();
 }
 
-function sauvegarderStorage(cle,valeur){
-try{localStorage.setItem(cle,JSON.stringify(valeur));}catch(e){}
+function effacerClasseActive(){
+  if(!confirm('⚠️ Effacer TOUS les cours de '+etat.classeActive+' ? Cette action est irréversible.'))return;
+  etat.emploisDuTemps[etat.classeActive] = {};
+  sauvegarderStorage();
+  afficher();
 }
 
-function chargerDepuisStorage(cle,defaut){
-try{
-var val=JSON.parse(localStorage.getItem(cle));
-return val!==null&&val!==undefined?val:defaut;
-}catch(e){return defaut;}
-}
-
-/* ===== EXPORT PDF - UNE SEULE PAGE A4 ===== */
+/* ===== EXPORT PDF ===== */
 function exporterPDF(){
-var win=window.open('','_blank');
-if(!win){alert('Autorisez les pop-ups pour exporter en PDF');return;}
-var html='<!DOCTYPE html><html><head><meta charset="UTF-8"><title>Emploi du temps</title>';
-html+='<style>';
-html+='*{box-sizing:border-box;margin:0;padding:0}';
-html+='body{font-family:Arial,sans-serif;padding:4mm;color:#000;background:#fff}';
-html+='h1{text-align:center;color:#2c3e50;margin-bottom:1px;font-size:14px}';
-html+='p.sub{text-align:center;color:#666;font-size:8px;margin-bottom:4px}';
-html+='table{border-collapse:collapse;width:100%;font-size:7px;table-layout:fixed}';
-html+='th,td{border:1px solid #333;padding:1px;text-align:center;vertical-align:middle;word-wrap:break-word;overflow:hidden}';
-html+='th{background:#2c3e50;color:#fff;font-weight:bold;font-size:8px;height:18px}';
-html+='th.sam{background:#8e44ad}';
-html+='td.hour{background:#ecf0f1;font-weight:bold;width:38px;font-size:7px;height:34px}';
-html+='td.slot-cell{height:34px}';
-html+='td.cours{color:#fff;font-weight:bold;padding:1px}';
-html+='.mat{font-size:8px;line-height:1;font-weight:bold}';
-html+='.pr{font-size:6px;opacity:.95;line-height:1}';
-html+='.sa{font-size:6px;font-style:italic;line-height:1}';
-html+='@page{size:A4 landscape;margin:4mm}';
-html+='@media print{body{padding:0}h1{font-size:13px}p.sub{font-size:7px}th,td{height:auto}}';
-html+='</style></head><body>';
-html+='<h1>📚 Emploi du temps scolaire</h1>';
-html+='<p class="sub">Temple du Savoir — Année '+(new Date().getFullYear())+'-'+(new Date().getFullYear()+1)+'</p>';
-html+='<table><thead><tr><th style="width:38px">Heure</th>';
-JOURS.forEach(function(j,i){
-html+='<th'+(i===5?' class="sam"':'')+'>'+j+'</th>';
-});
-html+='</tr></thead><tbody>';
-HEURES.forEach(function(heure,hi){
-html+='<tr><td class="hour">'+heure+'</td>';
-JOURS.forEach(function(_,ji){
-var key=ji+'-'+hi;
-var c=emploiDuTemps[key];
-if(c){
-html+='<td class="cours slot-cell" style="background:'+c.couleur+'">';
-html+='<div class="mat">'+c.matiere+'</div>';
-if(c.prof)html+='<div class="pr">'+c.prof+'</div>';
-if(c.salle)html+='<div class="sa">📍'+c.salle+'</div>';
-html+='</td>';
-}else{
-html+='<td class="slot-cell"></td>';
-}
-});
-html+='</tr>';
-});
-html+='</tbody></table>';
-html+='<p style="text-align:center;font-size:6px;color:#999;margin-top:3px">Généré le '+new Date().toLocaleDateString('fr-FR')+'</p>';
-html+='</body></html>';
-win.document.write(html);
-win.document.close();
-setTimeout(function(){win.print();},500);
+  if(etat.classes.length === 0){ alert('Aucune classe'); return; }
+  var edt = etat.emploisDuTemps[etat.classeActive] || {};
+  var win=window.open('','_blank');
+  if(!win){alert('Autorisez les pop-ups');return;}
+
+  var html='<!DOCTYPE html><html><head><meta charset="UTF-8"><title>Emploi du temps - '+etat.classeActive+'</title>';
+  html+='<style>';
+  html+='*{box-sizing:border-box;margin:0;padding:0}';
+  html+='body{font-family:Arial,sans-serif;padding:4mm;background:#fff}';
+  html+='h1{text-align:center;color:#2c3e50;margin-bottom:2px;font-size:16px}';
+  html+='p.sub{text-align:center;color:#666;font-size:9px;margin-bottom:6px}';
+  html+='table{border-collapse:collapse;width:100%;font-size:7px;table-layout:fixed}';
+  html+='th,td{border:1px solid #333;padding:1px;text-align:center;vertical-align:middle;word-wrap:break-word;overflow:hidden}';
+  html+='th{background:#2c3e50;color:#fff;font-weight:bold;font-size:8px;height:18px}';
+  html+='th.sam{background:#8e44ad}';
+  html+='td.hour{background:#ecf0f1;font-weight:bold;width:38px;font-size:7px;height:34px}';
+  html+='td.slot-cell{height:34px}';
+  html+='td.cours{color:#fff;font-weight:bold;padding:1px}';
+  html+='.mat{font-size:8px;line-height:1;font-weight:bold}';
+  html+='.pr{font-size:6px;line-height:1}';
+  html+='.sa{font-size:6px;font-style:italic;line-height:1}';
+  html+='@page{size:A4 landscape;margin:4mm}';
+  html+='@media print{body{padding:0}h1{font-size:14px}p.sub{font-size:8px}}';
+  html+='</style></head><body>';
+  html+='<h1>📚 Emploi du temps - '+etat.classeActive+'</h1>';
+  html+='<p class="sub">Temple du Savoir — Année '+(new Date().getFullYear())+'-'+(new Date().getFullYear()+1)+'</p>';
+  html+='<table><thead><tr><th style="width:38px">Heure</th>';
+  JOURS.forEach(function(j,i){
+    html+='<th'+(i===5?' class="sam"':'')+'>'+j+'</th>';
+  });
+  html+='</tr></thead><tbody>';
+  HEURES.forEach(function(heure,hi){
+    html+='<tr><td class="hour">'+heure+'</td>';
+    JOURS.forEach(function(_,ji){
+      var key=ji+'-'+hi;
+      var c=edt[key];
+      if(c){
+        html+='<td class="cours slot-cell" style="background:'+c.couleur+'">';
+        html+='<div class="mat">'+c.matiere+'</div>';
+        if(c.prof)html+='<div class="pr">'+c.prof+'</div>';
+        if(c.salle)html+='<div class="sa">📍'+c.salle+'</div>';
+        html+='</td>';
+      }else{
+        html+='<td class="slot-cell"></td>';
+      }
+    });
+    html+='</tr>';
+  });
+  html+='</tbody></table>';
+  html+='<p style="text-align:center;font-size:6px;color:#999;margin-top:3px">Généré le '+new Date().toLocaleDateString('fr-FR')+'</p>';
+  html+='</body></html>';
+  win.document.write(html);
+  win.document.close();
+  setTimeout(function(){win.print();},500);
 }
 
+/* ===== EXPORT WORD ===== */
+function exporterWord(){
+  if(etat.classes.length === 0){ alert('Aucune classe'); return; }
+  var edt = etat.emploisDuTemps[etat.classeActive] || {};
+
+  var html = '<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:w="urn:schemas-microsoft-com:office:word" xmlns="http://www.w3.org/TR/REC-html40">';
+  html += '<head><meta charset="utf-8"><title>Emploi du temps - '+etat.classeActive+'</title>';
+  html += '<style>';
+  html += '@page{size:A4 landscape;margin:1cm}';
+  html += 'body{font-family:Calibri,Arial,sans-serif}';
+  html += 'h1{text-align:center;color:#2c3e50;font-size:18pt}';
+  html += 'p.sub{text-align:center;color:#666;font-size:10pt;margin-bottom:10pt}';
+  html += 'table{border-collapse:collapse;width:100%}';
+  html += 'th,td{border:1px solid #333;padding:4pt;text-align:center;vertical-align:middle;font-size:9pt}';
+  html += 'th{background:#2c3e50;color:#fff;font-weight:bold}';
+  html += 'th.sam{background:#8e44ad}';
+  html += 'td.hour{background:#ecf0f1;font-weight:bold;font-size:9pt}';
+  html += '.mat{font-weight:bold;font-size:10pt}';
+  html += '.pr{font-size:8pt}';
+  html += '.sa{font-size:8pt;font-style:italic}';
+  html += '</style></head><body>';
+  html += '<h1>📚 Emploi du temps - '+etat.classeActive+'</h1>';
+  html += '<p class="sub">Temple du Savoir — Année '+(new Date().getFullYear())+'-'+(new Date().getFullYear()+1)+'</p>';
+  html += '<table><tr><th>Heure</th>';
+  JOURS.forEach(function(j,i){
+    html += '<th'+(i===5?' class="sam"':'')+'>'+j+'</th>';
+  });
+  html += '</tr>';
+  HEURES.forEach(function(heure,hi){
+    html += '<tr><td class="hour">'+heure+'</td>';
+    JOURS.forEach(function(_,ji){
+      var key=ji+'-'+hi;
+      var c=edt[key];
+      if(c){
+        var bg = c.couleur;
+        html += '<td style="background:'+bg+';color:#fff">';
+        html += '<div class="mat">'+c.matiere+'</div>';
+        if(c.prof) html += '<div class="pr">'+c.prof+'</div>';
+        if(c.salle) html += '<div class="sa">📍 '+c.salle+'</div>';
+        html += '</td>';
+      }else{
+        html += '<td></td>';
+      }
+    });
+    html += '</tr>';
+  });
+  html += '</table>';
+  html += '<p style="text-align:center;font-size:8pt;color:#999;margin-top:10pt">Généré le '+new Date().toLocaleDateString('fr-FR')+'</p>';
+  html += '</body></html>';
+
+  var blob = new Blob(['\ufeff', html], {type: 'application/msword'});
+  var url = URL.createObjectURL(blob);
+  var a = document.createElement('a');
+  a.href = url;
+  a.download = 'emploi-du-temps-' + etat.classeActive.replace(/[^a-z0-9]/gi,'_') + '.doc';
+  a.click();
+  URL.revokeObjectURL(url);
+}
+
+/* ===== EXPORT / IMPORT JSON ===== */
 function exporterJSON(){
-var data=JSON.stringify({emploiDuTemps:emploiDuTemps,listeSalles:listeSalles},null,2);
-var blob=new Blob([data],{type:'application/json'});
-var url=URL.createObjectURL(blob);
-var a=document.createElement('a');
-a.href=url;
-a.download='emploi-du-temps-'+new Date().toISOString().split('T')[0]+'.json';
-a.click();
-URL.revokeObjectURL(url);
+  var data=JSON.stringify(etat, null, 2);
+  var blob=new Blob([data],{type:'application/json'});
+  var url=URL.createObjectURL(blob);
+  var a=document.createElement('a');
+  a.href=url;
+  a.download='emploi-du-temps-multi-'+new Date().toISOString().split('T')[0]+'.json';
+  a.click();
+  URL.revokeObjectURL(url);
 }
 
 function restaurerJSON(event){
-var file=event.target.files[0];
-if(!file)return;
-if(!confirm('⚠️ Cette action va REMPLACER tout votre emploi du temps actuel par le contenu du fichier. Continuer ?')){event.target.value='';return;}
-var reader=new FileReader();
-reader.onload=function(e){
-try{
-var data=JSON.parse(e.target.result);
-if(data.emploiDuTemps){
-emploiDuTemps=data.emploiDuTemps;
-listeSalles=data.listeSalles||[];
-}else{
-emploiDuTemps=data;
-}
-sauvegarderStorage('emploiDuTemps',emploiDuTemps);
-sauvegarderStorage('listeSalles',listeSalles);
-afficher();
-afficherSalles();
-mettreAJourSelectSalles();
-alert('✅ Restauration réussie ! Votre emploi du temps a été rechargé.');
-}catch(err){
-alert('❌ Fichier invalide. Assurez-vous que c\'est un fichier .json généré par ce site.');
-}
-};
-reader.readAsText(file);
-event.target.value='';
+  var file=event.target.files[0];
+  if(!file)return;
+  if(!confirm('⚠️ Cette action va REMPLACER toutes vos données (classes, matières, salles, emplois du temps). Continuer ?')){event.target.value='';return;}
+  var reader=new FileReader();
+  reader.onload=function(e){
+    try{
+      var data=JSON.parse(e.target.result);
+
+      // Compatibilité avec l'ancien format (mono-classe)
+      if(data.emploiDuTemps && !data.emploisDuTemps){
+        // Ancien format : {emploiDuTemps: {...}, listeSalles: [...]}
+        var nouvelleClasse = 'Classe 1';
+        etat = {
+          classes: [nouvelleClasse],
+          matieres: [],
+          salles: data.listeSalles || [],
+          emploisDuTemps: {},
+          classeActive: nouvelleClasse
+        };
+        etat.emploisDuTemps[nouvelleClasse] = data.emploiDuTemps;
+      }
+      // Nouveau format multi
+      else if(data.emploisDuTemps){
+        etat = data;
+      }
+      else{
+        alert('❌ Fichier non reconnu'); event.target.value=''; return;
+      }
+
+      if(!etat.classes) etat.classes = [];
+      if(!etat.matieres) etat.matieres = [];
+      if(!etat.salles) etat.salles = [];
+      if(!etat.emploisDuTemps) etat.emploisDuTemps = {};
+      if(!etat.classeActive || etat.classes.indexOf(etat.classeActive) === -1){
+        etat.classeActive = etat.classes[0] || '';
+      }
+
+      sauvegarderStorage();
+      afficher();
+      afficherSalles();
+      afficherMatieres();
+      afficherClasses();
+      alert('✅ Restauration réussie !');
+    }catch(err){
+      alert('❌ Fichier invalide : ' + err.message);
+    }
+  };
+  reader.readAsText(file);
+  event.target.value='';
 }
 
-function toutEffacer(){
-if(!confirm('⚠️ Effacer tout l\'emploi du temps ?'))return;
-emploiDuTemps={};
-sauvegarderStorage('emploiDuTemps',emploiDuTemps);
-afficher();
-}
-
+/* ===== EVENEMENTS ===== */
 document.getElementById('modal').addEventListener('click',function(e){
-if(e.target.id==='modal')fermerModal();
+  if(e.target.id==='modal')fermerModal();
 });
 document.addEventListener('keydown',function(e){
-if(e.key==='Escape')fermerModal();
+  if(e.key==='Escape')fermerModal();
 });
 
+/* ===== INIT ===== */
 afficher();
-mettreAJourSelectSalles();
 </script>
 </body>
 </html>
