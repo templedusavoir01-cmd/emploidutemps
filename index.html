@@ -578,4 +578,445 @@ function supprimerMatiere(nom){
 /* ===== GESTION DES PROFS ===== */
 function afficherProfs(){
   var list=document.getElementById('profsList');
-  if(etat.pro
+  if(etat.professeurs.length===0){
+    list.innerHTML='<span style="color:#95a5a6;font-size:.8em;font-style:italic">Aucun professeur</span>';
+  }else{
+    list.innerHTML=etat.professeurs.map(function(p){
+      return '<div class="tag"><span>👨‍🏫 '+p+'</span><button onclick="supprimerProf(\''+p.replace(/'/g,"\\'")+'\')">✕</button></div>';
+    }).join('');
+  }
+
+  var charge = document.getElementById('profsCharge');
+  if(etat.professeurs.length===0){
+    charge.innerHTML = '<p class="empty-msg">Ajoute des professeurs pour voir leur charge horaire.</p>';
+    return;
+  }
+
+  var parProf = {};
+  etat.professeurs.forEach(function(p){ parProf[p] = []; });
+
+  Object.keys(etat.emploisDuTemps).forEach(function(classe){
+    var edt = etat.emploisDuTemps[classe] || {};
+    Object.keys(edt).forEach(function(key){
+      var c = edt[key];
+      if(!c.prof || !parProf[c.prof]) return;
+      var parts = key.split('-');
+      var ji = Number(parts[0]), hi = Number(parts[1]);
+      parProf[c.prof].push({
+        classe: classe, jour: JOURS[ji], heure: HEURES[hi],
+        matiere: c.matiere, jourIdx: ji, heureIdx: hi
+      });
+    });
+  });
+
+  Object.values(parProf).forEach(function(arr){
+    arr.sort(function(a,b){return a.jourIdx-b.jourIdx||a.heureIdx-b.heureIdx;});
+  });
+
+  charge.innerHTML = etat.professeurs.map(function(p){
+    var occ = parProf[p] || [];
+    var total = occ.length;
+    var badgeCls = total===0?'free':'busy';
+    var badgeTxt = total===0?'Disponible':total+' h/sem';
+    var html = '<div class="card"><h3>👨‍🏫 '+p+' <span class="badge '+badgeCls+'">'+badgeTxt+'</span></h3><div class="card-occupations">';
+    if(total===0){
+      html += '<span class="empty-msg">Aucun cours assigné</span>';
+    }else{
+      html += occ.map(function(o){
+        return '<div class="occupation-item"><span class="classe">'+o.classe+'</span><span>'+o.matiere+'</span><span class="time">'+o.jour+' · '+o.heure+'</span></div>';
+      }).join('');
+    }
+    html += '</div></div>';
+    return html;
+  }).join('');
+}
+
+function ajouterProf(){
+  var input=document.getElementById('newProfInput');
+  var nom=input.value.trim();
+  if(!nom)return;
+  if(etat.professeurs.indexOf(nom)!==-1){alert('Ce professeur existe déjà');return;}
+  etat.professeurs.push(nom);
+  etat.professeurs.sort();
+  sauvegarderStorage();
+  input.value='';
+  afficherProfs();
+  mettreAJourSelects();
+}
+
+function supprimerProf(nom){
+  if(!confirm('Supprimer le professeur "'+nom+'" ? Les cours concernés garderont son nom mais il ne sera plus dans la liste.'))return;
+  etat.professeurs = etat.professeurs.filter(function(p){return p!==nom;});
+  sauvegarderStorage();
+  afficherProfs();
+  mettreAJourSelects();
+}
+
+/* ===== GESTION DES CLASSES ===== */
+function afficherClasses(){
+  var list=document.getElementById('classesList');
+  if(etat.classes.length===0){
+    list.innerHTML='<span style="color:#95a5a6;font-size:.8em;font-style:italic">Aucune classe</span>';
+  }else{
+    list.innerHTML=etat.classes.map(function(c){
+      var cEsc = c.replace(/'/g,"\\'");
+      return '<div class="tag"><span>📋 '+c+'</span>'+
+        '<button class="dup" onclick="dupliquerClasse(\''+cEsc+'\')" title="Dupliquer">📋</button>'+
+        '<button onclick="supprimerClasse(\''+cEsc+'\')">✕</button></div>';
+    }).join('');
+  }
+
+  var resume = document.getElementById('classesResume');
+  if(etat.classes.length===0){
+    resume.innerHTML = '<p class="empty-msg">Ajoute des classes pour voir le résumé.</p>';
+    return;
+  }
+
+  resume.innerHTML = etat.classes.map(function(c){
+    var edt = etat.emploisDuTemps[c] || {};
+    var nb = Object.keys(edt).length;
+    return '<div class="card"><h3>📋 '+c+' <span class="badge '+(nb===0?'free':'busy')+'">'+nb+' cours</span></h3></div>';
+  }).join('');
+}
+
+function ajouterClasse(){
+  var input=document.getElementById('newClasseInput');
+  var nom=input.value.trim();
+  if(!nom)return;
+  if(etat.classes.indexOf(nom)!==-1){alert('Cette classe existe déjà');return;}
+  etat.classes.push(nom);
+  etat.classes.sort();
+  if(!etat.emploisDuTemps[nom]) etat.emploisDuTemps[nom] = {};
+  sauvegarderStorage();
+  input.value='';
+  afficherClasses();
+  afficher();
+}
+
+function supprimerClasse(nom){
+  var edt = etat.emploisDuTemps[nom] || {};
+  var nb = Object.keys(edt).length;
+  var msg = 'Supprimer la classe "'+nom+'"';
+  if(nb > 0) msg += ' et ses '+nb+' cours';
+  msg += ' ? Cette action est irréversible.';
+  if(!confirm(msg))return;
+
+  etat.classes = etat.classes.filter(function(c){return c!==nom;});
+  delete etat.emploisDuTemps[nom];
+
+  if(etat.classeActive === nom){
+    etat.classeActive = etat.classes[0] || '';
+  }
+
+  sauvegarderStorage();
+  afficherClasses();
+  afficher();
+}
+
+function dupliquerClasse(nom){
+  var nouvelle = prompt('Nom de la nouvelle classe :', nom + ' (copie)');
+  if(!nouvelle) return;
+  nouvelle = nouvelle.trim();
+  if(!nouvelle) return;
+  if(etat.classes.indexOf(nouvelle) !== -1){alert('Cette classe existe déjà');return;}
+
+  etat.classes.push(nouvelle);
+  etat.classes.sort();
+  etat.emploisDuTemps[nouvelle] = JSON.parse(JSON.stringify(etat.emploisDuTemps[nom] || {}));
+
+  sauvegarderStorage();
+  afficherClasses();
+  afficher();
+  alert('✅ Classe "'+nouvelle+'" créée avec ' + Object.keys(etat.emploisDuTemps[nouvelle]).length + ' cours copiés.');
+}
+
+/* ===== MODAL ===== */
+function ouvrirAjoutRapide(){
+  if(etat.classes.length === 0){ alert('Crée d\'abord une classe dans l\'onglet 📋 Classes'); return; }
+  modeAjoutRapide=true;
+  slotEnEdition={jourIndex:0,heureIndex:0};
+  document.getElementById('modalTitle').textContent='➕ Ajouter un cours — '+etat.classeActive;
+  document.getElementById('selectJourHeure').style.display='block';
+  document.getElementById('inputJour').value='0';
+  document.getElementById('inputHeure').value='0';
+  document.getElementById('inputMatiere').value='';
+  document.getElementById('inputProf').value='';
+  document.getElementById('inputSalle').value='';
+  document.getElementById('inputCouleur').value='#bdc3c7';
+  document.getElementById('btnDelete').style.display='none';
+  document.getElementById('dispoInfo').style.display='none';
+  document.getElementById('btnSave').disabled = false;
+  mettreAJourSelects();
+  document.getElementById('modal').classList.add('active');
+  setTimeout(function(){document.getElementById('inputMatiere').focus();},100);
+}
+
+function ouvrirModal(jourIndex,heureIndex,cours){
+  modeAjoutRapide=false;
+  slotEnEdition={jourIndex:jourIndex,heureIndex:heureIndex};
+  document.getElementById('selectJourHeure').style.display='none';
+  mettreAJourSelects();
+
+  if(cours){
+    document.getElementById('modalTitle').textContent='✏️ Modifier : '+JOURS[jourIndex]+' '+HEURES[heureIndex]+' — '+etat.classeActive;
+    document.getElementById('inputMatiere').value=cours.matiere || '';
+    document.getElementById('inputProf').value=cours.prof||'';
+    document.getElementById('inputSalle').value=cours.salle||'';
+    document.getElementById('inputCouleur').value=cours.couleur;
+    document.getElementById('btnDelete').style.display='block';
+  }else{
+    document.getElementById('modalTitle').textContent='➕ Ajouter : '+JOURS[jourIndex]+' '+HEURES[heureIndex]+' — '+etat.classeActive;
+    document.getElementById('inputMatiere').value='';
+    document.getElementById('inputProf').value='';
+    document.getElementById('inputSalle').value='';
+    document.getElementById('inputCouleur').value='#bdc3c7';
+    document.getElementById('btnDelete').style.display='none';
+  }
+
+  document.getElementById('dispoInfo').style.display='none';
+  document.getElementById('btnSave').disabled = false;
+  document.getElementById('modal').classList.add('active');
+  setTimeout(function(){document.getElementById('inputMatiere').focus();},100);
+  if(document.getElementById('inputSalle').value || document.getElementById('inputProf').value) verifierConflits();
+}
+
+function fermerModal(){
+  document.getElementById('modal').classList.remove('active');
+  slotEnEdition=null;
+  modeAjoutRapide=false;
+}
+
+function sauvegarderCours(){
+  var matiere=document.getElementById('inputMatiere').value;
+  if(!matiere){alert('Veuillez choisir une matière');return;}
+
+  var ji,hi;
+  if(modeAjoutRapide){
+    ji=parseInt(document.getElementById('inputJour').value);
+    hi=parseInt(document.getElementById('inputHeure').value);
+    slotEnEdition={jourIndex:ji,heureIndex:hi};
+  }else{
+    ji=slotEnEdition.jourIndex;
+    hi=slotEnEdition.heureIndex;
+  }
+  var key=ji+'-'+hi;
+  var edt = etat.emploisDuTemps[etat.classeActive] || {};
+
+  if(edt[key] && modeAjoutRapide){
+    if(!confirm('⚠️ Un cours existe déjà à '+JOURS[ji]+' '+HEURES[hi]+' pour '+etat.classeActive+'. Le remplacer ?'))return;
+  }
+
+  edt[key]={
+    matiere:matiere,
+    prof:document.getElementById('inputProf').value,
+    salle:document.getElementById('inputSalle').value,
+    couleur:document.getElementById('inputCouleur').value
+  };
+  etat.emploisDuTemps[etat.classeActive] = edt;
+
+  sauvegarderStorage();
+  fermerModal();
+  afficher();
+}
+
+function supprimerCours(){
+  if(!slotEnEdition)return;
+  if(!confirm('🗑️ Supprimer ce cours ?'))return;
+  var key=slotEnEdition.jourIndex+'-'+slotEnEdition.heureIndex;
+  var edt = etat.emploisDuTemps[etat.classeActive] || {};
+  delete edt[key];
+  etat.emploisDuTemps[etat.classeActive] = edt;
+  sauvegarderStorage();
+  fermerModal();
+  afficher();
+}
+
+function effacerClasseActive(){
+  if(!confirm('⚠️ Effacer TOUS les cours de '+etat.classeActive+' ?'))return;
+  etat.emploisDuTemps[etat.classeActive] = {};
+  sauvegarderStorage();
+  afficher();
+}
+
+/* ===== EXPORT PDF ===== */
+function exporterPDF(){
+  if(etat.classes.length === 0){ alert('Aucune classe'); return; }
+  var edt = etat.emploisDuTemps[etat.classeActive] || {};
+  var win=window.open('','_blank');
+  if(!win){alert('Autorisez les pop-ups');return;}
+
+  var html='<!DOCTYPE html><html><head><meta charset="UTF-8"><title>Emploi du temps - '+etat.classeActive+'</title>';
+  html+='<style>';
+  html+='*{box-sizing:border-box;margin:0;padding:0}';
+  html+='body{font-family:Arial,sans-serif;padding:4mm;background:#fff}';
+  html+='h1{text-align:center;color:#2c3e50;margin-bottom:2px;font-size:16px}';
+  html+='p.sub{text-align:center;color:#666;font-size:9px;margin-bottom:6px}';
+  html+='table{border-collapse:collapse;width:100%;font-size:7px;table-layout:fixed}';
+  html+='th,td{border:1px solid #333;padding:1px;text-align:center;vertical-align:middle;word-wrap:break-word;overflow:hidden}';
+  html+='th{background:#2c3e50;color:#fff;font-weight:bold;font-size:8px;height:18px}';
+  html+='th.sam{background:#8e44ad}';
+  html+='td.hour{background:#ecf0f1;font-weight:bold;width:38px;font-size:7px;height:34px}';
+  html+='td.slot-cell{height:34px}';
+  html+='td.cours{font-weight:bold;padding:1px}';
+  html+='.mat{font-size:8px;line-height:1;font-weight:bold}';
+  html+='.pr{font-size:6px;line-height:1}';
+  html+='.sa{font-size:6px;font-style:italic;line-height:1}';
+  html+='@page{size:A4 landscape;margin:4mm}';
+  html+='@media print{body{padding:0}h1{font-size:14px}p.sub{font-size:8px}}';
+  html+='</style></head><body>';
+  html+='<h1>📚 Emploi du temps - '+etat.classeActive+'</h1>';
+  html+='<p class="sub">Temple du Savoir — Année '+(new Date().getFullYear())+'-'+(new Date().getFullYear()+1)+'</p>';
+  html+='<table><thead><tr><th style="width:38px">Heure</th>';
+  JOURS.forEach(function(j,i){
+    html+='<th'+(i===5?' class="sam"':'')+'>'+j+'</th>';
+  });
+  html+='</tr></thead><tbody>';
+  HEURES.forEach(function(heure,hi){
+    html+='<tr><td class="hour">'+heure+'</td>';
+    JOURS.forEach(function(_,ji){
+      var key=ji+'-'+hi;
+      var c=edt[key];
+      if(c){
+        var bg=c.couleur;
+        var txtColor = (c.couleur === '#bdc3c7' || c.couleur === '#ffffff') ? '#000' : '#fff';
+        html+='<td class="cours slot-cell" style="background:'+bg+';color:'+txtColor+'">';
+        html+='<div class="mat">'+c.matiere+'</div>';
+        if(c.prof)html+='<div class="pr">'+c.prof+'</div>';
+        if(c.salle)html+='<div class="sa">📍'+c.salle+'</div>';
+        html+='</td>';
+      }else{
+        html+='<td class="slot-cell"></td>';
+      }
+    });
+    html+='</tr>';
+  });
+  html+='</tbody></table>';
+  html+='<p style="text-align:center;font-size:6px;color:#999;margin-top:3px">Généré le '+new Date().toLocaleDateString('fr-FR')+'</p>';
+  html+='</body></html>';
+  win.document.write(html);
+  win.document.close();
+  setTimeout(function(){win.print();},500);
+}
+
+/* ===== EXPORT WORD ===== */
+function exporterWord(){
+  if(etat.classes.length === 0){ alert('Aucune classe'); return; }
+  var edt = etat.emploisDuTemps[etat.classeActive] || {};
+
+  var html = '<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:w="urn:schemas-microsoft-com:office:word" xmlns="http://www.w3.org/TR/REC-html40">';
+  html += '<head><meta charset="utf-8"><title>Emploi du temps - '+etat.classeActive+'</title>';
+  html += '<style>';
+  html += '@page{size:A4 landscape;margin:1cm}';
+  html += 'body{font-family:Calibri,Arial,sans-serif}';
+  html += 'h1{text-align:center;color:#2c3e50;font-size:18pt}';
+  html += 'p.sub{text-align:center;color:#666;font-size:10pt;margin-bottom:10pt}';
+  html += 'table{border-collapse:collapse;width:100%}';
+  html += 'th,td{border:1px solid #333;padding:4pt;text-align:center;vertical-align:middle;font-size:9pt}';
+  html += 'th{background:#2c3e50;color:#fff;font-weight:bold}';
+  html += 'th.sam{background:#8e44ad}';
+  html += 'td.hour{background:#ecf0f1;font-weight:bold;font-size:9pt}';
+  html += '.mat{font-weight:bold;font-size:10pt}';
+  html += '.pr{font-size:8pt}';
+  html += '.sa{font-size:8pt;font-style:italic}';
+  html += '</style></head><body>';
+  html += '<h1>📚 Emploi du temps - '+etat.classeActive+'</h1>';
+  html += '<p class="sub">Temple du Savoir — Année '+(new Date().getFullYear())+'-'+(new Date().getFullYear()+1)+'</p>';
+  html += '<table><tr><th>Heure</th>';
+  JOURS.forEach(function(j,i){
+    html += '<th'+(i===5?' class="sam"':'')+'>'+j+'</th>';
+  });
+  html += '</tr>';
+  HEURES.forEach(function(heure,hi){
+    html += '<tr><td class="hour">'+heure+'</td>';
+    JOURS.forEach(function(_,ji){
+      var key=ji+'-'+hi;
+      var c=edt[key];
+      if(c){
+        var txtColor = (c.couleur === '#bdc3c7' || c.couleur === '#ffffff') ? '#000' : '#fff';
+        html += '<td style="background:'+c.couleur+';color:'+txtColor+'">';
+        html += '<div class="mat">'+c.matiere+'</div>';
+        if(c.prof) html += '<div class="pr">'+c.prof+'</div>';
+        if(c.salle) html += '<div class="sa">📍 '+c.salle+'</div>';
+        html += '</td>';
+      }else{
+        html += '<td></td>';
+      }
+    });
+    html += '</tr>';
+  });
+  html += '</table>';
+  html += '<p style="text-align:center;font-size:8pt;color:#999;margin-top:10pt">Généré le '+new Date().toLocaleDateString('fr-FR')+'</p>';
+  html += '</body></html>';
+
+  var blob = new Blob(['\ufeff', html], {type: 'application/msword'});
+  var url = URL.createObjectURL(blob);
+  var a = document.createElement('a');
+  a.href = url;
+  a.download = 'emploi-du-temps-' + etat.classeActive.replace(/[^a-z0-9]/gi,'_') + '.doc';
+  a.click();
+  URL.revokeObjectURL(url);
+}
+
+/* ===== JSON ===== */
+function exporterJSON(){
+  var data=JSON.stringify(etat, null, 2);
+  var blob=new Blob([data],{type:'application/json'});
+  var url=URL.createObjectURL(blob);
+  var a=document.createElement('a');
+  a.href=url;
+  a.download='emploi-du-temps-multi-'+new Date().toISOString().split('T')[0]+'.json';
+  a.click();
+  URL.revokeObjectURL(url);
+}
+
+function restaurerJSON(event){
+  var file=event.target.files[0];
+  if(!file)return;
+  if(!confirm('⚠️ Cette action va REMPLACER toutes vos données. Continuer ?')){event.target.value='';return;}
+  var reader=new FileReader();
+  reader.onload=function(e){
+    try{
+      var data=JSON.parse(e.target.result);
+      if(data.emploiDuTemps && !data.emploisDuTemps){
+        var nc = 'Classe 1';
+        etat = { classes: [nc], matieres: [], salles: data.listeSalles || [], professeurs: [], emploisDuTemps: {}, classeActive: nc };
+        etat.emploisDuTemps[nc] = data.emploiDuTemps;
+      }
+      else if(data.emploisDuTemps){ etat = data; }
+      else{ alert('❌ Fichier non reconnu'); event.target.value=''; return; }
+
+      if(!etat.classes) etat.classes = [];
+      if(!etat.matieres) etat.matieres = [];
+      if(!etat.salles) etat.salles = [];
+      if(!etat.professeurs) etat.professeurs = [];
+      if(!etat.emploisDuTemps) etat.emploisDuTemps = {};
+      if(!etat.classeActive || etat.classes.indexOf(etat.classeActive) === -1){
+        etat.classeActive = etat.classes[0] || '';
+      }
+
+      sauvegarderStorage();
+      afficher();
+      afficherSalles();
+      afficherMatieres();
+      afficherProfs();
+      afficherClasses();
+      alert('✅ Restauration réussie !');
+    }catch(err){
+      alert('❌ Fichier invalide : ' + err.message);
+    }
+  };
+  reader.readAsText(file);
+  event.target.value='';
+}
+
+document.getElementById('modal').addEventListener('click',function(e){
+  if(e.target.id==='modal')fermerModal();
+});
+document.addEventListener('keydown',function(e){
+  if(e.key==='Escape')fermerModal();
+});
+
+afficher();
+</script>
+</body>
+</html>
