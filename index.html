@@ -13,9 +13,12 @@ h1{text-align:center;color:#1e3a8a;font-size:1.1em;margin-bottom:4px}
 .tabs{display:flex;gap:3px;justify-content:center;margin-bottom:10px;background:#ecf0f1;padding:4px;border-radius:8px;flex-wrap:wrap}
 .tab{flex:1;min-width:75px;padding:7px;border:none;background:transparent;border-radius:6px;cursor:pointer;font-weight:600;color:#555;font-size:.68em}
 .tab.active{background:#fff;color:#1e3a8a;box-shadow:0 1px 3px rgba(0,0,0,.1)}
-.tab-add-main{display:block;width:100%;max-width:320px;margin:0 auto 10px;padding:12px 18px;background:linear-gradient(135deg,#1e3a8a,#3b82f6);color:#fff;border:none;border-radius:10px;font-size:.95em;font-weight:700;cursor:pointer;box-shadow:0 4px 12px rgba(30,58,138,.4);transition:.2s}
-.tab-add-main:hover{transform:translateY(-2px);box-shadow:0 6px 18px rgba(30,58,138,.5)}
-.tab-add-main:active{transform:scale(.97)}
+.btn-actions{display:flex;gap:6px;flex-wrap:wrap;justify-content:center;margin-bottom:10px}
+.btn-add-main{padding:12px 18px;background:linear-gradient(135deg,#27ae60,#2ecc71);color:#fff;border:none;border-radius:10px;font-size:.9em;font-weight:700;cursor:pointer;box-shadow:0 4px 12px rgba(39,174,96,.4);transition:.2s}
+.btn-edit-main{padding:12px 18px;background:linear-gradient(135deg,#f39c12,#f1c40f);color:#fff;border:none;border-radius:10px;font-size:.9em;font-weight:700;cursor:pointer;box-shadow:0 4px 12px rgba(243,156,18,.4);transition:.2s}
+.btn-del-main{padding:12px 18px;background:linear-gradient(135deg,#e74c3c,#c0392b);color:#fff;border:none;border-radius:10px;font-size:.9em;font-weight:700;cursor:pointer;box-shadow:0 4px 12px rgba(231,76,60,.4);transition:.2s}
+.btn-add-main:hover,.btn-edit-main:hover,.btn-del-main:hover{transform:translateY(-2px)}
+.btn-add-main:active,.btn-edit-main:active,.btn-del-main:active{transform:scale(.97)}
 .classe-selector{display:flex;align-items:center;justify-content:center;gap:8px;margin-bottom:10px;padding:8px;background:#f8f9fa;border-radius:8px;border-left:4px solid #1e3a8a;flex-wrap:wrap}
 .classe-selector label{font-weight:600;color:#1e3a8a;font-size:.82em}
 .classe-selector select{padding:6px 10px;border:2px solid #dfe6e9;border-radius:6px;font-size:.85em;font-weight:600;background:#fff;min-width:120px}
@@ -32,7 +35,7 @@ h1{text-align:center;color:#1e3a8a;font-size:1.1em;margin-bottom:4px}
 .header{background:linear-gradient(135deg,#1e3a8a,#3b82f6);color:#fff;padding:7px 3px;text-align:center;font-weight:600;font-size:.72em;border-radius:4px}
 .header.samedi{background:linear-gradient(135deg,#7c3aed,#a855f7)}
 .hour{padding:4px;text-align:center;color:#555;font-size:.6em;background:#ecf0f1;border-radius:4px;display:flex;align-items:center;justify-content:center;font-weight:600;min-height:42px;white-space:nowrap;position:relative;z-index:2}
-.slot{background:#f8f9fa;border-radius:4px;min-height:42px;padding:3px;font-size:.68em;cursor:pointer;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;overflow:hidden;touch-action:manipulation;-webkit-tap-highlight-color:rgba(30,58,138,.3);user-select:none;-webkit-user-select:none;transition:.15s;position:relative;z-index:3;pointer-events:auto}
+.slot{background:#f8f9fa;border-radius:4px;min-height:42px;padding:3px;font-size:.68em;cursor:pointer;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;overflow:hidden;touch-action:manipulation;-webkit-tap-highlight-color:rgba(30,58,138,.3);user-select:none;-webkit-user-select:none;transition:.15s;position:relative;z-index:3}
 .slot:active{background:#d6ecfa;transform:scale(.97)}
 .slot.filled{color:#fff;font-weight:600;box-shadow:0 1px 3px rgba(0,0,0,.15)}
 .slot.filled[style*="rgb(189, 195, 199)"]{color:#000 !important}
@@ -122,7 +125,11 @@ h1{text-align:center;color:#1e3a8a;font-size:1.1em;margin-bottom:4px}
 <select id="selectClasse" onchange="changerClasseActive(this.value)"></select>
 </div>
 
-<button class="tab-add-main" onclick="ouvrirAjoutRapide()">➕ Ajouter un cours</button>
+<div class="btn-actions">
+<button class="btn-add-main" onclick="ouvrirAjoutRapide()">➕ Ajouter un cours</button>
+<button class="btn-edit-main" onclick="ouvrirModification()">✏️ Modifier un cours</button>
+<button class="btn-del-main" onclick="ouvrirSuppression()">🗑️ Supprimer un cours</button>
+</div>
 
 <div class="toolbar">
 <button class="pdf" onclick="exporterPDF()">📄 PDF</button>
@@ -205,12 +212,12 @@ h1{text-align:center;color:#1e3a8a;font-size:1.1em;margin-bottom:4px}
 <h3>🛠️ Gérer les professeurs</h3>
 <div class="tags-list" id="profsList"></div>
 <div class="add-form">
-<input type="text" id="newProfInput" placeholder="Ex : ADOU, TRESOR, NGUESSAN" onkeypress="if(event.key==='Enter'){ajouterProf();event.preventDefault();}">
+<input type="text" id="newProfInput" placeholder="Ex : ADOU, TRESOR" onkeypress="if(event.key==='Enter'){ajouterProf();event.preventDefault();}">
 <button onclick="ajouterProf()">+ Ajouter</button>
 </div>
 </div>
 <div class="info-box">
-💡 Ajoute simplement le <strong>nom</strong> du professeur. Les associations Matière + Prof + Salle se font automatiquement à partir de tes cours.
+💡 Ajoute simplement le <strong>nom</strong> du professeur.
 </div>
 <h3 style="color:#1e3a8a;margin-bottom:8px;font-size:.9em;">📊 Charge horaire des professeurs</h3>
 <div id="profsCharge"></div>
@@ -239,7 +246,7 @@ h1{text-align:center;color:#1e3a8a;font-size:1.1em;margin-bottom:4px}
 <h2 id="modalTitle">Ajouter un cours</h2>
 <div id="selectJourHeure">
 <label>Jour</label>
-<select id="inputJour">
+<select id="inputJour" onchange="chargerCoursExistant()">
 <option value="0">LUNDI</option>
 <option value="1">MARDI</option>
 <option value="2">MERCREDI</option>
@@ -248,7 +255,7 @@ h1{text-align:center;color:#1e3a8a;font-size:1.1em;margin-bottom:4px}
 <option value="5">SAMEDI</option>
 </select>
 <label>Heure</label>
-<select id="inputHeure">
+<select id="inputHeure" onchange="chargerCoursExistant()">
 <option value="0">08H00-9H00</option>
 <option value="1">9H00-10H00</option>
 <option value="2">10H00-11H00</option>
@@ -305,11 +312,15 @@ var etat = chargerDepuisStorage('emploiDuTempsITA', {
 if(!etat.matieres || etat.matieres.length===0) etat.matieres = ['GTC'];
 if(!etat.salles) etat.salles = [];
 if(!etat.professeurs || etat.professeurs.length===0) etat.professeurs = ['ADOU'];
-// Nettoyer les anciens profs (format objet) → convertir en simple nom
 etat.professeurs = etat.professeurs.map(function(p){
   if(typeof p === 'string') return p;
   if(p && p.nom) return p.nom;
   return String(p);
+});
+etat.matieres = etat.matieres.map(function(m){
+  if(typeof m === 'string') return m;
+  if(m && m.nom) return m.nom;
+  return String(m);
 });
 if(!etat.emploisSemaines) etat.emploisSemaines = {};
 if(!etat.semaineActive) etat.semaineActive = 'S1';
@@ -317,6 +328,7 @@ if(!etat.semaineActive) etat.semaineActive = 'S1';
 var slotEnEdition=null;
 var modeAjoutRapide=false;
 var modeMensuel=false;
+var modeOperation=''; // 'ajouter', 'modifier', 'supprimer'
 
 function sauvegarderStorage(){
   try{ localStorage.setItem('emploiDuTempsITA', JSON.stringify(etat)); }catch(e){}
@@ -650,8 +662,7 @@ function afficherMatieres(){
     list.innerHTML='<span style="color:#95a5a6;font-size:.8em;font-style:italic">Aucune matière</span>';
   }else{
     list.innerHTML=etat.matieres.map(function(m){
-      var nom = (typeof m === 'string') ? m : (m.nom || '');
-      return '<div class="tag"><span>📖 '+nom+'</span><button onclick="supprimerMatiere(\''+nom.replace(/'/g,"\\'")+'\')">✕</button></div>';
+      return '<div class="tag"><span>📖 '+m+'</span><button onclick="supprimerMatiere(\''+m.replace(/'/g,"\\'")+'\')">✕</button></div>';
     }).join('');
   }
 }
@@ -671,10 +682,7 @@ function ajouterMatiere(){
 
 function supprimerMatiere(nom){
   if(!confirm('Supprimer la matière "'+nom+'" ?'))return;
-  etat.matieres = etat.matieres.filter(function(m){
-    var n = (typeof m === 'string') ? m : (m.nom || '');
-    return n!==nom;
-  });
+  etat.matieres = etat.matieres.filter(function(m){return m!==nom;});
   sauvegarderStorage();
   afficherMatieres();
   mettreAJourSelects();
@@ -686,8 +694,7 @@ function afficherProfs(){
     list.innerHTML='<span style="color:#95a5a6;font-size:.8em;font-style:italic">Aucun professeur</span>';
   }else{
     list.innerHTML=etat.professeurs.map(function(p){
-      var nom = (typeof p === 'string') ? p : (p.nom || '');
-      return '<div class="tag"><span>👨‍🏫 '+nom+'</span><button onclick="supprimerProf(\''+nom.replace(/'/g,"\\'")+'\')">✕</button></div>';
+      return '<div class="tag"><span>👨‍🏫 '+p+'</span><button onclick="supprimerProf(\''+p.replace(/'/g,"\\'")+'\')">✕</button></div>';
     }).join('');
   }
   var charge = document.getElementById('profsCharge');
@@ -696,10 +703,7 @@ function afficherProfs(){
     return;
   }
   var parProf = {};
-  etat.professeurs.forEach(function(p){
-    var nom = (typeof p === 'string') ? p : (p.nom || '');
-    parProf[nom] = [];
-  });
+  etat.professeurs.forEach(function(p){ parProf[p] = []; });
   Object.keys(etat.emploisDuTemps).forEach(function(classe){
     var edt = etat.emploisDuTemps[classe] || {};
     Object.keys(edt).forEach(function(key){
@@ -712,12 +716,11 @@ function afficherProfs(){
   });
   Object.values(parProf).forEach(function(arr){ arr.sort(function(a,b){return a.jourIdx-b.jourIdx||a.heureIdx-b.heureIdx;}); });
   charge.innerHTML = etat.professeurs.map(function(p){
-    var nom = (typeof p === 'string') ? p : (p.nom || '');
-    var occ = parProf[nom] || [];
+    var occ = parProf[p] || [];
     var total = occ.length;
     var badgeCls = total===0?'free':'busy';
     var badgeTxt = total===0?'Disponible':total+' h/sem';
-    var html = '<div class="card"><h3>👨‍🏫 '+nom+' <span class="badge '+badgeCls+'">'+badgeTxt+'</span></h3><div class="card-occupations">';
+    var html = '<div class="card"><h3>👨‍🏫 '+p+' <span class="badge '+badgeCls+'">'+badgeTxt+'</span></h3><div class="card-occupations">';
     if(total===0){ html += '<span class="empty-msg">Aucun cours assigné</span>'; }
     else{ html += occ.map(function(o){ return '<div class="occupation-item"><span class="classe">'+o.classe+'</span><span>'+o.matiere+'</span><span class="time">'+o.jour+' · '+o.heure+'</span></div>'; }).join(''); }
     html += '</div></div>';
@@ -740,10 +743,7 @@ function ajouterProf(){
 
 function supprimerProf(nom){
   if(!confirm('Supprimer le professeur "'+nom+'" ?'))return;
-  etat.professeurs = etat.professeurs.filter(function(p){
-    var n = (typeof p === 'string') ? p : (p.nom || '');
-    return n!==nom;
-  });
+  etat.professeurs = etat.professeurs.filter(function(p){return p!==nom;});
   sauvegarderStorage();
   afficherProfs();
   mettreAJourSelects();
@@ -821,15 +821,12 @@ function dupliquerClasse(nom){
 
 function afficherStats(){
   var heuresProfs = {};
-  etat.professeurs.forEach(function(p){
-    var nom = (typeof p === 'string') ? p : (p.nom || '');
-    heuresProfs[nom] = 0;
-  });
+  etat.professeurs.forEach(function(p){ heuresProfs[p] = 0; });
   Object.keys(etat.emploisDuTemps).forEach(function(classe){
     var edt = etat.emploisDuTemps[classe] || {};
     Object.keys(edt).forEach(function(key){
       var c = edt[key];
-      if(c.prof){ heuresProfs[c.prof] = (heuresProfs[c.prof]||0) + 1; }
+      if(c.prof){ heuresProfs[c.prof] = (heuresProfsp[c.prof]||0) + 1; }
     });
   });
   var arrProfs = Object.entries(heuresProfs).sort(function(a,b){return b[1]-a[1];});
@@ -871,10 +868,40 @@ function afficherStats(){
   document.getElementById('statsTotaux').innerHTML = htmlTot;
 }
 
+function chargerCoursExistant(){
+  if(modeOperation !== 'modifier' && modeOperation !== 'supprimer') return;
+  var ji = parseInt(document.getElementById('inputJour').value);
+  var hi = parseInt(document.getElementById('inputHeure').value);
+  var key = ji+'-'+hi;
+  var edt = etat.emploisDuTemps[etat.classeActive] || {};
+  var cours = edt[key];
+
+  if(cours){
+    document.getElementById('modalTitle').textContent = (modeOperation === 'supprimer' ? '🗑️ Supprimer' : '✏️ Modifier') + ' : ' + JOURS[ji] + ' ' + HEURES[hi] + ' — ' + etat.classeActive;
+    document.getElementById('inputMatiere').value = cours.matiere || '';
+    document.getElementById('inputProf').value = cours.prof || '';
+    document.getElementById('inputSalle').value = cours.salle || '';
+    document.getElementById('inputCouleur').value = cours.couleur || '#bdc3c7';
+    document.getElementById('dispoInfo').style.display = 'none';
+    document.getElementById('btnSave').disabled = (modeOperation === 'supprimer');
+    document.getElementById('btnDelete').style.display = (modeOperation === 'supprimer' ? 'block' : 'none');
+    document.getElementById('btnSave').textContent = (modeOperation === 'supprimer' ? 'Enregistrer' : 'Enregistrer');
+  } else {
+    document.getElementById('modalTitle').textContent = (modeOperation === 'supprimer' ? '🗑️ Supprimer' : '✏️ Modifier') + ' : ' + JOURS[ji] + ' ' + HEURES[hi] + ' — ' + etat.classeActive + ' (aucun cours)';
+    document.getElementById('inputMatiere').value = '';
+    document.getElementById('inputProf').value = '';
+    document.getElementById('inputSalle').value = '';
+    document.getElementById('dispoInfo').style.display = 'none';
+    document.getElementById('btnSave').disabled = true;
+    document.getElementById('btnDelete').style.display = 'none';
+  }
+}
+
 function ouvrirAjoutRapide(){
   if(etat.classes.length === 0){ alert('Crée d\'abord une classe dans l\'onglet 📋 Classes'); return; }
   modeAjoutRapide=true;
   modeMensuel=false;
+  modeOperation='ajouter';
   slotEnEdition={jourIndex:0,heureIndex:0};
   document.getElementById('modalTitle').textContent='➕ Ajouter un cours — '+etat.classeActive;
   document.getElementById('selectJourHeure').style.display='block';
@@ -887,13 +914,43 @@ function ouvrirAjoutRapide(){
   document.getElementById('btnDelete').style.display='none';
   document.getElementById('dispoInfo').style.display='none';
   document.getElementById('btnSave').disabled = false;
+  document.getElementById('btnSave').textContent = 'Enregistrer';
   mettreAJourSelects();
   document.getElementById('modal').classList.add('active');
   setTimeout(function(){document.getElementById('inputMatiere').focus();},100);
 }
 
+function ouvrirModification(){
+  if(etat.classes.length === 0){ alert('Crée d\'abord une classe'); return; }
+  modeAjoutRapide=false;
+  modeMensuel=false;
+  modeOperation='modifier';
+  slotEnEdition={jourIndex:0,heureIndex:0};
+  document.getElementById('selectJourHeure').style.display='block';
+  document.getElementById('inputJour').value='0';
+  document.getElementById('inputHeure').value='0';
+  mettreAJourSelects();
+  chargerCoursExistant();
+  document.getElementById('modal').classList.add('active');
+}
+
+function ouvrirSuppression(){
+  if(etat.classes.length === 0){ alert('Crée d\'abord une classe'); return; }
+  modeAjoutRapide=false;
+  modeMensuel=false;
+  modeOperation='supprimer';
+  slotEnEdition={jourIndex:0,heureIndex:0};
+  document.getElementById('selectJourHeure').style.display='block';
+  document.getElementById('inputJour').value='0';
+  document.getElementById('inputHeure').value='0';
+  mettreAJourSelects();
+  chargerCoursExistant();
+  document.getElementById('modal').classList.add('active');
+}
+
 function ouvrirModal(jourIndex,heureIndex,cours){
   modeAjoutRapide=false;
+  modeOperation='';
   slotEnEdition={jourIndex:jourIndex,heureIndex:heureIndex};
   document.getElementById('selectJourHeure').style.display='none';
   document.getElementById('inputJour').value=jourIndex;
@@ -916,6 +973,7 @@ function ouvrirModal(jourIndex,heureIndex,cours){
   }
   document.getElementById('dispoInfo').style.display='none';
   document.getElementById('btnSave').disabled = false;
+  document.getElementById('btnSave').textContent = 'Enregistrer';
   document.getElementById('modal').classList.add('active');
   setTimeout(function(){document.getElementById('inputMatiere').focus();},100);
   if(document.getElementById('inputSalle').value || document.getElementById('inputProf').value) verifierConflits();
@@ -925,13 +983,14 @@ function fermerModal(){
   document.getElementById('modal').classList.remove('active');
   slotEnEdition=null;
   modeAjoutRapide=false;
+  modeOperation='';
 }
 
 function sauvegarderCours(){
   var matiere=document.getElementById('inputMatiere').value;
   if(!matiere){alert('Veuillez choisir une matière');return;}
   var ji,hi;
-  if(modeAjoutRapide){
+  if(modeAjoutRapide || modeOperation==='modifier' || modeOperation==='supprimer'){
     ji=parseInt(document.getElementById('inputJour').value);
     hi=parseInt(document.getElementById('inputHeure').value);
     slotEnEdition={jourIndex:ji,heureIndex:hi};
@@ -948,17 +1007,11 @@ function sauvegarderCours(){
   var etaitMensuel = modeMensuel;
   if(modeMensuel){
     var edtM = getEDTSemaine(etat.classeActive, etat.semaineActive);
-    if(edtM[key] && modeAjoutRapide){
-      if(!confirm('⚠️ Un cours existe déjà à '+JOURS[ji]+' '+HEURES[hi]+'. Le remplacer ?'))return;
-    }
     edtM[key] = cours;
     if(!etat.emploisSemaines[etat.classeActive]) etat.emploisSemaines[etat.classeActive] = {};
     etat.emploisSemaines[etat.classeActive][etat.semaineActive] = edtM;
   }else{
     var edt = etat.emploisDuTemps[etat.classeActive] || {};
-    if(edt[key] && modeAjoutRapide){
-      if(!confirm('⚠️ Un cours existe déjà à '+JOURS[ji]+' '+HEURES[hi]+'. Le remplacer ?'))return;
-    }
     edt[key] = cours;
     etat.emploisDuTemps[etat.classeActive] = edt;
   }
@@ -1013,10 +1066,8 @@ function getEnteteHTML(){
 }
 
 function getTableauRecapHTML(style){
-  // Génère le tableau récap à partir des cours saisis (combinaisons uniques)
   var combinaisons = [];
   var dejaVus = {};
-
   Object.keys(etat.emploisDuTemps).forEach(function(classe){
     var edt = etat.emploisDuTemps[classe] || {};
     Object.keys(edt).forEach(function(key){
@@ -1030,10 +1081,7 @@ function getTableauRecapHTML(style){
       }
     });
   });
-
-  // Trier par matière
   combinaisons.sort(function(a,b){ return a.matiere.localeCompare(b.matiere); });
-
   var html = '<table style="'+(style||'')+'">';
   html += '<thead><tr><th>MATIÈRES</th><th>PROFESSEURS</th><th>SALLES</th></tr></thead><tbody>';
   if(combinaisons.length === 0){
@@ -1244,13 +1292,11 @@ function restaurerJSON(event){
       if(!etat.matieres) etat.matieres = ['GTC'];
       if(!etat.salles) etat.salles = [];
       if(!etat.professeurs || etat.professeurs.length===0) etat.professeurs = ['ADOU'];
-      // Nettoyer profs
       etat.professeurs = etat.professeurs.map(function(p){
         if(typeof p === 'string') return p;
         if(p && p.nom) return p.nom;
         return String(p);
       });
-      // Nettoyer matieres
       etat.matieres = etat.matieres.map(function(m){
         if(typeof m === 'string') return m;
         if(m && m.nom) return m.nom;
